@@ -1,4 +1,4 @@
-# Watermelons-soen341projectW2024
+npx# Watermelons-soen341projectW2024
 # Overview
 Welcome to our Car Catalog and Reservation System, developed as part of the SOEN 341: Software Process course. This web application is designed to provide users, particularly travelers and individuals in urgent need of a vehicle in Canada, with a seamless and convenient experience in selecting, reserving, and managing their vehicle rentals.
 
