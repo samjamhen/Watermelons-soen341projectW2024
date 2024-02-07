@@ -1,4 +1,4 @@
-npx# Watermelons-soen341projectW2024
+# Watermelons-soen341projectW2024
 # Overview
 Welcome to our Car Catalog and Reservation System, developed as part of the SOEN 341: Software Process course. This web application is designed to provide users, particularly travelers and individuals in urgent need of a vehicle in Canada, with a seamless and convenient experience in selecting, reserving, and managing their vehicle rentals.
 
@@ -55,3 +55,20 @@ The project is developed using the MERN stack:
 
 ## Target Audience
 Our web application caters to travelers and individuals in urgent need of a vehicle in Canada. By enabling users to freely choose pickup locations, booking dates, and vehicle types, we aim to enhance their experience and provide a user-friendly platform for renting vehicles.
+
+## Getting Started (Usage Guidelines and Instructions)
+To set up the project locally, follow these steps:
+
+1. Clone the repository.
+2. Install dependencies using npm install in both the client and server directories.
+3. Set up the MongoDB database.
+4. Run the server using npm start in the server directory.
+5. Run the client using npm start in the client directory.
+
+### Exploring the Application:
+- Use the navigation and user interface provided to browse the car catalog, select vehicles, and make reservations.
+- Follow the prompts for logging in or creating a new account to complete a reservation.
+- Review completed reservations, modify or cancel as needed, and provide feedback on rented vehicles.
+
+### Feedback and Support:
+If you encounter any issues or have suggestions for improvement,reach out to any of the team members mentioned above. Feel free to explore the project! I
