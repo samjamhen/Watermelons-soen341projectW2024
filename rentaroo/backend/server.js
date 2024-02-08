@@ -4,7 +4,7 @@ const app = express()
 const PORT = process.env.PORT || 8000;
 
 //Connect to MongoDB and start the server
-mongoose.connect('mongodb+srv://admin:Rentaroo1@rentaroodb.dchkjpr.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://admin:Rentaroo1@rentaroodb.dchkjpr.mongodb.net/Rentaroo?retryWrites=true&w=majority')
 .then(() => {
     console.log("Connected to MongoDB")
     app.listen(PORT, () => {
@@ -15,3 +15,6 @@ mongoose.connect('mongodb+srv://admin:Rentaroo1@rentaroodb.dchkjpr.mongodb.net/?
 })
 
 //Define routes for CRUD operations
+app.get('/', (req, res) => {
+    res.json({mssg: "Welcome to the app"})
+})
