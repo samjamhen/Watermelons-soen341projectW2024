@@ -30,6 +30,4 @@ const reservations = new mongoose.Schema({
 
 const Reservation = mongoose.model('Reservation', reservations)
 
-module.exports = {
-    Reservation
-}
+module.exports = {Reservation}
