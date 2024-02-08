@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Nav() {
+const Nav = () => {
   return (
     <nav>
       <ul>
