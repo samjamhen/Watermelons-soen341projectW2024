@@ -5,8 +5,8 @@ function Nav() {
   return (
     <nav>
       <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/vehicles">Browse Vehicles</Link></li> // Add link for Browse Vehicles page
+        <li><Link to="/Home">Home</Link></li>
+        <li><Link to="/Catalog">Catalog</Link></li>
       </ul>
     </nav>
   );
