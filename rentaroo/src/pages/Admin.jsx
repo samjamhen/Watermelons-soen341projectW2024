@@ -9,7 +9,12 @@ const Admin = () => {
       <Header />
       <main>
         <h2>Welcome to Administrator Page</h2>
-                
+        <ul>
+          <li>Reservations</li>
+          <li>Vehicles</li>
+          <li>Clients</li>
+        </ul>
+  
       </main>
       <Footer />
     </div>

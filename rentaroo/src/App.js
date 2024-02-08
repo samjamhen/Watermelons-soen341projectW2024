@@ -3,6 +3,9 @@ import Home from './pages/Home';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CatalogPage from './pages/CatalogPage';
 import Admin from './pages/Admin';
+import ClientManagement from './pages/ClientManagement';
+
+
 
 function App() {
   return (
