@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const app = express()
 const PORT = process.env.PORT || 8000;
 const reservationRoutes = require('./routes/reservations')
+const usersRoutes = require('./routes/users')
 
 //Middleware 
 app.use(express.json())
@@ -18,7 +19,6 @@ mongoose.connect('mongodb+srv://admin:Rentaroo1@rentaroodb.dchkjpr.mongodb.net/R
     console.log(error)
 })
 
-//routes
-app.use('/api/reservations', reservationRoutes)
-
 //Define routes for CRUD operations
+app.use('/api/reservations', reservationRoutes)
+app.use('/api/users', usersRoutes)

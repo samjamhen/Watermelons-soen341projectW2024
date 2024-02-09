@@ -8,13 +8,12 @@ router.get('/', (req, res) => {
     res.json({mssg: "Get all reservations"})
 })
 
-router.post('/api', async (req, res) => {
+router.post('/create', async (req, res) => {
     res.json({mssg: "POST from json"})
 })
 
 //POST a new reservation
 router.post('/', bookReservation)
-
 
 
 module.exports = router
