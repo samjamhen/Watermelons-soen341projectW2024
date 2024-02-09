@@ -1,33 +1,30 @@
+
 const mongoose = require("mongoose")
 
 const reservations = new mongoose.Schema({
     reservationID:{
         type: Number,
-        required: True
+        required: true,
+        unique: true
     },
     name:{
         type: String,
-        required: True
+        required: true
     },
     vehicle:{
         type: String,
-        required: True
+        required: true
     },
     reservationStartDate:{
         type: Date,
-        required: True
+        required: true
     },
     reservationEndDate:{
         type: Date,
-        required: True
+        required: true
     },
-    reservedAt:{
-        type:Date,
-        default: Date.now()
-        
-    }
-})
+}, {timestamps: true});
 
 const Reservation = mongoose.model('Reservation', reservations)
 
-module.exports = {Reservation}
+module.exports = Reservation
