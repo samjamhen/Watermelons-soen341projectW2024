@@ -9,6 +9,14 @@ function VehicleCard({
   handlePopupCloseButtonClick,
   handleBookNowButtonClick,
 }) {
+function VehicleCard({
+  vehicle,
+  onSelectButtonClick,
+  selectedVehicle,
+  isPopupVisible,
+  handlePopupCloseButtonClick,
+  handleBookNowButtonClick,
+}) {
   return (
   
     <div className="vehicle-card">
