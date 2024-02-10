@@ -63,10 +63,10 @@ We strive to follow the established rules and guidelines we've collectively devi
 ### To set up the project locally, follow these steps:
 
 1. Clone the repository.
-2. If you haven't already,download and install Node.js from [nodejs.org](https://nodejs.org).
+2. If you haven't already, download and install Node.js from [nodejs.org](https://nodejs.org).
 3. Install dependencies using ```npm install``` in both the client and server directories.
 4. Set up the MongoDB database.
-5. Run the server using ```npm start``` in the server directory.
+5. Run the server using ```npm run dev``` in the server directory.
 6. Run the client using ```npm start``` in the client directory.
 
 ### Exploring the Application:
