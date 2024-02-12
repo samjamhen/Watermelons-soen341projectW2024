@@ -3,12 +3,12 @@
 Welcome to our Car Catalog and Reservation System, developed as part of the SOEN 341: Software Process course. This web application is designed to provide users, particularly travelers and individuals in urgent need of a vehicle in Canada, with a seamless and convenient experience in selecting, reserving, and managing their vehicle rentals.
 
 ## Team Members
-Benjamin Ho, 
-Samuel Henderson,
-Ikram Kamal,
-Uyi Oronsaye,
-Yasmine Mouatif,
-Hanine Tydrini
+Quality Assurance/Testing: Benjamin Ho, 
+Backend Developer: Samuel Henderson,
+DevOps Engineer: Ikram Kamal,
+Frontend Developer: Uyi Oronsaye,
+Scrun Master: Yasmine Mouatif,
+Project manager: Hanine Tydrini
 
 ## Project Description
 ### Car Catalog (Database)
