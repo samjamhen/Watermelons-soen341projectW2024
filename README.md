@@ -3,12 +3,12 @@
 Welcome to our Car Catalog and Reservation System, developed as part of the SOEN 341: Software Process course. This web application is designed to provide users, particularly travelers and individuals in urgent need of a vehicle in Canada, with a seamless and convenient experience in selecting, reserving, and managing their vehicle rentals.
 
 ## Team Members
-Benjamin Ho, 
-Samuel Henderson,
-Ikram Kamal,
-Uyi Oronsaye,
-Yasmine Mouatif,
-Hanine Tydrini
+Quality Assurance/Testing: Benjamin Ho, 
+Backend Developer: Samuel Henderson,
+DevOps Engineer: Ikram Kamal,
+Frontend Developer: Uyi Oronsaye,
+Scrun Master: Yasmine Mouatif,
+Project manager: Hanine Tydrini
 
 ## Project Description
 ### Car Catalog (Database)
@@ -57,13 +57,17 @@ The project is developed using the MERN stack:
 Our web application caters to travelers and individuals in urgent need of a vehicle in Canada. By enabling users to freely choose pickup locations, booking dates, and vehicle types, we aim to enhance their experience and provide a user-friendly platform for renting vehicles.
 
 ## Getting Started (Usage Guidelines and Instructions)
-To set up the project locally, follow these steps:
+### Development guidelines:
+We strive to follow the established rules and guidelines we've collectively devised to ensure our workflow operates efficiently. For a detailed overview of our guidelines, please consult our [GitHub Wiki](https://github.com/samjamhen/Watermelons-soen341projectW2024/wiki/Git-Rules).
+
+### To set up the project locally, follow these steps:
 
 1. Clone the repository.
-2. Install dependencies using npm install in both the client and server directories.
-3. Set up the MongoDB database.
-4. Run the server using npm start in the server directory.
-5. Run the client using npm start in the client directory.
+2. If you haven't already, download and install Node.js from [nodejs.org](https://nodejs.org).
+3. Install dependencies using ```npm install``` in both the client and server directories.
+4. Set up the MongoDB database.
+5. Run the server using ```npm run dev``` in the server directory.
+6. Run the client using ```npm start``` in the client directory.
 
 ### Exploring the Application:
 - Use the navigation and user interface provided to browse the car catalog, select vehicles, and make reservations.
