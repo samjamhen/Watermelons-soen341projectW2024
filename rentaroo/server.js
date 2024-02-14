@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 8000;
 //Connect to MongoDB and start the server
 mongoose
   .connect(
-    "mongodb+srv://admin:Rentaroo1@rentaroodb.dchkjpr.mongodb.net/?retryWrites=true&w=majority"
+    "mongodb+srv://admin:Rentaroo1@rentaroodb.dchkjpr.mongodb.net/Rentaroo?retryWrites=true&w=majority"
   )
   .then(() => {
     console.log("Connected to MongoDB");
