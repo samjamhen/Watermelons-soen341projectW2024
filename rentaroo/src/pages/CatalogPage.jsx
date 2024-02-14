@@ -8,7 +8,9 @@ const CatalogPage = () => {
     <div>
       <Header />
       <main>
+        <h1>Catalog Page</h1>
         <Catalog></Catalog>
+            {/* Add more components as needed */}
       </main>
       <Footer />
     </div>
