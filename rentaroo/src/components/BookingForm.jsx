@@ -29,7 +29,7 @@ const BookingForm = () => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here we send data to the server for processing
+    // Here we send data to the server for processing and confirming the reservation
     console.log(formData);
   };
 
