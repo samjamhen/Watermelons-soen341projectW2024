@@ -3,13 +3,13 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../styles/Home.css'
 
-const VehicleManagement = () => {
+const ClientsManagement = () => {
   return (
     <div>
       <Header />
       <main>
         <h2>Welcome to Administrator Page</h2>
-        <h3>Vehicle Management</h3>
+        <h3>Client Management</h3>
                 {/* Add more components as needed */}
       </main>
       <Footer />
@@ -17,4 +17,4 @@ const VehicleManagement = () => {
   );
 };
 
-export default VehicleManagement;
+export default ClientsManagement;
