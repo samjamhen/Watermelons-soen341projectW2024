@@ -1,7 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
+
+//express app
 const app = express();
+
 const PORT = process.env.PORT || 8000;
+const reservationRoutes = require("./routes/reservations");
+const usersRoutes = require("./routes/users");
+const vehicleRoutes = require("./routes/vehicles");
+
+//Middleware
+app.use(express.json());
 
 //Connect to MongoDB and start the server
 mongoose
@@ -19,3 +28,6 @@ mongoose
   });
 
 //Define routes for CRUD operations
+app.use("/api/reservations", reservationRoutes);
+app.use("/api/users", usersRoutes);
+app.use("/api/vehicles", vehicleRoutes);
