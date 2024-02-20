@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema(
     {
@@ -30,6 +31,21 @@ const userSchema = new mongoose.Schema(
     }, 
     {timestamps: true}
 );
+
+// Middleware to hash the password before saving
+userSchema.pre('save', async function(next) {
+    const user = this;
+    if (!user.isModified('password')) {
+        return next();
+    }
+    try {
+        const hashedPassword = await bcrypt.hash(user.password, 10); // 10 is the number of salt rounds
+        user.password = hashedPassword;
+        next();
+    } catch (error) {
+        return next(error);
+    }
+});
 
 const Users = mongoose.model('Users', userSchema)
 
