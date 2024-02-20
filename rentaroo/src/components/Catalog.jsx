@@ -4,8 +4,6 @@ import vehicles from  './api/vehicles.jsx';
 import VehicleCard from './VehicleCard.jsx';
 import '../styles/Catalog.css'
 function Catalog() {
-
-
                 //Code to fetch vehicules data from api. Commented out until database is set
                 /*const [sortedVehicles, setSortedVehicles] = useState([]);
                 useEffect(() => {
@@ -26,21 +24,17 @@ function Catalog() {
               })
               }, []);*/
 
-
     const [sortedVehicles, setSortedVehicles] = useState(vehicles);
-    const [selectedSortOption, setSelectedSortOption] = useState('year')
-    const [selectedVehicle, setSelectedVehicle] = useState(null);
-    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [selectedSortOption, setSelectedSortOption] = useState('year');
 
     useEffect(() => {
       handleSortChange();
     }, [selectedSortOption]);
-
+    
     function handleSortChange() {
       const newSortedVehicles = sortVehiclesBy(sortedVehicles, selectedSortOption);
       setSortedVehicles(newSortedVehicles);
     }
-  
     function sortVehiclesBy(vehicles, sortBy) {
       return [...vehicles].sort((a, b) => {
         if (sortBy === 'color') {
@@ -56,173 +50,68 @@ function Catalog() {
         }
       });
     }
-
+    
     function compareColors(a, b) {
       const aColor = a.color.toLowerCase();
       const bColor = b.color.toLowerCase();
       return aColor > bColor ? 1 : -1;
     }
+    
+    function compareYears(a, b) {
+      return a.year - b.year;
+    }
+    
+    function compareMakes(a, b) {
+      const aMake = a.make.toLowerCase();
+      const bMake = b.make.toLowerCase();
+      return aMake > bMake ? 1 : -1;
+    }    
 
-  function compareYears(a, b) {
-    return a.year - b.year;
-  }
-  function compareYears(a, b) {
-    return a.year - b.year;
-  }
+    function compareMileages(a, b) {
+      return a.mileage - b.mileage;
+    }
 
-  function compareMakes(a, b) {
-    const aMake = a.make.toLowerCase();
-    const bMake = b.make.toLowerCase();
-    return aMake > bMake ? 1 : -1;
-  }
-  function compareMakes(a, b) {
-    const aMake = a.make.toLowerCase();
-    const bMake = b.make.toLowerCase();
-    return aMake > bMake ? 1 : -1;
-  }
-
-  function compareMileages(a, b) {
-    return a.mileage - b.mileage;
-  }
-  function compareMileages(a, b) {
-    return a.mileage - b.mileage;
-  }
-
-  function comparePrices(a, b) {
-    return a.price - b.price;
-  }
-
-  function handleSelectButtonClick(vehicle) {
-    setSelectedVehicle(vehicle);
-    setIsPopupVisible(true);
-  }
-
-  function handlePopupCloseButtonClick() {
-    setSelectedVehicle(null);
-    setIsPopupVisible(false);
-  }
-
-  function handleBookNowButtonClick() {
-    // TODO: Implement booking functionality
-  }
-  function comparePrices(a, b) {
-    return a.price - b.price;
-  }
-
-  function handleSelectButtonClick(vehicle) {
-    setSelectedVehicle(vehicle);
-    setIsPopupVisible(true);
-  }
-
-  function handlePopupCloseButtonClick() {
-    setSelectedVehicle(null);
-    setIsPopupVisible(false);
-  }
-
-  function handleBookNowButtonClick() {
-    // TODO: Implement booking functionality
+    function comparePrices(a, b) {
+      return a.price - b.price;
+    }
+    
+    function renderVehicles() {
+      return sortedVehicles.map(vehicle => (
+        <VehicleCard key={vehicle.id} vehicle={vehicle} />
+      ));
+    }
+    
+    function handleSortOptionClick(event) {
+      const sortOption = event.target.value;
+      setSelectedSortOption(sortOption);
+    }
+    
+    return (
+      <div className="catalog-page">
+        <h1>FIND THE RIGHT CAR FOR YOU WITH RENTAROO</h1>
+        <table>
+          <tr>
+            <td id="sorting-menu">
+              <div className="sorting-section">
+                <label htmlFor="sort-by">Sort results by: </label>
+                <button value="year" onClick={handleSortOptionClick}>Year</button>
+                <button value="make" onClick={handleSortOptionClick}>Make</button>
+                <button value="mileage" onClick={handleSortOptionClick}>Mileage</button>
+                <button value="color" onClick={handleSortOptionClick}>Color</button>
+                <button value="price" onClick={handleSortOptionClick}>Price</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td id="vehicle-list">
+              <ul className="vehicle-list">{renderVehicles()}</ul>
+            </td>
+          </tr>
+        </table>
+      </div>
+    );
   }
 
-  function renderVehicles() {
-    return sortedVehicles.map(vehicle => (
-      <VehicleCard
-        key={vehicle.id}
-        vehicle={vehicle}
-        onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
-        selectedVehicle={selectedVehicle}
-        isPopupVisible={isPopupVisible}
-        handlePopupCloseButtonClick={handlePopupCloseButtonClick}
-        handleBookNowButtonClick={handleBookNowButtonClick}
-      />
-    ));
-  }
-  return (
-    <div className="catalog-page">
-      <h1>FIND THE RIGHT CAR FOR YOU WITH RENTAROO</h1>
-      <table>
-        <tr>
-          <td id="sorting-menu">
-            <div className="sorting-section">
-              <label htmlFor="sort-by">Sort by :</label>
-              <select id="sort-by" onChange={event => setSelectedSortOption(event.target.value)}>
-                <option value="year">Year</option>
-                <option value="make">Make</option>
-                <option value="mileage">Mileage</option>
-                <option value="color">Color</option>
-                <option value="price">Price</option>
-              </select>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td id="vehicle-list">
-            <ul className="vehicle-list">{renderVehicles()}</ul>
-          </td>
-        </tr>
-      </table>
-      {selectedVehicle && isPopupVisible && (
-        <div className="popup">
-          <button onClick={handlePopupCloseButtonClick}>Close</button>
-          <h2>{`${selectedVehicle.year} ${selectedVehicle.make} ${selectedVehicle.model}`}</h2>
-          <p>Color: {selectedVehicle.color}</p>
-          <p>Mileage: {selectedVehicle.mileage}</p>
-          <p>Price: ${selectedVehicle.price}</p>
-          <p>Transmission: {selectedVehicle.transmission}</p>
-          <button onClick={handleBookNowButtonClick}>Book Now</button>
-        </div>
-      )}
-    </div>
-  );
-  function renderVehicles() {
-    return sortedVehicles.map(vehicle => (
-      <VehicleCard
-        key={vehicle.id}
-        vehicle={vehicle}
-        onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
-        selectedVehicle={selectedVehicle}
-        isPopupVisible={isPopupVisible}
-        handlePopupCloseButtonClick={handlePopupCloseButtonClick}
-        handleBookNowButtonClick={handleBookNowButtonClick}
-      />
-    ));
-  }
-  return (
-    <div className="catalog-page">
-      <h1>FIND THE RIGHT CAR FOR YOU WITH RENTAROO</h1>
-      <table>
-        <tr>
-          <td id="sorting-menu">
-            <div className="sorting-section">
-              <label htmlFor="sort-by">Sort by :</label>
-              <select id="sort-by" onChange={event => setSelectedSortOption(event.target.value)}>
-                <option value="year">Year</option>
-                <option value="make">Make</option>
-                <option value="mileage">Mileage</option>
-                <option value="color">Color</option>
-                <option value="price">Price</option>
-              </select>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td id="vehicle-list">
-            <ul className="vehicle-list">{renderVehicles()}</ul>
-          </td>
-        </tr>
-      </table>
-      {selectedVehicle && isPopupVisible && (
-        <div className="popup">
-          <button onClick={handlePopupCloseButtonClick}>Close</button>
-          <h2>{`${selectedVehicle.year} ${selectedVehicle.make} ${selectedVehicle.model}`}</h2>
-          <p>Color: {selectedVehicle.color}</p>
-          <p>Mileage: {selectedVehicle.mileage}</p>
-          <p>Price: ${selectedVehicle.price}</p>
-          <p>Transmission: {selectedVehicle.transmission}</p>
-          <button onClick={handleBookNowButtonClick}>Book Now</button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default Catalog;
+  export default Catalog;
+    
+    
