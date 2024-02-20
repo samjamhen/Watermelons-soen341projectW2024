@@ -1,0 +1,45 @@
+/* Header Styles */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 0px 50px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  padding: 0px 50px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+  z-index: 100;
+}
+
+.logo img {
+  width: 150px; /* Adjust height as needed */
+  padding: 0;
+}
+
+#navbar {
+  list-style-type: none;
+  margin-left: 100px;
+
+}
+
+#navbar li {
+  display: inline;
+  margin-right: 20px;
+}
+
+
+#navbar a {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+#navbar a:hover {
+  color: lightgray;
+}
