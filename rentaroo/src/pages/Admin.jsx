@@ -1,7 +1,9 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
 import '../styles/Home.css'
+
 
 const Admin = () => {
   return (
@@ -9,11 +11,17 @@ const Admin = () => {
       <Header />
       <main>
         <h2>Welcome to Administrator Page</h2>
-        <ul>
-          <li>Reservations</li>
-          <li>Vehicles</li>
-          <li>Clients</li>
-        </ul>
+      <ul>
+      <li>
+        <Link to="/ReservationsManagement">Reservations</Link>
+      </li>
+      <li>
+        <Link to="/VehiclesManagement">Vehicles</Link>
+      </li>
+      <li>
+        <Link to="/ClientsManagement">Clients</Link>
+      </li>
+    </ul>
   
       </main>
       <Footer />
