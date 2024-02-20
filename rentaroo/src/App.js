@@ -9,7 +9,7 @@ import ClientsManagement from './pages/ClientsManagement';
 import VehiclesManagement from './pages/VehiclesManagement';
 import ReservationsManagement from './pages/ReservationsManagement';
 
-import './App.css';
+//import './App.css';
 
 
 function App() {
