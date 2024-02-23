@@ -5,6 +5,6 @@
     "react-hooks": "^1.0.1"
   },
   "scripts": {
-    "test": "your-test-command-here"
+    "test": "jest"
   }
 }
