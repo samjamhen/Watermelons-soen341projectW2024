@@ -16,7 +16,7 @@
     "react-router-dom": "^6.22.0",
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4",
-    "cors": "^2.8.5" // Added CORS package
+    "cors": "^2.8.5" 
   },
   "scripts": {
     "start": "react-scripts start",
