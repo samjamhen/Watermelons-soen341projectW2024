@@ -5,6 +5,7 @@ const Vehicle = require("../models/vehicles");
 const createVehicle = async (req, res) => {
   const {
     make,
+    color,
     model,
     yearOfManufacture,
     mileage,
@@ -21,6 +22,7 @@ const createVehicle = async (req, res) => {
   try {
     const user = await User.create({
       make,
+      color,
       model,
       yearOfManufacture,
       mileage,
