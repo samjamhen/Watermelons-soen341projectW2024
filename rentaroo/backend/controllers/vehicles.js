@@ -93,9 +93,9 @@ const deleteVehicle = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "Vehicle not found" });
   }
-  const vehicle = await Vehicle.findOneAndDelete({ _id: id });
+  const existingVehicle = await Vehicle.findOneAndDelete({ _id: id });
 
-  if (!vehicle) {
+  if (!existingVehicle) {
     return res.status(400).json({ error: "Vehicle not found" });
   }
 
