@@ -1,5 +1,5 @@
-import React from 'react';
-import '../styles/VehicleCard.css';
+import React from "react";
+import "../styles/VehicleCard.css";
 
 function VehicleCard({
   vehicle,
