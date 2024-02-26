@@ -4,30 +4,12 @@ import Footer from "../components/Footer";
 import Catalog from "../components/Catalog";
 
 const CatalogPage = () => {
-  const [vehicles, setVehicles] = useState(null);
-
-  useEffect(() => {
-    const fetchVehicles = async () => {
-      const response = await fetch("/api/vehicles");
-      const json = await response.json();
-
-      if (response.ok) {
-        setVehicles(json);
-      }
-    };
-
-    fetchVehicles();
-  }, []);
   return (
-    <div className="Catalog">
+    <div>
       <Header />
-      <div className="vehicles">
-        {vehicles &&
-          vehicles.map((vehicle) => (
-            <Catalog key={vehicle._id} vehicle={vehicle} />
-          ))}
-      </div>
-
+      <main>
+        <Catalog></Catalog>
+      </main>
       <Footer />
     </div>
   );
