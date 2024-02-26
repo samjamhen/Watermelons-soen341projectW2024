@@ -21,7 +21,7 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link to="/Registration" id="link">
+            <Link to="/ReservationPage" id="link">
               Registration
             </Link>
           </li>
