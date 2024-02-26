@@ -1,30 +1,91 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import vehicles from "./api/vehicles.jsx";
 import VehicleCard from "./VehicleCard.jsx";
 import "../styles/Catalog.css";
+
+// const Catalog = ({ vehicle }) => {
+//   return (
+//     <div className="catalog-page">
+//       <p>
+//         <strong>Vehicle Make:</strong> {vehicle.make}
+//       </p>
+//       <p>
+//         <strong>Vehicle Model:</strong> {vehicle.model}
+//       </p>
+//       <p>
+//         <strong>Vehicle YOM:</strong> {vehicle.yearOfManufacture}
+//       </p>
+//       <p>
+//         <strong>Vehicle Mileage:</strong> {vehicle.mileage}
+//       </p>
+//       <p>
+//         <strong>Vehicle Type:</strong> {vehicle.carType}
+//       </p>
+//       <p>
+//         <strong>Transmission Type:</strong> {vehicle.transmissionType}
+//       </p>
+//       <p>
+//         <strong>Fuel Type:</strong> {vehicle.fuelType}
+//       </p>
+//       <p>
+//         <strong>Seating Capacity:</strong> {vehicle.seatingCapacity}
+//       </p>
+//       <p>
+//         <strong>Features and Amenities:</strong> {vehicle.featuresAndAmenities}
+//       </p>
+//       <p>
+//         <strong>Rental Terms and Conditions:</strong>{" "}
+//         {vehicle.rentalTermsAndConditions}
+//       </p>
+//       <p>
+//         <strong>Photos:</strong> {vehicle.photos}
+//       </p>
+//       <p>
+//         <strong>Location:</strong> {vehicle.location}
+//       </p>
+//       <p>
+//         <strong>Availability Status:</strong> {vehicle.availabilityStatus}
+//       </p>
+//     </div>
+//   );
+// };
+// export default Catalog;
+
 function Catalog() {
   //Code to fetch vehicules data from api. Commented out until database is set
   // const [sortedVehicles, setSortedVehicles] = useState([]);
   useEffect(() => {
-    fetch("localhost:8000/api/vehicles/")
-      .then((response) => response.json())
-      .then((vehicles) => {
-        // Check if vehicles is an array
-        if (Array.isArray(vehicles)) {
-          // Convert vehicles to an array if it's not already one
-          const sortedVehicles = Array.from(vehicles);
+    const [vehicles, setVehicles] = useState(null);
 
-          // Now you can safely pass sortedVehicles to setSortedVehicles
-          setSortedVehicles(sortedVehicles);
-        } else {
-          // Handle the case where vehicles is not an array
-          console.error("Response data is not an array", vehicles);
+    useEffect(() => {
+      const fetchVehicles = async () => {
+        const response = await fetch("/api/vehicles");
+        const json = await response.json();
+
+        if (response.ok) {
+          setVehicles(json);
         }
-      });
+      };
+
+      fetchVehicles();
+    }, []);
+    return (
+      <div className="Catalog">
+        <Header />
+        <div className="vehicles">
+          {vehicles &&
+            vehicles.map((vehicle) => (
+              <Catalog key={vehicle._id} vehicle={vehicle} />
+            ))}
+        </div>
+
+        <Footer />
+      </div>
+    );
   }, []);
 
-  const [sortedVehicles, setSortedVehicles] = useState(vehicles);
+  const [sortedVehicles, setSortedVehicles] = useState(vehicle);
   const [selectedSortOption, setSelectedSortOption] = useState("year");
 
   useEffect(() => {
@@ -124,5 +185,4 @@ function Catalog() {
     </div>
   );
 }
-
 export default Catalog;

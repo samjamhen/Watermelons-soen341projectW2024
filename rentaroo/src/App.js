@@ -1,6 +1,11 @@
 import React from "react";
 import Home from "./pages/Home";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  BrowserRouter,
+} from "react-router-dom";
 
 import CatalogPage from "./pages/CatalogPage";
 import Admin from "./pages/Admin";
@@ -13,8 +18,8 @@ import ReservationsManagement from "./pages/ReservationsManagement";
 
 function App() {
   return (
-    <Router>
-      <div className="App">
+    <div className="App">
+      <BrowserRouter>
         <header className="App-header"></header>
 
         <Routes>
@@ -33,8 +38,8 @@ function App() {
           />
           <Route path="/VehiclesManagement" element={<VehiclesManagement />} />
         </Routes>
-      </div>
-    </Router>
+      </BrowserRouter>
+    </div>
   );
 }
 

@@ -62,3 +62,23 @@ p {
 .select-button:hover {
   background-color: #0056b3;
 }
+.catalog-page {
+  border: 2px solid #007bff; /* Border color: blue */
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #f8f9fa; /* Background color: light gray */
+}
+
+.catalog-page p {
+  margin: 5px 0;
+  color: #333; /* Text color: dark gray */
+}
+
+.catalog-page:nth-child(even) {
+  background-color: #edf2f7; /* Alternate background color: light blue-gray */
+}
+
+.catalog-page strong {
+  color: #007bff; /* Color for strong (bold) text: blue */
+}

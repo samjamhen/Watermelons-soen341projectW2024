@@ -1,17 +1,33 @@
-import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import Catalog from '../components/Catalog';
+import { React, useState, useEffect } from "react";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Catalog from "../components/Catalog";
 
 const CatalogPage = () => {
+  const [vehicles, setVehicles] = useState(null);
+
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      const response = await fetch("/api/vehicles");
+      const json = await response.json();
+
+      if (response.ok) {
+        setVehicles(json);
+      }
+    };
+
+    fetchVehicles();
+  }, []);
   return (
-    <div>
+    <div className="Catalog">
       <Header />
-      <main>
-        <h1>Catalog Page</h1>
-        <Catalog></Catalog>
-            {/* Add more components as needed */}
-      </main>
+      <div className="vehicles">
+        {vehicles &&
+          vehicles.map((vehicle) => (
+            <Catalog key={vehicle._id} vehicle={vehicle} />
+          ))}
+      </div>
+
       <Footer />
     </div>
   );
