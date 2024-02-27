@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DatePicker from 'react-datepicker'; // to install: npm install react-datepicker
+import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
 
@@ -57,7 +57,7 @@ const BookingForm = () => {
           <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required />
         </div>
         <div>
-          <label htmlFor="pickupAddress">Pickup & Return Address:
+          <label htmlFor="pickupAddress">Pickup Address:
             <select id="pickupAddress" name="pickupAddress" value={formData.pickupAddress} onChange={handleChange} required>
               <option value="Montreal">Montreal</option>
               <option value="Toronto">Toronto</option>
@@ -86,13 +86,21 @@ const BookingForm = () => {
           />
         </div>
         <div>
-          <label htmlFor="driverAge">Driver's Age:
-            <select id="pickupAddress" name="pickupAddress" value={formData.pickupAddress} onChange={handleChange} required>
-              <option value="young">18-25</option>
-              <option value="adult">25-65</option>
-              <option value="senior">65+</option>
-            </select>
-          </label>
+          <label htmlFor="drivingLicenseNumber">Driving License Number:</label>
+          <input type="text" id="drivingLicenseNumber" name="drivingLicenseNumber" value={formData.drivingLicenseNumber} onChange={handleChange} required />
+        </div>
+        <h3>Credit Card Information</h3>
+        <div>
+          <label htmlFor="creditCardNumber">Credit Card Number:</label>
+          <input type="text" id="creditCardNumber" name="creditCardNumber" value={formData.creditCardNumber} onChange={handleChange} required />
+        </div>
+        <div>
+          <label htmlFor="expirationDate">Expiration Date:</label>
+          <input type="text" id="expirationDate" name="expirationDate" value={formData.expirationDate} onChange={handleChange} required />
+        </div>
+        <div>
+          <label htmlFor="cvv">CVV:</label>
+          <input type="text" id="cvv" name="cvv" value={formData.cvv} onChange={handleChange} required />
         </div>
         <button type="submit">Submit</button>
       </form>
