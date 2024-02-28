@@ -1,0 +1,67 @@
+/* Style for the booking container */
+.booking-container {
+    display: flex;
+    max-width: 90vw; 
+    margin: 0 auto;
+    gap: 2vw; /* Add space between the image and the form */
+  }
+  
+/* Style for the car image placeholder */
+.car-image-placeholder {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0; /* Placeholder background color */
+    padding: 20px; /* Adjust padding as needed */
+}
+
+/* Style for the form container */
+.booking-form {
+    flex: 2;
+    max-width: 40vw;
+    margin: 0 auto;
+    }
+
+/* Style for the form headings */
+.booking-form h2, .booking-form h3 {
+    text-align: center;
+    }
+
+/* Style for form labels */
+.booking-form label {
+    display: block;
+    margin-bottom: 5px;
+    }
+
+/* Style for form inputs */
+.booking-form input[type="text"],
+.booking-form input[type="email"],
+.booking-form input[type="tel"],
+.booking-form input[type="text"],
+.booking-form select,
+.booking-form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    }
+
+/* Style for date picker container */
+.booking-form .react-datepicker-wrapper {
+    width: 100%;
+    }
+
+/* Style for submit button */
+.booking-form button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    }
+
+/* Style for submit button on hover */
+.booking-form button[type="submit"]:hover {
+    background-color: #0056b3;
+    }

@@ -1,9 +1,11 @@
 {
   "dependencies": {
+    "@testing-library/react": "^14.2.1",
     "react": "^18.2.0",
     "react-datepicker": "^6.1.0",
     "react-dom": "^18.2.0",
     "react-hooks": "^1.0.1",
+<<<<<<< HEAD
     "react-router-dom": "^6.22.1"
   },
   "scripts": {
@@ -30,4 +32,8 @@
   "presets": [
     "@babel/preset-react"
   ]
+=======
+    "react-test-renderer": "^18.2.0"
+  }
+>>>>>>> e0e5c5aa4c080d631f69f4ce42a1ef32d3a18555
 }
