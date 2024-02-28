@@ -1,30 +1,36 @@
-
 const mongoose = require("mongoose")
 
 const reservations = new mongoose.Schema({
-    reservationID:{
-        type: Number,
-        required: true,
-        unique: true
+
+    fullName:{
+        type: String,
+        required: true
     },
-    name:{
+    email:{
+        type: String,
+        required: true
+    },
+    phone:{
         type: String,
         required: true
     },
     vehicle:{
         type: String,
+    },
+    pickupAddress:{
+        type: String, 
         required: true
     },
-    reservationStartDate:{
+    pickupDate:{
         type: Date,
         required: true
     },
-    reservationEndDate:{
+    returnDate:{
         type: Date,
         required: true
     },
 }, {timestamps: true});
 
-const Reservation = mongoose.model('Reservation', reservations)
+const Reservation = mongoose.model('Bookings', reservations)
 
 module.exports = Reservation

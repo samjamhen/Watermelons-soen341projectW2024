@@ -8,9 +8,9 @@ const Reservation = require('../models/reservations.js')
 
 //create a reservation
 const bookReservation = async (req, res) =>{
-    const { reservationID, name, vehicle, reservationStartDate, reservationEndDate} = req.body
+    const {fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate} = req.body
     try{
-        const reservation = await Reservation.create({reservationID, name, vehicle, reservationStartDate, reservationEndDate})
+        const reservation = await Reservation.create({fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate})
         //return status
         res.status(200).json(reservation)
     } catch(error){
