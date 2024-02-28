@@ -1,19 +1,36 @@
 /* Style for the booking container */
 .booking-container {
     display: flex;
-    max-width: 90vw; 
+    max-width: 90vw;
     margin: 0 auto;
     gap: 2vw; /* Add space between the image and the form */
-  }
-  
-/* Style for the car image placeholder */
-.car-image-placeholder {
+}
+
+/* Style for the vehicle information and image */
+.information-placeholder {
     flex: 1;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    gap: 20px; /* Space between elements */
+}
+
+.information-placeholder img {
+    width: 20vw; /* Width of the image */
+    height: 20vw; /* Making the height equal to the width for a square */
+    object-fit: cover; /* Ensures the image covers the square without distorting */
+    border-radius: 10px; /* Optional: Adds rounded corners to the image */
     background-color: #f0f0f0; /* Placeholder background color */
-    padding: 20px; /* Adjust padding as needed */
+    background-image: url('../../public/NoImageAvailable.jpeg');
+    background-size: cover; /* Cover the container with the background image */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+}
+
+.information-placeholder h3, 
+.information-placeholder p {
+    margin: 5px 0;
+    text-align: center;
 }
 
 /* Style for the form container */
@@ -21,47 +38,64 @@
     flex: 2;
     max-width: 40vw;
     margin: 0 auto;
-    }
+}
 
 /* Style for the form headings */
-.booking-form h2, .booking-form h3 {
+.booking-form h2, 
+.booking-form h3 {
     text-align: center;
-    }
+}
 
 /* Style for form labels */
 .booking-form label {
     display: block;
     margin-bottom: 5px;
-    }
+}
 
 /* Style for form inputs */
 .booking-form input[type="text"],
 .booking-form input[type="email"],
 .booking-form input[type="tel"],
-.booking-form input[type="text"],
+.booking-form input[type="number"], /* Assuming you might have number inputs */
 .booking-form select,
 .booking-form button {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
     box-sizing: border-box;
-    }
+}
 
 /* Style for date picker container */
 .booking-form .react-datepicker-wrapper {
     width: 100%;
-    }
+}
 
 /* Style for submit button */
 .booking-form button[type="submit"] {
     background-color: #007bff;
-    color: #fff;
+    color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    }
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
 
 /* Style for submit button on hover */
 .booking-form button[type="submit"]:hover {
     background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .booking-container {
+        flex-direction: column;
+        align-items: center;
     }
+
+    .booking-form {
+        max-width: 80vw;
+    }
+
+    .information-placeholder {
+        width: 80vw;
+    }
+}

@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import { useLocation } from 'react-router-dom'; // Import useLocation
+
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
 
 const BookingForm = () => {
+
+  const location = useLocation(); // Access location object
+  const vehicle = location.state?.vehicle; // Access vehicle information passed through state
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -12,9 +18,6 @@ const BookingForm = () => {
     pickupDate: new Date(),
     returnDate: new Date(),
     drivingLicenseNumber: '',
-    creditCardNumber: '',
-    expirationDate: '',
-    cvv: '',
   });
 
   // Handle form input changes
@@ -37,11 +40,16 @@ const BookingForm = () => {
 
   return (
     <div className="booking-container">
-      <div className="car-image-placeholder">
-        {/* Placeholder for the car image */}
-        {/* You can replace this with an actual image */}
-        Image Placeholder
-      </div>
+      {vehicle && (
+        <div className="car-image-placeholder">
+          {/* Display vehicle information */}
+          {/* For demonstration, using placeholder. Replace with actual image tag if you have vehicle images */}
+          <img src={vehicle.imageUrl || 'path/to/default/image.jpg'} alt={`${vehicle.make} ${vehicle.model}`} />
+          <h3>{`${vehicle.yearOfManufacture} ${vehicle.make} ${vehicle.model}`}</h3>
+          <p>Price: ${vehicle.price} per day</p>
+          {/* Add more vehicle details as needed */}
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="booking-form">
         <h2>Booking Form</h2>
         <div>
@@ -89,19 +97,7 @@ const BookingForm = () => {
           <label htmlFor="drivingLicenseNumber">Driving License Number:</label>
           <input type="text" id="drivingLicenseNumber" name="drivingLicenseNumber" value={formData.drivingLicenseNumber} onChange={handleChange} required />
         </div>
-        <h3>Credit Card Information</h3>
-        <div>
-          <label htmlFor="creditCardNumber">Credit Card Number:</label>
-          <input type="text" id="creditCardNumber" name="creditCardNumber" value={formData.creditCardNumber} onChange={handleChange} required />
-        </div>
-        <div>
-          <label htmlFor="expirationDate">Expiration Date:</label>
-          <input type="text" id="expirationDate" name="expirationDate" value={formData.expirationDate} onChange={handleChange} required />
-        </div>
-        <div>
-          <label htmlFor="cvv">CVV:</label>
-          <input type="text" id="cvv" name="cvv" value={formData.cvv} onChange={handleChange} required />
-        </div>
+      
         <button type="submit">Submit</button>
       </form>
     </div>
