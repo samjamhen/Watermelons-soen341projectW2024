@@ -2,7 +2,9 @@ const express = require("express");
 const Reservation = require("../models/reservations.js");
 const { bookReservation, 
   getReservations, 
-  getReservationByName } = require("../controllers/reservations.js");
+  getReservationByName,
+  updateReservation,
+  deleteReservation } = require("../controllers/reservations.js");
 
 const router = express.Router();
 
@@ -12,12 +14,13 @@ router.get("/", getReservations);
 //GET a single reservation 
 router.get('/:fullName', getReservationByName);
 
-
-router.post("/create", async (req, res) => {
-  res.json({ mssg: "POST from json" });
-});
-
 //POST a new reservation
 router.post("/", bookReservation);
+
+//DELETE a reservation
+router.delete('/:fullName', deleteReservation);
+
+//UPDATE a reservation
+router.patch('/:fullName', updateReservation);
 
 module.exports = router;

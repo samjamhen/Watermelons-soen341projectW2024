@@ -36,10 +36,32 @@ const bookReservation = async (req, res) =>{
     }
 }
 
+// update a reservation 
+const updateReservation = async (req, res) => {
+    const { fullName } = req.params
 
+    const reservation = await Reservation.findOneAndUpdate({ fullName: fullName}, {
+        ...req.body
+    })
+
+    if(!reservation){
+        return res.status(400).json({error: 'No such reservation'})
+    }
+    res.status(200).json(reservation)
+}
 
 //delete a reservation
+const deleteReservation = async (req, res) => {
+    const { fullName } = req.params
+
+    const reservation = await Reservation.findOneAndDelete({ fullName: fullName })
+
+    if(!reservation){
+        return res.status(400).json({error: "No such reservation"})
+    }
+
+    res.status(200).json(reservation)
+}
 
 
-
-module.exports = { bookReservation, getReservations, getReservationByName }
+module.exports = { bookReservation, getReservations, getReservationByName, updateReservation, deleteReservation }
