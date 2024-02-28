@@ -27,6 +27,12 @@ const userSchema = new mongoose.Schema(
             required: true
         },
 
+        phoneNumber: {
+            type: String,
+            required: [true, 'Please enter a phone number'],
+            unique: [true, 'This phone number is already in use. Please enter another one']
+        }
+
         //Add fields specific to each user type
     }, 
     {timestamps: true}

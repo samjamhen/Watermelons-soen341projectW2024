@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import ClientCard from '../components/SystemAdministrator/ClientCard'
 import '../styles/Home.css'
 import { useEffect, useState } from 'react';
 
@@ -26,11 +27,37 @@ const ClientsManagement = () => {
       <main>
         <h2>Welcome to Administrator Page</h2>
         <h3>Client Management</h3>
-        <div className="users">
-          {users && users.map((user) => ( 
-            <p key={user._id}>{user.username}</p>
-          ))}
-        </div>
+
+          <button>Sort</button>
+          <button>Add New Client</button>
+
+        <ClientCard
+        firstName="John"
+        lastName="Doe"
+        email="john.doe@example.com"
+        phoneNumber="123-456-7890"
+        />
+        
+        <ClientCard
+        firstName="John"
+        lastName="Doe"
+        email="john.doe@example.com"
+        phoneNumber="123-456-7890"
+        />
+
+        <ClientCard
+        firstName="John"
+        lastName="Doe"
+        email="john.doe@example.com"
+        phoneNumber="123-456-7890"
+        />
+
+
+
+
+
+
+
                 {/* Add more components as needed */}
       </main>
       <Footer />
