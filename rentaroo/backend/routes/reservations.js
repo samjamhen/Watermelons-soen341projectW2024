@@ -1,12 +1,17 @@
 const express = require("express");
 const Reservation = require("../models/reservations.js");
-const bookReservation = require("../controllers/reservations.js");
+const { bookReservation, 
+  getReservations, 
+  getReservationByName } = require("../controllers/reservations.js");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ mssg: "Get all reservations" });
-});
+//GET all reservations
+router.get("/", getReservations);
+
+//GET a single reservation 
+router.get('/:fullName', getReservationByName);
+
 
 router.post("/create", async (req, res) => {
   res.json({ mssg: "POST from json" });
