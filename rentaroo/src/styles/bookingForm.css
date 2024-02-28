@@ -29,9 +29,20 @@
 
 .information-placeholder h3, 
 .information-placeholder p {
-    margin: 5px 0;
-    text-align: center;
+    margin: 2px 0;
+    text-align: left;
 }
+/* Style for vehicle details list */
+.vehicle-details {
+    list-style-type: none; /* Removes the default list bullets */
+    padding: 0;
+    margin: 20px 0; /* Adjust the margin as needed */
+  }
+  
+  .vehicle-details li {
+    padding: 5px 0; /* Adds some padding to each list item for better spacing */
+    border-bottom: 1px solid #ddd; /* Optional: adds a separator line between items */
+  }
 
 /* Style for the form container */
 .booking-form {

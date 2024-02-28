@@ -41,12 +41,21 @@ const BookingForm = () => {
   return (
     <div className="booking-container">
       {vehicle && (
-        <div className="car-image-placeholder">
+        <div className="information-placeholder">
           {/* Display vehicle information */}
-          {/* For demonstration, using placeholder. Replace with actual image tag if you have vehicle images */}
           <img src={vehicle.imageUrl || 'path/to/default/image.jpg'} alt={`${vehicle.make} ${vehicle.model}`} />
           <h3>{`${vehicle.yearOfManufacture} ${vehicle.make} ${vehicle.model}`}</h3>
           <p>Price: ${vehicle.price} per day</p>
+          <ul className="vehicle-details">
+            <li>Color: {vehicle.color}</li>
+            <li>Mileage: {vehicle.mileage}</li>
+            <li>Transmission: {vehicle.transmissionType}</li>
+            <li>Seating Capacity: {vehicle.seatingCapacity}</li>
+            <li>Fuel Type: {vehicle.fuelType}</li>
+            <li>Car Type: {vehicle.carType}</li>
+            <li>Features: {vehicle.featuresAndAmenities.join(', ')}</li>
+          </ul>
+
           {/* Add more vehicle details as needed */}
         </div>
       )}
