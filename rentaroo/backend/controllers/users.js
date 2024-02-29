@@ -13,6 +13,16 @@ const createUser = async(req, res) => {
 
 //READ
 
+
+
+
+
+
+
+
+
+
+
 //UPDATE
 
 //DELETE
