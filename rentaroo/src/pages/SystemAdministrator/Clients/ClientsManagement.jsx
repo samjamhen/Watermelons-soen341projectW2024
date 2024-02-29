@@ -1,9 +1,11 @@
-import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import ClientCard from '../components/SystemAdministrator/ClientCard'
-import '../styles/Home.css'
-import { useEffect, useState } from 'react';
+import {Routes, Route, useNavigate} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import Header from '../../../components/Header.jsx';
+import Footer from '../../../components/Footer.jsx';
+import ClientCard from '../../../components/SystemAdministrator/ClientCard.jsx';
+import AddClient from './ClientForm.jsx';
+// import '../styles/Home.css'
+//import { useNavigate } from 'react-router-dom';
 
 const ClientsManagement = () => {
   const [users, setUsers] = useState(null);
@@ -21,6 +23,13 @@ const ClientsManagement = () => {
     fetchUsers();
   }, []);
 
+  const navigate = useNavigate();
+  
+    // Function to handle redirection to the Form component
+    const redirectToForm = () => {
+     navigate('/ClientForm'); // Assuming '/form' is the route to your Form component
+    };
+
   return (
     <div>
       <Header />
@@ -29,7 +38,8 @@ const ClientsManagement = () => {
         <h3>Client Management</h3>
 
           <button>Sort</button>
-          <button>Add New Client</button>
+          <button onClick={redirectToForm}>Add New Client</button>
+         
 
         <div>
           {users ? (

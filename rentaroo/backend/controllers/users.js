@@ -31,6 +31,16 @@ const getUser = async(req, res) => {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
 //UPDATE
 
 
