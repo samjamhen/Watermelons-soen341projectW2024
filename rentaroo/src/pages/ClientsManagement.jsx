@@ -31,34 +31,25 @@ const ClientsManagement = () => {
           <button>Sort</button>
           <button>Add New Client</button>
 
-        <ClientCard
-        firstName="John"
-        lastName="Doe"
-        email="john.doe@example.com"
-        phoneNumber="123-456-7890"
-        />
-        
-        <ClientCard
-        firstName="John"
-        lastName="Doe"
-        email="john.doe@example.com"
-        phoneNumber="123-456-7890"
-        />
+        <div>
+          {users ? (
+            users.map(user => (
+              <ClientCard
+                id = {user._id}
+                username = {user.username}
+                name = {user.name}
+                email = {user.email}
+                password = {user.password}
+                phoneNumber = {user.phoneNumber}
+                userType = {user.userType}
+              />
+            ))
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
 
-        <ClientCard
-        firstName="John"
-        lastName="Doe"
-        email="john.doe@example.com"
-        phoneNumber="123-456-7890"
-        />
-
-
-
-
-
-
-
-                {/* Add more components as needed */}
+        {/* Add more components as needed */}
       </main>
       <Footer />
     </div>

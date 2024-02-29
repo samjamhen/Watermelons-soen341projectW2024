@@ -10,6 +10,11 @@ const userSchema = new mongoose.Schema(
             unique: [true, 'Username is taken. Please select another one']
         },
 
+        name: {
+            type: String,
+            required: [true, 'Please enter your name'],
+        },
+
         email: {
             type: String,
             required: [true, 'Please enter an email'],
@@ -45,7 +50,7 @@ userSchema.pre('save', async function(next) {
         return next();
     }
     try {
-        const hashedPassword = await bcrypt.hash(user.password, 10); // 10 is the number of salt rounds
+        const hashedPassword = await bcrypt.hash(user.password, 10);
         user.password = hashedPassword;
         next();
     } catch (error) {
