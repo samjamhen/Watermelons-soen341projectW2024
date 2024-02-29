@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../../../components/Header.jsx';
 import Footer from '../../../components/Footer.jsx';
-//import ClientForm from '../../components/SystemAdministrator/ClientForm.jsx'
+import AddClientForm from '../../../components/SystemAdministrator/AddClientForm.jsx';
 
 const ClientForm = () => {
   
@@ -13,8 +13,8 @@ const ClientForm = () => {
 
     <main>
 
-        <p>test</p>
-    <ClientForm/>  
+        <AddClientForm/>
+        
     </main>
 
     <Footer/>
