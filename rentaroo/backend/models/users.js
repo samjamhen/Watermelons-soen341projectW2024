@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema(
     {
@@ -7,6 +8,11 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Please enter a username'],
             unique: [true, 'Username is taken. Please select another one']
+        },
+
+        name: {
+            type: String,
+            required: [true, 'Please enter your name'],
         },
 
         email: {
@@ -26,10 +32,31 @@ const userSchema = new mongoose.Schema(
             required: true
         },
 
+        phoneNumber: {
+            type: String,
+            required: [true, 'Please enter a phone number'],
+            unique: [true, 'This phone number is already in use. Please enter another one']
+        }
+
         //Add fields specific to each user type
     }, 
     {timestamps: true}
 );
+
+// Middleware to hash the password before saving
+userSchema.pre('save', async function(next) {
+    const user = this;
+    if (!user.isModified('password')) {
+        return next();
+    }
+    try {
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+        user.password = hashedPassword;
+        next();
+    } catch (error) {
+        return next(error);
+    }
+});
 
 const Users = mongoose.model('Users', userSchema)
 
