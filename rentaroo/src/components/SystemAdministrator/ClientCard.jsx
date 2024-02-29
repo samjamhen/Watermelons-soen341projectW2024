@@ -28,23 +28,32 @@ const ClientCard = ({ clientId }) => {
 
 
 
-const ClientCard = ({ firstName, lastName, email, phoneNumber }) => {
+const ClientCard = ({id, username, name, email, password, phoneNumber, userType }) => {
 
   
     return (
         <div className="client-etiquette">
         <div className="client-info">
           <p>
-            <strong>First Name:</strong> {firstName}
+            <strong>User ID:</strong> {id}
           </p>
           <p>
-            <strong>Last Name:</strong> {lastName}
+            <strong>Username:</strong> {username}
+          </p>
+          <p>
+            <strong>Name:</strong> {name}
           </p>
           <p>
             <strong>Email Address:</strong> {email}
           </p>
           <p>
+            <strong>Password:</strong> {password}
+          </p>
+          <p>
             <strong>Phone Number:</strong> {phoneNumber}
+          </p>
+          <p>
+            <strong>User Type:</strong> {userType}
           </p>
         </div>
         <div className="client-actions">
