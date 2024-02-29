@@ -4,7 +4,6 @@
   "proxy": "http://localhost:8000",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "bcrypt": "^5.1.1",
@@ -46,6 +45,11 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@testing-library/jest-dom": "^6.4.2",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.3"
-  }
+  },
+  "presets": [
+    "@babel/preset-react"
+  ]
 }
