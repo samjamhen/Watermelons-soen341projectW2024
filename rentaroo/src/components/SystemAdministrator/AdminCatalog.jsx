@@ -1,25 +1,25 @@
-
 import React, { useState, useEffect } from "react";
 import AdminVehicleCard from "./AdminVehicleCard";
 import "../../styles/Catalog.css";
 import { deleteVehicle } from "../../backend/controllers/vehicles";
 //import { router } from 'react-router-dom';
-import axios from 'axios';
-import { BASE_URL } from '../../constants';
+import axios from "axios";
+import { BASE_URL } from "../../constants";
+import VehicleForm from "./VehicleForm";
 
 export function onDeleteVehicleButtonClick(id) {
-    console.log('Delete vehicle button clicked');
-    console.log(id);
+  console.log("Delete vehicle button clicked");
+  console.log(id);
 
-    deleteVehicle(id);
-  }
+  deleteVehicle(id);
+}
 
 function AdminCatalog() {
   const [vehicles, setVehicles] = useState([]);
   const [sortedVehicles, setSortedVehicles] = useState([]);
   const [selectedSortOption, setSelectedSortOption] = useState();
   const [reload, setReload] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   //const [selectedVehicle, setSelectedVehicle] = useState(null);
   //const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -83,24 +83,21 @@ function AdminCatalog() {
     return a.price - b.price;
   }
 
-
-  
-  
   function onModifyVehicleButtonClick(vehicle) {
     //setSelectedVehicle(null);
   }
 
   function renderVehicles() {
     return sortedVehicles.map((vehicle) => (
-      <AdminVehicleCard  
-        key={vehicle._id} 
+      <AdminVehicleCard
+        key={vehicle._id}
         vehicle={vehicle}
         //onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
         //selectedVehicle={selectedVehicle}
         //isPopupVisible={isPopupVisible}
         //handlePopupCloseButtonClick={handlePopupCloseButtonClick}
-        //handleBookNowButtonClick={handleBookNowButtonClick} 
-        />
+        //handleBookNowButtonClick={handleBookNowButtonClick}
+      />
     ));
   }
 
@@ -108,7 +105,6 @@ function AdminCatalog() {
     const sortOption = event.target.value;
     setSelectedSortOption(sortOption);
   }
-  
 
   return (
     <div className="catalog-page">
@@ -127,7 +123,13 @@ function AdminCatalog() {
           Price
         </button>
       </div>
-      <ul className="vehicle-list">{renderVehicles()}</ul>
+      <div className="create-list-display">
+        <ul className="vehicle-list">{renderVehicles()}</ul>
+
+        <div className="create-vehicle-form">
+          <VehicleForm />
+        </div>
+      </div>
     </div>
   );
 }

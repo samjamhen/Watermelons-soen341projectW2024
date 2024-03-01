@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import VehicleCard from "./VehicleCard.jsx";
@@ -80,14 +79,15 @@ function Catalog() {
 
   function renderVehicles() {
     return sortedVehicles.map((vehicle) => (
-      <VehicleCard  
-        key={vehicle._id} 
+      <VehicleCard
+        key={vehicle._id}
         vehicle={vehicle}
         onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
         selectedVehicle={selectedVehicle}
         isPopupVisible={isPopupVisible}
         handlePopupCloseButtonClick={handlePopupCloseButtonClick}
-        handleBookNowButtonClick={handleBookNowButtonClick} />
+        handleBookNowButtonClick={handleBookNowButtonClick}
+      />
     ));
   }
 
@@ -95,7 +95,6 @@ function Catalog() {
     const sortOption = event.target.value;
     setSelectedSortOption(sortOption);
   }
-  
 
   return (
     <div className="catalog-page">
@@ -117,7 +116,13 @@ function Catalog() {
         <div className="popup">
           <button onClick={handlePopupCloseButtonClick}>Close</button>
           <h2>{`${selectedVehicle.yearOfManufacture} ${selectedVehicle.make} ${selectedVehicle.model}`}</h2>
-          <p className={`availability-status ${selectedVehicle.availabilityStatus === 'available' ? 'available' : 'unavailable'}`}>
+          <p
+            className={`availability-status ${
+              selectedVehicle.availabilityStatus === "available"
+                ? "available"
+                : "unavailable"
+            }`}
+          >
             {selectedVehicle.availabilityStatus}
           </p>
           <p>Color: {selectedVehicle.color}</p>
@@ -128,10 +133,9 @@ function Catalog() {
           <p>Fuel Type: {selectedVehicle.fuelType}</p>
           <p>Car Type: {selectedVehicle.carType}</p>
           <p>Fuel Type: {selectedVehicle.fuelType}</p>
-          <p>Features: {selectedVehicle.featuresAndAmenities.join(', ')}</p>
+          <p>Features: {selectedVehicle.featuresAndAmenities.join(", ")}</p>
 
           <p>{selectedVehicle.rentalTermsAndConditions}</p>
-
 
           <button onClick={handleBookNowButtonClick}>Book Now</button>
         </div>
