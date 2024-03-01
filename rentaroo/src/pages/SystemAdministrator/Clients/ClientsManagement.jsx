@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../../../components/Header.jsx';
 import Footer from '../../../components/Footer.jsx';
 import ClientCard from '../../../components/SystemAdministrator/ClientCard.jsx';
-import AddClient from './ClientForm.jsx';
+import { Link } from 'react-router-dom';
 // import '../styles/Home.css'
 //import { useNavigate } from 'react-router-dom';
 
@@ -23,12 +23,12 @@ const ClientsManagement = () => {
     fetchUsers();
   }, []);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   
-    // Function to handle redirection to the Form component
-    const redirectToForm = () => {
-     navigate('/ClientForm'); // Assuming '/form' is the route to your Form component
-    };
+  //   // Function to handle redirection to the Form component
+  //   const redirectToForm = () => {
+  //    navigate('/ClientForm'); // Assuming '/form' is the route to your Form component
+  //   };
 
   return (
     <div>
@@ -38,7 +38,7 @@ const ClientsManagement = () => {
         <h3>Client Management</h3>
 
           <button>Sort</button>
-          <button onClick={redirectToForm}>Add New Client</button>
+          <Link to= "/ClientForm"><button>Add New Client</button></Link>
          
 
         <div>
