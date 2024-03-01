@@ -1,56 +1,30 @@
-import React from "react";
-import "../styles/VehicleCard.css";
+import React from 'react';
+import '../styles/VehicleCard.css';
 
-function VehicleCard({ vehicle }) {
+function VehicleCard({
+  vehicle,
+  onSelectButtonClick,
+  selectedVehicle,
+  isPopupVisible,
+  handlePopupCloseButtonClick,
+  handleBookNowButtonClick,
+}) {
   return (
-    <div className="vehicle-card">
-      <h3>
-        {vehicle.make} {vehicle.model}
-      </h3>
-      <p>ID: {vehicle._id}</p>
-      <p>
-        <strong>Vehicle Make:</strong> {vehicle.make}
-      </p>
-      <p>
-        <strong>Vehicle Model:</strong> {vehicle.model}
-      </p>
-      <p>
-        <strong>Vehicle YOM:</strong> {vehicle.yearOfManufacture}
-      </p>
-      <p>
-        <strong>Vehicle Mileage:</strong> {vehicle.mileage}
-      </p>
-      <p>
-        <strong>Vehicle Type:</strong> {vehicle.carType}
-      </p>
-      <p>
-        <strong>Transmission Type:</strong> {vehicle.transmissionType}
-      </p>
-      <p>
-        <strong>Fuel Type:</strong> {vehicle.fuelType}
-      </p>
-      <p>
-        <strong>Seating Capacity:</strong> {vehicle.seatingCapacity}
-      </p>
-      <p>
-        <strong>Features and Amenities:</strong> {vehicle.featuresAndAmenities}
-      </p>
-      <p>
-        <strong>Rental Terms and Conditions:</strong>{" "}
-        {vehicle.rentalTermsAndConditions}
-      </p>
-      <p>
-        <strong>Photos:</strong> {vehicle.photos}
-      </p>
-      <p>
-        <strong>Location:</strong> {vehicle.location}
-      </p>
-      <p>
-        <strong>Availability Status:</strong> {vehicle.availabilityStatus}
-      </p>
-      {/* Add more vehicle details as needed, and picture */}
-    </div>
-  );
-}
 
+    <div className="vehicle-card">
+    <img src="" width="40" height="40" alt="Placeholder" className="vehicle-image" />
+    <div className="vehicle-details">
+      <h2 className="vehicle-title">{vehicle.make} {vehicle.model}</h2>
+      <p className="vehicle-year">{vehicle.yearOfManufacture}</p>
+      <p className="vehicle-price">Only {vehicle.price}$ per day</p>
+      <p className="vehicle-mileage">Mileage: {vehicle.mileage}Km</p> 
+      <p className="vehicle-color">Color: {vehicle.color}</p> 
+      <p className="vehicle-transmission">Transmission: {vehicle.transmissionType}</p>     
+      
+        <button className="select-button" onClick={onSelectButtonClick}>View Additional Information</button>
+    </div>
+  </div>  
+  
+);
+      }
 export default VehicleCard;

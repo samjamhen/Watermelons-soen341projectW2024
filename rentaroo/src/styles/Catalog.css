@@ -1,9 +1,13 @@
-.catalog {
+.catalog-page {
   display: flex;
   flex-direction: column;
+  align-items: left;
+  padding:2rem;
+  position:relative;
+}
+table{
   align-items: center;
 }
-
 .vehicle-card {
   display: flex;
   flex-direction: row;
@@ -13,9 +17,8 @@
   height: 200px;
   background-color: #f0f0f0;
   border-radius: 8px;
-  padding: 16px;
+  padding-bottom: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 16px;
 }
 
 .vehicle-image-placeholder {
@@ -48,17 +51,67 @@ p {
   color: #909090;
 }
 
+.sorting-section{
+  min-height: 2rem;
+  width:auto;
+  padding-inline-start: 40px;
+  padding-top:0.5rem;
+}
+.sorting-section button{
+  margin-left: 2rem;
+  min-width: 6rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+.sorting-section button:focus{
+  background-color: #cccccc;
+}
+.sorting-section button:hover{
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+#sorting-menu{
+  align-items: flex-start;
+}
+
 .select-button {
   background-color: #007bff;
   color: white;
   border: none;
+  width:fit-content;
   border-radius: 4px;
   padding: 8px 16px;
   cursor: pointer;
   margin-top: 16px;
   margin-left: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 .select-button:hover {
   background-color: #0056b3;
+}
+
+.popup {
+  position:fixed;
+  top: 50%;
+  left: 75%;
+  transform: translate(-35%, -50%);
+  background-color: rgb(245, 245, 245);
+  border: 1px solid rgba(0, 0, 0, 0);
+  padding: 20px;
+  z-index: 1000;
+  min-height: 400px;
+  width: 400px;
+  border-radius: 3%;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.021);
+
+}
+.availability-status {
+  color: black;
+}
+
+.available {
+  color: green;
+}
+
+.unavailable {
+  color: red;
 }
