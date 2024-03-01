@@ -1,18 +1,26 @@
 const express = require("express");
 const Reservation = require("../models/reservations.js");
-const bookReservation = require("../controllers/reservations.js");
+const { bookReservation, 
+  getReservations, 
+  getReservationByName,
+  updateReservation,
+  deleteReservation } = require("../controllers/reservations.js");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ mssg: "Get all reservations" });
-});
+//GET all reservations
+router.get("/", getReservations);
 
-router.post("/create", async (req, res) => {
-  res.json({ mssg: "POST from json" });
-});
+//GET a single reservation 
+router.get('/:fullName', getReservationByName);
 
 //POST a new reservation
 router.post("/", bookReservation);
+
+//DELETE a reservation
+router.delete('/:fullName', deleteReservation);
+
+//UPDATE a reservation
+router.patch('/:fullName', updateReservation);
 
 module.exports = router;
