@@ -2,9 +2,9 @@ const User = require('../models/users')
 
 //CREATE
 const createUser = async(req, res) => {
-    const {username, name, email, password, userType, phoneNumber} = req.body
+    const {name, email, password, userType, phoneNumber} = req.body
     try {
-        const user = await User.create({username, name, email, password, userType, phoneNumber})
+        const user = await User.create({name, email, password, userType, phoneNumber})
         if (!user) {
             return res.status(404).json({error: 'User not created'})
         }
@@ -42,10 +42,10 @@ const getUser = async(req, res) => {
 
 //UPDATE
 const updateUser = async (req, res) => {
-    const {username, name, email, password, userType, phoneNumber} = req.body
+    const {name, email, password, userType, phoneNumber} = req.body
     const {id} = req.params
     try {
-        const updatedUser = await User.findByIdAndUpdate(id, {username, name, email, password, userType, phoneNumber}, { new: true })
+        const updatedUser = await User.findByIdAndUpdate(id, {name, email, password, userType, phoneNumber}, { new: true })
         if (!updatedUser) {
             return res.status(404).json({ error: 'User not found' })
         }

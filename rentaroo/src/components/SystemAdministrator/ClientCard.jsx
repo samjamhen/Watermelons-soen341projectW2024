@@ -28,7 +28,7 @@ const ClientCard = ({ clientId }) => {
 
 
 
-const ClientCard = ({id, username, name, email, password, phoneNumber, userType }) => {
+const ClientCard = ({id, name, email, password, phoneNumber, userType }) => {
 
   
     return (
@@ -36,9 +36,6 @@ const ClientCard = ({id, username, name, email, password, phoneNumber, userType 
         <div className="client-info">
           <p>
             <strong>User ID:</strong> {id}
-          </p>
-          <p>
-            <strong>Username:</strong> {username}
           </p>
           <p>
             <strong>Name:</strong> {name}

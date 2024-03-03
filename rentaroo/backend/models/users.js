@@ -4,12 +4,6 @@ const bcrypt = require('bcrypt')
 const userSchema = new mongoose.Schema(
     {
         //Fields needed for all users
-        username: {
-            type: String,
-            required: [true, 'Please enter a username'],
-            unique: [true, 'Username is taken. Please select another one']
-        },
-
         name: {
             type: String,
             required: [true, 'Please enter your name'],
