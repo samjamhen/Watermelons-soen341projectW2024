@@ -15,7 +15,7 @@ const ReservationsManagement = () => {
     console.log('Searching for:', searchTerm, 'with option:', searchOption);
     // You can add your search logic here, such as making an API request
     try{
-      const response = await fetch(`/api/reservations/${searchTerm}`);
+      const response = await fetch(`/api/reservations/${searchOption}/${searchTerm}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
     }
@@ -43,7 +43,7 @@ const ReservationsManagement = () => {
       <select value={searchOption} onChange={(e) => setSearchOption(e.target.value)}>
         <option value="referenceNumber">Reference Number</option>
         <option value="name">Name</option>
-        <option value="name">Phone Number</option>
+        <option value="phone">Phone Number</option>
        
        
       </select>
@@ -62,7 +62,7 @@ const ReservationsManagement = () => {
       <button onClick={handleSearch}>Search</button>
       {reservation && (
       <div>
-        <p>{reservation.fullName} {reservation.email} {reservation.phone} {reservation.vehicle} {reservation.pickupAddress} {reservation.pickupDate} {reservation.returnDate}</p>
+        <p>{reservation.id} {reservation.fullName} {reservation.email} {reservation.phone} {reservation.vehicle} {reservation.pickupAddress} {reservation.pickupDate} {reservation.returnDate}</p>
       </div>
       )}
       </main>

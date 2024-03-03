@@ -7,7 +7,24 @@ const getReservations = async (req, res) => {
     res.status(200).json(reservations)
 }
 
-//get a single reservation
+//get a single reservation by fullName
+const getReservationByID = async (req, res) => {
+    const { id } = req.params
+
+    try{
+        const reservation = await Reservation.findOne({ id: id})
+        if (!reservation) {
+            return res.status(404).json({error: 'No such reservation'})
+        }
+        res.status(200).json(reservation)
+    }
+    catch (error){
+        console.error('Error finding reservation: ', error)
+        res.status(500).json({message: 'Server error'})
+    }
+}
+
+//get a single reservation by fullName
 const getReservationByName = async (req, res) => {
     const { fullName } = req.params
 
@@ -24,11 +41,28 @@ const getReservationByName = async (req, res) => {
     }
 }
 
+//get a single reservation by phoneNumber
+const getReservationByPhone = async (req, res) => {
+    const { phone } = req.params
+
+    try{
+        const reservation = await Reservation.findOne({ phone: phone})
+        if (!reservation) {
+            return res.status(404).json({error: 'No such reservation'})
+        }
+        res.status(200).json(reservation)
+    }
+    catch (error){
+        console.error('Error finding reservation: ', error)
+        res.status(500).json({message: 'Server error'})
+    }
+}
+
 //create a reservation
 const bookReservation = async (req, res) =>{
-    const {fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate} = req.body
+    const {id, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate} = req.body
     try{
-        const reservation = await Reservation.create({fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate})
+        const reservation = await Reservation.create({id, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate})
         //return status
         res.status(200).json(reservation)
     } catch(error){
@@ -64,4 +98,4 @@ const deleteReservation = async (req, res) => {
 }
 
 
-module.exports = { bookReservation, getReservations, getReservationByName, updateReservation, deleteReservation }
+module.exports = { bookReservation, getReservations, getReservationByID, getReservationByName, getReservationByPhone, updateReservation, deleteReservation }
