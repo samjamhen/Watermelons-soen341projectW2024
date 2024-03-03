@@ -48,7 +48,6 @@ const AddClientForm = () => {
 
   return (
     <form className='client-form' onSubmit = {handleSubmit}>
-
       <h1>Client Form</h1>
 
       <label>

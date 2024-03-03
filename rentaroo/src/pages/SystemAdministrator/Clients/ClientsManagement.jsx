@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 //import { useNavigate } from 'react-router-dom';
 
 const ClientsManagement = () => {
-  const [users, setUsers] = useState(null);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -22,6 +22,21 @@ const ClientsManagement = () => {
 
     fetchUsers();
   }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`/api/users/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete user');
+      }
+      // Update state to reflect deletion
+      setUsers(prevUsers => prevUsers.filter(user => user._id !== id));
+    } catch (error) {
+      console.error('Error deleting user:', error.message);
+    }
+  };
 
   // const navigate = useNavigate();
   
@@ -42,20 +57,22 @@ const ClientsManagement = () => {
          
 
         <div>
-          {users ? (
+          {users.length > 0 ? (
             users.map(user => (
               <ClientCard
-                id = {user._id}
-                name = {user.name}
-                email = {user.email}
-                password = {user.password}
-                phoneNumber = {user.phoneNumber}
-                userType = {user.userType}
+                key={user._id}
+                id={user._id}
+                name={user.name}
+                email={user.email}
+                password={user.password}
+                phoneNumber={user.phoneNumber}
+                userType={user.userType}
+                onDelete={handleDelete}
               />
             ))
-          ) : (
-            <p>Loading...</p>
-          )}
+            ) : (
+              <p>No users found.</p>
+            )}
         </div>
 
         {/* Add more components as needed */}

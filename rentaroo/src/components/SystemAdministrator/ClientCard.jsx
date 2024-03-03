@@ -1,35 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/SystemAdministrator/ClientManagement.css';
 
 
+const ClientCard = ({id, name, email, password, phoneNumber, userType, onDelete}) => {
+    const [showPassword, setShowPassword] = useState(false);
 
-
-/* Fetch client data form data base and and extract 
-firstName, lastName, email, and phoneNumber from it*/
-
-/*
-const ClientCard = ({ clientId }) => {
-  const [clientData, setClientData] = useState(null);
-
-  useEffect(() => {
-    // Fetch client data from database using clientId
-    fetch(`your-api-endpoint/clients/${clientId}`)
-      .then(response => response.json())
-      .then(data => setClientData(data))
-      .catch(error => console.error('Error fetching client data:', error));
-  }, [clientId]);
-
-  if (!clientData) {
-    return <div>Loading...</div>;
-  }
-
-  const { firstName, lastName, email, phoneNumber } = clientData;
-*/
-
-
-
-const ClientCard = ({id, name, email, password, phoneNumber, userType }) => {
-
+    const handleDeleteClick = () => {
+      onDelete(id);
+    };
   
     return (
         <div className="client-etiquette">
@@ -44,8 +22,13 @@ const ClientCard = ({id, name, email, password, phoneNumber, userType }) => {
             <strong>Email Address:</strong> {email}
           </p>
           <p>
-            <strong>Password:</strong> {password}
-          </p>
+          <strong>Password:</strong> {showPassword ? password : '********'}
+          {!showPassword ? (
+            <button onClick={() => setShowPassword(true)}>Show Password</button>
+          ) : (
+            <button onClick={() => setShowPassword(false)}>Hide Password</button>
+          )}
+        </p>
           <p>
             <strong>Phone Number:</strong> {phoneNumber}
           </p>
@@ -55,7 +38,7 @@ const ClientCard = ({id, name, email, password, phoneNumber, userType }) => {
         </div>
         <div className="client-actions">
           <button className="info-button">Show More Info</button>
-          <button className="delete-button">Delete Client</button>
+          <button className="delete-button" onClick = {handleDeleteClick}>Delete Client</button>
         </div>
       </div>
   );
