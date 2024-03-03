@@ -46,7 +46,6 @@ const ClientsManagement = () => {
             users.map(user => (
               <ClientCard
                 id = {user._id}
-                username = {user.username}
                 name = {user.name}
                 email = {user.email}
                 password = {user.password}
