@@ -2,9 +2,12 @@ const User = require('../models/users')
 
 //CREATE
 const createUser = async(req, res) => {
-    const {username, email, password, userType} = req.body
+    const {username, name, email, password, userType, phoneNumber} = req.body
     try {
-        const user = await User.create({username, email, password, userType})
+        const user = await User.create({username, name, email, password, userType, phoneNumber})
+        if (!user) {
+            return res.status(404).json({error: 'User not created'})
+        }
         res.status(200).json(user)
     } catch(error) {
         res.status(400).json({error: error.message})
@@ -15,6 +18,9 @@ const createUser = async(req, res) => {
 const getUsers = async(req, res) => {
     try {
         const users = await User.find()
+        if (!users) {
+            return res.status(404).json({error: 'No users found'})
+        }
         res.status(200).json(users)
     } catch(error) {
         res.status(400).json({error: error.message})
@@ -25,26 +31,42 @@ const getUsers = async(req, res) => {
 const getUser = async(req, res) => {
     try {
         const user = await User.findById(req.params.id)
+        if (!user) {
+            return res.status(404).json({error: 'User not found'})
+        }
         res.status(200).json(user)
     } catch(error) {
         res.status(400).json({error: error.message})
     }
 }
 
-
-
-
-
-
-
-
-
-
-
 //UPDATE
-
+const updateUser = async (req, res) => {
+    const {username, name, email, password, userType, phoneNumber} = req.body
+    const {id} = req.params
+    try {
+        const updatedUser = await User.findByIdAndUpdate(id, {username, name, email, password, userType, phoneNumber}, { new: true })
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' })
+        }
+        res.status(200).json(updatedUser)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+}
 
 //DELETE
+const deleteUser = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const deletedUser = await User.findByIdAndDelete(id);
+        if (!deletedUser) {
+            return res.status(404).json({error: 'User not found'});
+        }
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
 
-
-module.exports = {createUser, getUsers, getUser}
+module.exports = {createUser, getUsers, getUser, updateUser, deleteUser}
