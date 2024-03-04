@@ -7,6 +7,7 @@ const AddClientForm = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true); //Default value is true
+  const [passwordStrongEnough, setPasswordStrongEnough] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
   const [userType, setUserType] = useState('client'); //Default user type is client
@@ -106,10 +107,14 @@ const AddClientForm = () => {
         <input
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value)
+            setPasswordStrongEnough(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(e.target.value))
+          }}
           required
         />
       </label>
+      {!passwordStrongEnough && password && <span style={{color: 'red'}}>Password does not meet the requirements.</span>}
 
       <label>
         Confirm Password:
@@ -121,8 +126,18 @@ const AddClientForm = () => {
             setPasswordMatch(e.target.value === password);}}
           required
         />
-        {!passwordMatch && (password || confirmPassword) && <span style={{color: 'red'}}>Passwords do not match.</span>}
+        {!passwordMatch && confirmPassword && <span style={{color: 'red'}}>Passwords do not match.</span>}
       </label>
+      <span style={{ fontSize: '0.8rem', color: 'gray' }}>
+        Password must contain:
+        <ul style={{ paddingLeft: '20px', margin: '0', marginBottom: '15px' }}>
+          <li>At least 8 characters</li>
+          <li>At least one uppercase letter</li>
+          <li>At least one lowercase letter</li>
+          <li>At least one number</li>
+          <li>At least one special character</li>
+        </ul>
+      </span>
 
       <label>
         Phone Number (xxx-xxx-xxxx) :
