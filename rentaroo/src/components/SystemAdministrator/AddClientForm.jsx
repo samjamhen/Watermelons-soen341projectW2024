@@ -8,6 +8,7 @@ const AddClientForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true); //Default value is true
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
   const [userType, setUserType] = useState('client'); //Default user type is client
   const [emailError, setEmailError] = useState(false);
   const [phoneNumberError, setPhoneNumberError] = useState(false);
@@ -124,14 +125,23 @@ const AddClientForm = () => {
       </label>
 
       <label>
-        Phone Number:
+        Phone Number (xxx-xxx-xxxx) :
         <input
           type="text"
           value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
+          onChange={(e) => {
+            setPhoneNumber(e.target.value);
+            if (/^\d{3}-\d{3}-\d{3}$/.test(phoneNumber)) {
+              setPhoneNumberFormatError(false);
+            }
+            else {
+              setPhoneNumberFormatError(true);
+            }
+          }}
           required
         />
         {phoneNumberError && <span style={{color: 'red'}}>Phone number is already in use. Please use a different one.</span>}
+        {phoneNumberFormatError && <span style={{color: 'red'}}>Please enter a phone number in the format xxx-xxx-xxxx.</span>}
       </label>
 
       <label>
