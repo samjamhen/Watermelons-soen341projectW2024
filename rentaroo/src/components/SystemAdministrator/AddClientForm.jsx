@@ -9,6 +9,8 @@ const AddClientForm = () => {
   const [passwordMatch, setPasswordMatch] = useState(true); //Default value is true
   const [phoneNumber, setPhoneNumber] = useState('');
   const [userType, setUserType] = useState('client'); //Default user type is client
+  const [emailError, setEmailError] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,19 +30,46 @@ const AddClientForm = () => {
           userType,
         }),
       });
+
+      console.log('Response:', response); // Log the response received from the API
   
       if (!response.ok) {
-        throw new Error('Failed to add client');
+        const errorResponse = await response.json();
+
+        if (response.status === 400) {
+          console.log('Error Response:', errorResponse); // Log the error response from the API
+          if (errorResponse.error && errorResponse.error.includes('duplicate key error')) {
+            if (errorResponse.error.includes('email')) {
+              setEmailError(true);
+              setPhoneNumberError(false);
+            }
+            else if (errorResponse.error.includes('phoneNumber')) {
+              setPhoneNumberError(true);
+              setEmailError(false);
+            }
+            else {
+              throw new Error('Failed to add client');
+            }
+          }
+        }
+        else {
+          throw new Error('Failed to add client');
+        }
       }
   
-      //Reset form after successful submission
-      setName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      setPhoneNumber('');
-      setUserType('client');
-    } 
+      else {
+        console.log('User added successfully');
+        //Reset form after successful submission
+        setName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setPhoneNumber('');
+        setUserType('client');
+        setEmailError(false);
+        setPhoneNumberError(false);
+      } 
+    }
     catch (error) {
       console.error('Error adding client:', error.message);
     }
@@ -68,6 +97,7 @@ const AddClientForm = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+        {emailError && <span style={{color: 'red'}}>Email is already in use. Please use a different one.</span>}
       </label>
 
       <label>
@@ -90,7 +120,7 @@ const AddClientForm = () => {
             setPasswordMatch(e.target.value === password);}}
           required
         />
-        {!passwordMatch && (password || confirmPassword) && <span style={{ color: 'red' }}>Passwords do not match</span>}
+        {!passwordMatch && (password || confirmPassword) && <span style={{color: 'red'}}>Passwords do not match.</span>}
       </label>
 
       <label>
@@ -101,6 +131,7 @@ const AddClientForm = () => {
           onChange={(e) => setPhoneNumber(e.target.value)}
           required
         />
+        {phoneNumberError && <span style={{color: 'red'}}>Phone number is already in use. Please use a different one.</span>}
       </label>
 
       <label>
@@ -118,4 +149,3 @@ const AddClientForm = () => {
 };
 
 export default AddClientForm;
-

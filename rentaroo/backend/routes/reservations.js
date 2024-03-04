@@ -4,15 +4,23 @@ const { bookReservation,
   getReservations, 
   getReservationByName,
   updateReservation,
-  deleteReservation } = require("../controllers/reservations.js");
+  deleteReservation,
+  getReservationByPhone,
+  getReservationByID } = require("../controllers/reservations.js");
 
 const router = express.Router();
 
 //GET all reservations
 router.get("/", getReservations);
 
-//GET a single reservation 
-router.get('/:fullName', getReservationByName);
+//GET a single reservation by name
+router.get('/ReferenceNumber/:id', getReservationByID);
+
+//GET a single reservation by name
+router.get('/Name/:fullName', getReservationByName);
+
+//GET a single reservation by phone
+router.get('/Phone/:phone', getReservationByPhone);
 
 //POST a new reservation
 router.post("/", bookReservation);
