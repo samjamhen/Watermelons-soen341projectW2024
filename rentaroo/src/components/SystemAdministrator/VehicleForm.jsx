@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useVehicleContext } from "../../hooks/useVehicleContext";
 
 const VehicleForm = () => {
+  const { dispatch } = useVehicleContext();
+
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [color, setColor] = useState("");
@@ -70,6 +73,7 @@ const VehicleForm = () => {
 
       setError(null);
       console.log("Vehicle created successfully", json);
+      dispatch({ type: "CREATE_VEHICLE", payload: json });
     }
   };
   return (

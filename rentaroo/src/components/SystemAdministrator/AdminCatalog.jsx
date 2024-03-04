@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import AdminVehicleCard from "./AdminVehicleCard";
 import "../../styles/Catalog.css";
-import { deleteVehicle } from "../../backend/controllers/vehicles";
 //import { router } from 'react-router-dom';
 import axios from "axios";
 import { BASE_URL } from "../../constants";
 import VehicleForm from "./VehicleForm";
+import { useVehicleContext } from "../../hooks/useVehicleContext";
+import ModifyVehicleForm from "./ModifyVehicleForm";
+// export function onDeleteVehicleButtonClick(id) {
+//   console.log("Delete vehicle button clicked");
+//   console.log(id);
 
-export function onDeleteVehicleButtonClick(id) {
-  console.log("Delete vehicle button clicked");
-  console.log(id);
-
-  deleteVehicle(id);
-}
+//   deleteVehicle(id);
+// }
 
 function AdminCatalog() {
-  const [vehicles, setVehicles] = useState([]);
+  // const [vehicles, setVehicles] = useState([]);
   const [sortedVehicles, setSortedVehicles] = useState([]);
   const [selectedSortOption, setSelectedSortOption] = useState();
   const [reload, setReload] = useState(false);
@@ -23,6 +23,8 @@ function AdminCatalog() {
 
   //const [selectedVehicle, setSelectedVehicle] = useState(null);
   //const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const { vehicles, dispatch } = useVehicleContext();
 
   useEffect(() => {
     if (reload) {
@@ -34,11 +36,13 @@ function AdminCatalog() {
     const fetchVehicles = async () => {
       try {
         const response = await fetch("/api/vehicles");
+        const json = await response.json();
+
         if (!response.ok) {
           throw new Error("Failed to fetch vehicles");
         }
-        const json = await response.json();
-        setVehicles(json);
+        dispatch({ type: "SET_VEHICLES", payload: json });
+        // setVehicles(json);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }

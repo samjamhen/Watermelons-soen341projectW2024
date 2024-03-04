@@ -12,6 +12,12 @@ export const vehicleReducer = (state = { vehicles: [] }, action) => {
       return {
         vehicles: [...state.vehicles, action.payload],
       };
+    case "UPDATE_VEHICLE":
+      return {
+        vehicles: state.vehicles.map((vehicle) =>
+          vehicle._id === action.payload._id ? action.payload : vehicle
+        ),
+      };
     case "DELETE_VEHICLE":
       return {
         vehicles: state.vehicles.filter((v) => v._id !== action.payload._id),
@@ -27,7 +33,7 @@ export const VehicleContextProvider = ({ children }) => {
   });
 
   return (
-    <VehicleContext.Provider value={{ state, dispatch }}>
+    <VehicleContext.Provider value={{ ...state, dispatch }}>
       {children}
     </VehicleContext.Provider>
   );

@@ -2,6 +2,7 @@ import React from "react";
 import "../../styles/VehicleCard.css";
 import { onDeleteVehicleButtonClick } from "./AdminCatalog";
 import { useVehicleContext } from "../../hooks/useVehicleContext";
+import ModifyVehicleForm from "./ModifyVehicleForm";
 
 function AdminVehicleCard({
   vehicle,
@@ -17,6 +18,24 @@ function AdminVehicleCard({
 
     if (response.ok) {
       dispatch({ type: "DELETE_VEHICLE", payload: vehicle._id });
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch("/api/vehicles/" + vehicle._id, {
+      method: "PATCH",
+      body: JSON.stringify(vehicle), // Assuming vehicle is the updated vehicle object
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const json = await response.json();
+
+    if (response.ok) {
+      dispatch({ type: "UPDATE_VEHICLE", payload: vehicle._id });
+      <ModifyVehicleForm vehicleId={vehicle._id} />;
     }
   };
 
@@ -69,7 +88,7 @@ function AdminVehicleCard({
         <button
           className="select-button"
           id="modify-vehicle-button"
-          onClick={onModifyVehicleButtonClick}
+          onClick={handleSubmit}
         >
           Modify Vehicle Details
         </button>
