@@ -83,9 +83,21 @@ const updateReservation = async (req, res) => {
     }
     res.status(200).json(reservation)
 }
+//delete a reservation by reference number 
+const deleteReservationByID = async (req, res) => {
+    const { id } = req.params
 
-//delete a reservation
-const deleteReservation = async (req, res) => {
+    const reservation = await Reservation.findOneAndDelete({ id: id })
+
+    if(!reservation){
+        return res.status(400).json({error: "No such reservation"})
+    }
+
+    res.status(200).json(reservation)
+}
+
+//delete a reservation by name
+const deleteReservationByName = async (req, res) => {
     const { fullName } = req.params
 
     const reservation = await Reservation.findOneAndDelete({ fullName: fullName })
@@ -97,5 +109,18 @@ const deleteReservation = async (req, res) => {
     res.status(200).json(reservation)
 }
 
+//delete a reservation by name
+const deleteReservationByPhone = async (req, res) => {
+    const { phone } = req.params
 
-module.exports = { bookReservation, getReservations, getReservationByID, getReservationByName, getReservationByPhone, updateReservation, deleteReservation }
+    const reservation = await Reservation.findOneAndDelete({ phone: phone })
+
+    if(!reservation){
+        return res.status(400).json({error: "No such reservation"})
+    }
+
+    res.status(200).json(reservation)
+}
+
+
+module.exports = { bookReservation, getReservations, getReservationByID, getReservationByName, getReservationByPhone, updateReservation, deleteReservationByID, deleteReservationByName, deleteReservationByPhone }

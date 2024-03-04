@@ -28,9 +28,25 @@ const ReservationsManagement = () => {
     }
   };
 
-  useEffect(() => {
-    handleSearch();
-  }, [searchTerm, searchOption])
+  const handleDelete = async () => {
+    try{
+      const response = await fetch(`/api/reservations/${searchOption}/${searchTerm}`, {
+        method: 'DELETE'
+      });
+
+      setReservation([]);
+      
+      if(!response.ok){
+        throw new Error('Network response was not ok');
+      }
+    } catch (error){
+      console.log('Error deleting reservation:', error);
+    }
+  }
+
+  //useEffect(() => {
+    //handleSearch();
+  //}, [searchTerm, searchOption])
 
   return (
     <div>
@@ -65,6 +81,7 @@ const ReservationsManagement = () => {
         <p>{reservation.id} {reservation.fullName} {reservation.email} {reservation.phone} {reservation.vehicle} {reservation.pickupAddress} {reservation.pickupDate} {reservation.returnDate}</p>
       </div>
       )}
+      <button onClick={handleDelete}>Delete</button>
       </main>
 
       <Footer/>
