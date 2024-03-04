@@ -1,12 +1,13 @@
 {
   "dependencies": {
     "@testing-library/react": "^14.2.1",
+    "bcrypt": "^5.1.1",
     "react": "^18.2.0",
     "react-datepicker": "^6.1.0",
     "react-dom": "^18.2.0",
     "react-hooks": "^1.0.1",
-
-    "react-router-dom": "^6.22.1"
+    "react-router-dom": "^6.22.1",
+    "uuid": "^9.0.1"
   },
   "scripts": {
     "test": "jest"
@@ -32,7 +33,4 @@
   "presets": [
     "@babel/preset-react"
   ]
-
-  
-
 }

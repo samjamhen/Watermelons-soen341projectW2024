@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import DatePicker from 'react-datepicker'; //install "npm install react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
 
 const BookingForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
+    vehicle: '',
     email: '',
     phone: '',
     pickupAddress: '',
     pickupDate: new Date(),
     returnDate: new Date(),
-    drivingLicenseNumber: '',
-    creditCardNumber: '',
-    expirationDate: '',
-    cvv: '',
   });
+  const [error, setError] = useState('')
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -23,16 +21,51 @@ const BookingForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle date picker changes
-  const handleDateChange = (date, name) => {
-    setFormData({ ...formData, [name]: date });
+  // Handle pickup address change
+  const handlePickupAddressChange = (e) => {
+    const { value } = e.target;
+    setFormData({ ...formData, pickupAddress: value });
   };
 
+  // Handle date picker changes
+  const handleDateChange = (date, name) => {
+    setFormData({ ...formData, [name]: date || new Date() });
+  };  
+
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Here we send data to the server for processing and confirming the reservation
+    const reservation = { fullName: formData.fullName, vehicle: formData.vehicle, email: formData.email, 
+      phone: formData.phone, pickupAddress: formData.pickupAddress, pickupDate: formData.pickupDate, returnDate: formData.returnDate}
     console.log(formData);
+
+    const response = await fetch('/api/reservations', {
+      method: 'POST',
+      body: JSON.stringify(reservation), 
+      headers: {
+          'Content-Type': 'application/json'
+      }
+    })
+
+    const json = await response.json()
+
+        if (!response.ok){
+            setError(json.error)
+        }
+        if (response.ok){
+            setError(null)
+            setFormData({
+              fullName : '',
+              email: '', 
+              phone: '',
+              pickupAddress: '',
+              pickupDate: new Date(),
+              returnDate: new Date() 
+            })
+            console.log('new reservation added')
+
+        }
   };
 
   return (
@@ -59,6 +92,7 @@ const BookingForm = () => {
         <div>
           <label htmlFor="pickupAddress">Pickup Address:
             <select id="pickupAddress" name="pickupAddress" value={formData.pickupAddress} onChange={handleChange} required>
+              <option value="">Select</option>
               <option value="Montreal">Montreal</option>
               <option value="Toronto">Toronto</option>
               <option value="Ottawa">Ottawa</option>
@@ -85,25 +119,8 @@ const BookingForm = () => {
             required
           />
         </div>
-        <div>
-          <label htmlFor="drivingLicenseNumber">Driving License Number:</label>
-          <input type="text" id="drivingLicenseNumber" name="drivingLicenseNumber" value={formData.drivingLicenseNumber} onChange={handleChange} required />
-        </div>
-        <h3>Credit Card Information</h3>
-        <div>
-          <label htmlFor="creditCardNumber">Credit Card Number:</label>
-          <input type="text" id="creditCardNumber" name="creditCardNumber" value={formData.creditCardNumber} onChange={handleChange} required />
-        </div>
-        <div>
-          <label htmlFor="expirationDate">Expiration Date:</label>
-          <input type="text" id="expirationDate" name="expirationDate" value={formData.expirationDate} onChange={handleChange} required />
-        </div>
-        <div>
-          <label htmlFor="cvv">CVV:</label>
-          <input type="text" id="cvv" name="cvv" value={formData.cvv} onChange={handleChange} required />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+      <button type="submit">Submit</button>
+    </form>
     </div>
   );
 };
