@@ -1,6 +1,13 @@
 const mongoose = require("mongoose")
+const { v4: uuidv4 } = require('uuid');
 
 const reservations = new mongoose.Schema({
+
+    id:{
+        type: String,
+        default: uuidv4,
+        required: true
+    },
 
     fullName:{
         type: String,
@@ -31,6 +38,6 @@ const reservations = new mongoose.Schema({
     },
 }, {timestamps: true});
 
-const Reservation = mongoose.model('Bookings', reservations)
+const Reservation = mongoose.model('Reservations', reservations)
 
 module.exports = Reservation
