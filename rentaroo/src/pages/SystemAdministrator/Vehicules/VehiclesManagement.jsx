@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 // import '../styles/Home.css'
-import VehicleCard from '../../../components/Catalog';
+import AdminCatalog from '../../../components/SystemAdministrator/AdminCatalog';
 import Catalog from '../../../components/Catalog';
 
 const VehiclesManagement = () => {
@@ -15,7 +15,7 @@ const VehiclesManagement = () => {
         
 
 
-        <Catalog/>
+        <AdminCatalog/>
       </main>
       <Footer />
     </div>
