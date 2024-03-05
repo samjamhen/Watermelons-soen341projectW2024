@@ -54,11 +54,7 @@ const ReservationsManagement = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Enter reservation reference number"
       />
-      {/* <select value={searchOption} onChange={(e) => setSearchOption(e.target.value)}>
-        <option value="referenceNumber">Reference Number</option>
-        <option value="name">Name</option>
-       
-      </select> */}
+      
       <button onClick={handleSearch}>Search</button>
       {reservation && (
       <div>
