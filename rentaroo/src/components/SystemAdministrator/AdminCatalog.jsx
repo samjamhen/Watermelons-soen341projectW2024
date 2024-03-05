@@ -1,17 +1,13 @@
-
 import React, { useState, useEffect } from "react";
 import AdminVehicleCard from "./AdminVehicleCard";
 import "../../styles/Catalog.css";
-import { deleteVehicle } from "../../backend/controllers/vehicles";
-//import { router } from 'react-router-dom';
-import axios from 'axios';
-import { BASE_URL } from '../../constants';
 
 export function onDeleteVehicleButtonClick(id) {
     console.log('Delete vehicle button clicked');
     console.log(id);
-
-    deleteVehicle(id);
+  }
+  export   function onModifyVehicleButtonClick() {
+    console.log('Modify vehicle clicked');
   }
 
 function AdminCatalog() {
@@ -21,8 +17,6 @@ function AdminCatalog() {
   const [reload, setReload] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  //const [selectedVehicle, setSelectedVehicle] = useState(null);
-  //const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   useEffect(() => {
     if (reload) {
@@ -83,23 +77,11 @@ function AdminCatalog() {
     return a.price - b.price;
   }
 
-
-  
-  
-  function onModifyVehicleButtonClick(vehicle) {
-    //setSelectedVehicle(null);
-  }
-
   function renderVehicles() {
     return sortedVehicles.map((vehicle) => (
       <AdminVehicleCard  
         key={vehicle._id} 
         vehicle={vehicle}
-        //onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
-        //selectedVehicle={selectedVehicle}
-        //isPopupVisible={isPopupVisible}
-        //handlePopupCloseButtonClick={handlePopupCloseButtonClick}
-        //handleBookNowButtonClick={handleBookNowButtonClick} 
         />
     ));
   }
@@ -108,7 +90,6 @@ function AdminCatalog() {
     const sortOption = event.target.value;
     setSelectedSortOption(sortOption);
   }
-  
 
   return (
     <div className="catalog-page">

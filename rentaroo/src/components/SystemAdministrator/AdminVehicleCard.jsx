@@ -1,12 +1,10 @@
 import React from 'react';
 import '../../styles/VehicleCard.css';
 import { onDeleteVehicleButtonClick } from './AdminCatalog';
-
+import { onModifyVehicleButtonClick } from './AdminCatalog';
 
 function AdminVehicleCard({
   vehicle,
-  //onDeleteVehicleButtonClick,
-  onModifyVehicleButtonClick,
 }) {
   return (
 
@@ -34,7 +32,7 @@ function AdminVehicleCard({
 
 
           <button className="select-button" id='delete-vehicle-button'onClick={() => onDeleteVehicleButtonClick(vehicle._id)}>Delete vehicle</button>        
-          <button className="select-button" id='modify-vehicle-button'onClick={onModifyVehicleButtonClick}>Modify Vehicle Details</button>    
+          <button className="select-button" id='modify-vehicle-button'onClick={onModifyVehicleButtonClick()}>Modify Vehicle Details</button>    
     </div>
   </div>  
   
