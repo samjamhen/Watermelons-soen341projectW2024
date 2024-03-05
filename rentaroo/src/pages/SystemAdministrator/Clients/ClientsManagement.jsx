@@ -4,11 +4,12 @@ import Header from '../../../components/Header.jsx';
 import Footer from '../../../components/Footer.jsx';
 import ClientCard from '../../../components/SystemAdministrator/ClientCard.jsx';
 import { Link } from 'react-router-dom';
-// import '../styles/Home.css'
-//import { useNavigate } from 'react-router-dom';
+
 
 const ClientsManagement = () => {
   const [users, setUsers] = useState([]);
+  const [confirmDelete, setConfirmDelete] = useState(null);
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -25,25 +26,24 @@ const ClientsManagement = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`/api/users/${id}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete user');
+      if (window.confirm('Are you sure you want to delete this client?')) {
+        const response = await fetch(`/api/users/${id}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to delete user');
+        }
+        
+        setUsers(prevUsers => prevUsers.filter(user => user._id !== id));
       }
-      // Update state to reflect deletion
-      setUsers(prevUsers => prevUsers.filter(user => user._id !== id));
     } catch (error) {
       console.error('Error deleting user:', error.message);
     }
   };
-
-  // const navigate = useNavigate();
   
-  //   // Function to handle redirection to the Form component
-  //   const redirectToForm = () => {
-  //    navigate('/ClientForm'); // Assuming '/form' is the route to your Form component
-  //   };
+
+
+
 
   return (
     <div>
