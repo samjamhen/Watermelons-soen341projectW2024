@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import AdminVehicleCard from "./AdminVehicleCard";
 import "../../styles/Catalog.css";
 
@@ -94,8 +95,9 @@ function AdminCatalog() {
   return (
     <div className="catalog-page">
       <h1>ADMIN CATALOG</h1>
-      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-
+      <Link to="/VehicleForm">
+        <button className="add-vehicle-button">Add Vehicle</button>
+      </Link>
       <div className="sorting-section">
         <label htmlFor="sort-by">Sort results by: </label>
         <button value="year" onClick={handleSortOptionClick}>
