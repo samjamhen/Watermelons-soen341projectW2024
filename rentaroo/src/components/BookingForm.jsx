@@ -4,6 +4,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
 
 const BookingForm = () => {
+
+  const location = useLocation(); // Access location object
+  const vehicle = location.state?.vehicle; // Access vehicle information passed through state
+
   const [formData, setFormData] = useState({
     fullName: '',
     vehicle: '',
@@ -70,11 +74,25 @@ const BookingForm = () => {
 
   return (
     <div className="booking-container">
-      <div className="car-image-placeholder">
-        {/* Placeholder for the car image */}
-        {/* You can replace this with an actual image */}
-        Image Placeholder
-      </div>
+      {vehicle && (
+        <div className="information-placeholder">
+          {/* Display vehicle information */}
+          <img src={vehicle.imageUrl || 'path/to/default/image.jpg'} alt={`${vehicle.make} ${vehicle.model}`} />
+          <h3>{`${vehicle.yearOfManufacture} ${vehicle.make} ${vehicle.model}`}</h3>
+          <p>Price: ${vehicle.price} per day</p>
+          <ul className="vehicle-details">
+            <li>Color: {vehicle.color}</li>
+            <li>Mileage: {vehicle.mileage}</li>
+            <li>Transmission: {vehicle.transmissionType}</li>
+            <li>Seating Capacity: {vehicle.seatingCapacity}</li>
+            <li>Fuel Type: {vehicle.fuelType}</li>
+            <li>Car Type: {vehicle.carType}</li>
+            <li>Features: {vehicle.featuresAndAmenities.join(', ')}</li>
+          </ul>
+
+          {/* Add more vehicle details as needed */}
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="booking-form">
         <h2>Booking Form</h2>
         <div>
