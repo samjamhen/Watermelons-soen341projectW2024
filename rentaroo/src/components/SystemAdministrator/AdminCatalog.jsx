@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import AdminVehicleCard from "./AdminVehicleCard";
-import "../../styles/Catalog.css";
+// import "../../styles/Catalog.css";
 //import { router } from 'react-router-dom';
 import axios from "axios";
-import { BASE_URL } from "../../constants";
-import VehicleForm from "./VehicleForm";
+// import { BASE_URL } from "../../constants";
 import { useVehicleContext } from "../../hooks/useVehicleContext";
 import ModifyVehicleForm from "./ModifyVehicleForm";
-// export function onDeleteVehicleButtonClick(id) {
-//   console.log("Delete vehicle button clicked");
-//   console.log(id);
-
-//   deleteVehicle(id);
-// }
 
 function AdminCatalog() {
   // const [vehicles, setVehicles] = useState([]);
@@ -20,9 +14,6 @@ function AdminCatalog() {
   const [selectedSortOption, setSelectedSortOption] = useState();
   const [reload, setReload] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
-  //const [selectedVehicle, setSelectedVehicle] = useState(null);
-  //const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const { vehicles, dispatch } = useVehicleContext();
 
@@ -87,21 +78,9 @@ function AdminCatalog() {
     return a.price - b.price;
   }
 
-  function onModifyVehicleButtonClick(vehicle) {
-    //setSelectedVehicle(null);
-  }
-
   function renderVehicles() {
     return sortedVehicles.map((vehicle) => (
-      <AdminVehicleCard
-        key={vehicle._id}
-        vehicle={vehicle}
-        //onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
-        //selectedVehicle={selectedVehicle}
-        //isPopupVisible={isPopupVisible}
-        //handlePopupCloseButtonClick={handlePopupCloseButtonClick}
-        //handleBookNowButtonClick={handleBookNowButtonClick}
-      />
+      <AdminVehicleCard key={vehicle._id} vehicle={vehicle} />
     ));
   }
 
@@ -113,8 +92,9 @@ function AdminCatalog() {
   return (
     <div className="catalog-page">
       <h1>ADMIN CATALOG</h1>
-      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-
+      <Link to="/VehicleForm">
+        <button className="add-vehicle-button">Add Vehicle</button>
+      </Link>
       <div className="sorting-section">
         <label htmlFor="sort-by">Sort results by: </label>
         <button value="year" onClick={handleSortOptionClick}>
@@ -129,10 +109,6 @@ function AdminCatalog() {
       </div>
       <div className="create-list-display">
         <ul className="vehicle-list">{renderVehicles()}</ul>
-
-        <div className="create-vehicle-form">
-          <VehicleForm />
-        </div>
       </div>
     </div>
   );
