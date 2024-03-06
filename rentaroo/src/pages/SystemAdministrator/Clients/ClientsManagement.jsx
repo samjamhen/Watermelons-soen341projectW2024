@@ -41,10 +41,6 @@ const ClientsManagement = () => {
     }
   };
   
-
-
-
-
   return (
     <div>
       <Header />
