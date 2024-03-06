@@ -10,6 +10,10 @@ const ClientCard = ({ id, name, email, password, phoneNumber, userType, onDelete
     phoneNumber: phoneNumber,
     userType: userType
   });
+  const [emailError, setEmailError] = useState(false);
+  const [emailFormatError, setEmailFormatError] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
 
   const handleDeleteClick = () => {
     onDelete(id);
@@ -19,10 +23,79 @@ const ClientCard = ({ id, name, email, password, phoneNumber, userType, onDelete
     setIsEditing(true);
   };
 
-  const handleSaveClick = () => {
-    // Perform saving logic here, such as updating the data in the backend
-    setIsEditing(false);
+  {/*}
+  const handleSaveClick = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`api/users/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editedData),
+      });
+
+      if (response.ok) {
+        setIsEditing(false);
+      }
+      else {
+        console.error('Failed to update user data');
+      }
+    }
+    catch(error) {
+      console.error('Error updating user data:', error)
+    }
   };
+{*/}
+
+const handleSaveClick = async (e) => {
+  e.preventDefault();
+
+  try {
+    //POST request to add client
+    const response = await fetch(`/api/users/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(editedData),
+    });
+
+    console.log('Response:', response); // Log the response received from the API
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+
+      if (response.status === 400) {
+        console.log('Error Response:', errorResponse); // Log the error response from the API
+        if (errorResponse.error && errorResponse.error.includes('duplicate key error')) {
+          if (errorResponse.error.includes('email')) {
+            setEmailError(true);
+            setPhoneNumberError(false);
+          }
+          else if (errorResponse.error.includes('phoneNumber')) {
+            setPhoneNumberError(true);
+            setEmailError(false);
+          }
+          else {
+            throw new Error('Failed to update client');
+          }
+        }
+      }
+      else {
+        throw new Error('Failed to update client');
+      }
+    }
+
+    else {
+      setIsEditing(false);
+      console.log('User updated successfully');
+    } 
+  }
+  catch (error) {
+    console.error('Error updating client:', error.message);
+  }
+};
 
   const handleCancelClick = () => {
     // Reset editedData to original values
@@ -43,6 +116,36 @@ const ClientCard = ({ id, name, email, password, phoneNumber, userType, onDelete
     }));
   };
 
+  const handlePhoneNumberChange = (e) => {
+    const { name, value } = e.target;
+    if (/^\d{3}-\d{3}-\d{4}$/.test(value)) {
+      setPhoneNumberFormatError(false);
+    }
+    else {
+      setPhoneNumberFormatError(true);
+    }
+
+    setEditedData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  const handleEmailAddressChange = (e)  => {
+    const { name, value } = e.target;
+    if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+      setEmailFormatError(false);
+    }
+    else {
+      setEmailFormatError(true);
+    }
+  
+    setEditedData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  }
+
   return (
     <div className="client-etiquette">
       <div className="client-info">
@@ -55,25 +158,37 @@ const ClientCard = ({ id, name, email, password, phoneNumber, userType, onDelete
               <strong>Name:</strong>{' '}
               <input type="text" name="name" value={editedData.name} onChange={handleChange} />
             </p>
+
             <p>
               <strong>Email Address:</strong>{' '}
-              <input type="email" name="email" value={editedData.email} onChange={handleChange} />
+              <input type="email" name="email" value={editedData.email} onChange={handleEmailAddressChange} />
             </p>
+            {emailFormatError && <span style={{color: 'red'}}>Please enter a valid email address.</span>}
+            {emailError && <span style={{color: 'red'}}>Email is already in use. Please use a different one.</span>}
+            
             <p>
               <strong>Password:</strong> {showPassword ? password : '********'}
               {!showPassword ? (
-                <button onClick={() => setShowPassword(true)}>Show Password</button>
+                <button onClick={() => setShowPassword(true)}>Show Hashsed Password</button>
               ) : (
-                <button onClick={() => setShowPassword(false)}>Hide Password</button>
+                <button onClick={() => setShowPassword(false)}>Hide Hashed Password</button>
               )}
+            
             </p>
             <p>
-              <strong>Phone Number:</strong>{' '}
-              <input type="tel" name="phoneNumber" value={editedData.phoneNumber} onChange={handleChange} />
+              <strong>Phone Number: (xxx-xxx-xxxx)</strong>{' '}
+              <input type="tel" name="phoneNumber" value={editedData.phoneNumber} onChange={handlePhoneNumberChange} />
             </p>
+            {phoneNumberError && <span style={{color: 'red'}}>Phone number is already in use. Please use a different one.</span>}
+            {phoneNumberFormatError && phoneNumber && <span style={{color: 'red'}}>Please enter a phone number in the correct format.</span>}
+            
             <p>
               <strong>User Type:</strong>{' '}
-              <input type="text" name="userType" value={editedData.userType} onChange={handleChange} />
+              <select name="userType" value={editedData.userType} onChange={handleChange}>
+                <option value="client">Client</option>
+                <option value="customer_representative">Customer Representative</option>
+                <option value="system_administrator">System Administrator</option>
+              </select>
             </p>
           </>
         ) : (
@@ -81,20 +196,24 @@ const ClientCard = ({ id, name, email, password, phoneNumber, userType, onDelete
             <p>
               <strong>Name:</strong> {editedData.name}
             </p>
+           
             <p>
               <strong>Email Address:</strong> {editedData.email}
             </p>
+           
             <p>
               <strong>Password:</strong> {showPassword ? password : '********'}
               {!showPassword ? (
-                <button onClick={() => setShowPassword(true)}>Show Password</button>
+                <button onClick={() => setShowPassword(true)}>Show Hashed Password</button>
               ) : (
-                <button onClick={() => setShowPassword(false)}>Hide Password</button>
+                <button onClick={() => setShowPassword(false)}>Hide Hashed Password</button>
               )}
             </p>
+            
             <p>
               <strong>Phone Number:</strong> {editedData.phoneNumber}
             </p>
+            
             <p>
               <strong>User Type:</strong> {editedData.userType}
             </p>
@@ -117,4 +236,3 @@ const ClientCard = ({ id, name, email, password, phoneNumber, userType, onDelete
 };
 
 export default ClientCard;
-
