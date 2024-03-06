@@ -12,9 +12,9 @@ table{
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 100%;
-  max-width: 600px;
-  height: 200px;
+  width:fit-content;
+  min-width:600px;
+  height:fit-content;
   background-color: #f0f0f0;
   border-radius: 8px;
   padding-bottom: 16px;
@@ -85,6 +85,13 @@ p {
   margin-left: auto;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+#save-vehicle-button{
+  margin-left:10px;
+}
+#cancel-vehicle-button{
+  margin-left:10px;
+
+}
 .select-button:hover {
   background-color: #0056b3;
 }
@@ -114,4 +121,21 @@ p {
 
 .unavailable {
   color: red;
+}
+
+#delete-vehicle-button{
+  background-color: #7e0000;
+  color:#e0e0e0;
+  margin-left:10px;
+}
+#delete-vehicle-button:hover{
+  background-color: #470000;
+}
+#modify-vehicle-button{
+  background-color: #004949;
+  color:#e0e0e0;
+  margin-left:10px;
+}
+#modify-vehicle-button:hover{
+  background-color: #002e2e;
 }
