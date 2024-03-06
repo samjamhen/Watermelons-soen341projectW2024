@@ -12,6 +12,7 @@ const AddClientForm = () => {
   const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
   const [userType, setUserType] = useState('client'); //Default user type is client
   const [emailError, setEmailError] = useState(false);
+  const [emailFormatError, setEmailFormatError] = useState(false);
   const [phoneNumberError, setPhoneNumberError] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -96,11 +97,15 @@ const AddClientForm = () => {
         <input
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value)
+            setEmailFormatError(!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(e.target.value))
+          }}
           required
         />
-        {emailError && <span style={{color: 'red'}}>Email is already in use. Please use a different one.</span>}
       </label>
+      {emailFormatError && email && <span style={{color: 'red'}}>Please enter a valid email address.</span>}
+      {emailError && <span style={{color: 'red'}}>Email is already in use. Please use a different one.</span>}
 
       <label>
         Password:
@@ -156,7 +161,7 @@ const AddClientForm = () => {
           required
         />
         {phoneNumberError && <span style={{color: 'red'}}>Phone number is already in use. Please use a different one.</span>}
-        {phoneNumberFormatError && <span style={{color: 'red'}}>Please enter a phone number in the format xxx-xxx-xxxx.</span>}
+        {phoneNumberFormatError && <span style={{color: 'red'}}>Please enter a phone number in the correct format.</span>}
       </label>
 
       <label>
