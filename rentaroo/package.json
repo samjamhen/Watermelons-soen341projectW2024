@@ -13,7 +13,7 @@
     "react": "^18.2.0",
     "react-datepicker": "^6.1.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.0",
+    "react-router-dom": "^6.22.2",
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -23,7 +23,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "serve": "node server.js",
-    "dev": "nodemon backend/server.js"
+    "dev": "nodemon backend/server.js",
+    "lint": "eslint src"
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +47,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/jest-dom": "^6.4.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "jest": "^29.7.0",
     "nodemon": "^3.0.3"
   },

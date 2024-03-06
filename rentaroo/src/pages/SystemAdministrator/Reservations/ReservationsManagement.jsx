@@ -2,15 +2,18 @@
 import React, {useEffect, useState} from 'react';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import ModifyBookingForm from '../../../components/ModifyBookingForm';
 
 const ReservationsManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchOption, setSearchOption] = useState('referenceNumber');
-  const [reservation, setReservation] = useState([]);
+  const [reservation, setReservation] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+
 
   const handleSearch = async () => {
     // Clear the previous reservation data
-    setReservation([]);
+    setReservation(null);
     // Perform search logic with searchTerm and searchOption
     console.log('Searching for:', searchTerm, 'with option:', searchOption);
     // You can add your search logic here, such as making an API request
@@ -34,8 +37,8 @@ const ReservationsManagement = () => {
         method: 'DELETE'
       });
 
-      setReservation([]);
-      
+      setReservation(null);
+
       if(!response.ok){
         throw new Error('Network response was not ok');
       }
@@ -44,9 +47,23 @@ const ReservationsManagement = () => {
     }
   }
 
+  const handleUpdateClick = () => {
+    setIsUpdating(true);
+  };
+
+  const handleFormSubmit = () => {
+    setIsUpdating(false);
+    // Optionally, you can perform any other actions upon form submission
+  };
   //useEffect(() => {
     //handleSearch();
   //}, [searchTerm, searchOption])
+
+
+  const handleFormSubmitComplete = () => {
+    setReservation(null);
+    setSearchTerm("");
+  }
 
   return (
     <div>
@@ -76,12 +93,12 @@ const ReservationsManagement = () => {
        
       </select> */}
       <button onClick={handleSearch}>Search</button>
+
+      {reservation && <button onClick={handleDelete}>Delete</button>}
       {reservation && (
-      <div>
-        <p>{reservation.id} {reservation.fullName} {reservation.email} {reservation.phone} {reservation.vehicle} {reservation.pickupAddress} {reservation.pickupDate} {reservation.returnDate}</p>
-      </div>
-      )}
-      <button onClick={handleDelete}>Delete</button>
+        <ModifyBookingForm reservation = {reservation} onSubmit={handleFormSubmit} onFormSubmitComplete={handleFormSubmitComplete} searchTerm = {searchTerm} searchOption = {searchOption}/>
+        )}
+      {reservation === null && <p>No reservation found</p>}
       </main>
 
       <Footer/>

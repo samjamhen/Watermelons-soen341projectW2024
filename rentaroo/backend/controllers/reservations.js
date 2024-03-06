@@ -70,11 +70,11 @@ const bookReservation = async (req, res) =>{
     }
 }
 
-// update a reservation 
+// update a reservation by name
 const updateReservation = async (req, res) => {
-    const { fullName } = req.params
+    const { _id } = req.params
 
-    const reservation = await Reservation.findOneAndUpdate({ fullName: fullName}, {
+    const reservation = await Reservation.findOneAndUpdate({ _id: _id}, {
         ...req.body
     })
 
@@ -83,6 +83,7 @@ const updateReservation = async (req, res) => {
     }
     res.status(200).json(reservation)
 }
+
 //delete a reservation by reference number 
 const deleteReservationByID = async (req, res) => {
     const { id } = req.params

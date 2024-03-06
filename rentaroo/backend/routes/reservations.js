@@ -37,6 +37,6 @@ router.delete('/Name/:fullName', deleteReservationByName);
 router.delete('/Phone/:phone', deleteReservationByName);
 
 //UPDATE a reservation
-router.patch('/:fullName', updateReservation);
+router.patch('/:_id', updateReservation);
 
 module.exports = router;

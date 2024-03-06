@@ -5,51 +5,10 @@ import { useLocation } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
 
-const ModifyBookingForm = () => {
-  const location = useLocation();
-  const vehicle = location.state?.vehicle;
-
-  // Initialize form state with null values
-  const [formData, setFormData] = useState({
-    reservationId: '',
-    fullName: '',
-    email: '',
-    phone: '',
-    pickupAddress: '',
-    pickupDate: null,
-    returnDate: null,
-    drivingLicenseNumber: '',
-  });
-
-  // This function simulates fetching reservation data from a backend
-  // Replace it with your actual data fetching logic
-  const fetchReservationData = async (reservationId) => {
-    console.log(`Fetching data for reservation ID: ${reservationId}`);
-    // Simulated fetch response
-    const fetchedData = {
-      fullName: 'John Doe',
-      email: 'john.doe@example.com',
-      phone: '1234567890',
-      pickupAddress: 'Toronto',
-      pickupDate: new Date('2024-03-10'),
-      returnDate: new Date('2024-03-15'),
-      drivingLicenseNumber: 'D12345678',
-    };
-    // Update form state with fetched data
-    setFormData((prevState) => ({
-      ...prevState,
-      ...fetchedData,
-      pickupDate: new Date(fetchedData.pickupDate),
-      returnDate: new Date(fetchedData.returnDate),
-    }));
-  };
-
-  // Effect hook to fetch data when a reservation ID is provided
-  useEffect(() => {
-    if (formData.reservationId) {
-      fetchReservationData(formData.reservationId);
-    }
-  }, [formData.reservationId]);
+const ModifyBookingForm = ({ reservation, searchTerm, searchOption, onFormSubmitComplete}) => {
+  // Initialize form state with reservation data or null values if no reservation is provided
+  const [formData, setFormData] = useState({...reservation});
+  const [editMode, setEditMode] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,31 +19,125 @@ const ModifyBookingForm = () => {
     setFormData({ ...formData, [name]: date });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Logic to update the reservation
     console.log('Updating reservation with data:', formData);
     // Make an API call to update the reservation in your backend
+    try {
+      const response = await fetch(`/api/reservations/${formData._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not okay');
+      }
+      console.log('Reservation updated successfully');
+      onFormSubmitComplete();
+      // Optionally, you can redirect or perform any other action upon successful update
+    } catch (error) {
+      console.error('Error updating reservation:', error);
+      // Handle error, show error message, etc.
+    }
   };
+
+  const handleEditClick = () => {
+    setEditMode(true);
+  }
+
+  const handleCancelClick = () => {
+    setEditMode(false);
+    setFormData({...reservation});
+  }
 
   return (
     <div className="booking-container">
-      <form onSubmit={handleSubmit} className="modify-booking-form">
-        <h2>Modify Your Booking</h2>
+      <form onSubmit={handleSubmit} className="booking-form">
+
         <div>
           <label htmlFor="reservationId">Reservation ID:</label>
           <input
             type="text"
             id="reservationId"
             name="reservationId"
-            value={formData.reservationId}
+            value={formData.id}
             onChange={handleChange}
+            disabled="true"
             placeholder="Enter reservation ID"
           />
         </div>
         {/* Form fields to modify reservation data */}
-        {/* Note: Ensure each DatePicker's selected value can handle null/undefined */}
-        <button type="submit">Update Reservation</button>
+        <div>
+          <label htmlFor="fullName">Full Name:</label>
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            disabled={!editMode}
+            placeholder="Enter full name"
+          />
+        </div>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            disabled={!editMode}
+            placeholder="Enter email"
+          />
+        </div>
+        <div>
+          <label htmlFor="phone">Phone Number:</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            disabled={!editMode}
+            placeholder="Enter phone Number"
+          />
+        </div>
+        <div>
+          <label htmlFor="pickupAddress">Pickup Address:
+            <select id="pickupAddress" name="pickupAddress" value={formData.pickupAddress} onChange={handleChange} disabled={!editMode} required>
+              <option value="Montreal">Montreal</option>
+              <option value="Toronto">Toronto</option>
+              <option value="Ottawa">Ottawa</option>
+            </select>
+          </label>
+        </div>
+        {/* Add more input fields for other reservation data */}
+        {/* Date picker for pickup date */}
+        <div>
+          <label>Pickup Date:</label>
+          <DatePicker
+            selected={formData.pickupDate}
+            onChange={(date) => handleDateChange(date, 'pickupDate')}
+            disabled={!editMode}
+            dateFormat="MM/dd/yyyy"
+          />
+        </div>
+        {/* Date picker for return date */}
+        <div>
+          <label>Return Date:</label>
+          <DatePicker
+            selected={formData.returnDate}
+            onChange={(date) => handleDateChange(date, 'returnDate')}
+            disabled={!editMode}
+            dateFormat="MM/dd/yyyy"
+          />
+        </div>
+        <button type="button" onClick={editMode? handleCancelClick: handleEditClick}>{editMode? "Cancel": "Edit"}</button>
+        {editMode && <button type="submit">Update Reservation</button>}
       </form>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DatePicker from 'react-datepicker'; //install "npm install react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
+import { useLocation } from 'react-router-dom';
 
 const BookingForm = () => {
 
