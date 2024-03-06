@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import VehicleCard from "./VehicleCard.jsx";
@@ -9,7 +8,6 @@ function Catalog() {
   const [sortedVehicles, setSortedVehicles] = useState([]);
   const [selectedSortOption, setSelectedSortOption] = useState();
   const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -66,12 +64,10 @@ function Catalog() {
 
   function handleSelectButtonClick(vehicle) {
     setSelectedVehicle(vehicle);
-    setIsPopupVisible(true);
   }
 
   function handlePopupCloseButtonClick() {
     setSelectedVehicle(null);
-    setIsPopupVisible(false);
   }
 
   function handleBookNowButtonClick() {
@@ -85,7 +81,6 @@ function Catalog() {
         vehicle={vehicle}
         onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
         selectedVehicle={selectedVehicle}
-        isPopupVisible={isPopupVisible}
         handlePopupCloseButtonClick={handlePopupCloseButtonClick}
         handleBookNowButtonClick={handleBookNowButtonClick} />
     ));
@@ -113,29 +108,7 @@ function Catalog() {
         </button>
       </div>
       <ul className="vehicle-list">{renderVehicles()}</ul>
-      {selectedVehicle && isPopupVisible && (
-        <div className="popup">
-          <button onClick={handlePopupCloseButtonClick}>Close</button>
-          <h2>{`${selectedVehicle.yearOfManufacture} ${selectedVehicle.make} ${selectedVehicle.model}`}</h2>
-          <p className={`availability-status ${selectedVehicle.availabilityStatus === 'available' ? 'available' : 'unavailable'}`}>
-            {selectedVehicle.availabilityStatus}
-          </p>
-          <p>Color: {selectedVehicle.color}</p>
-          <p>Mileage: {selectedVehicle.mileage}</p>
-          <p>Price: ${selectedVehicle.price} per day</p>
-          <p>Transmission: {selectedVehicle.transmissionType}</p>
-          <p>Seating Capacity {selectedVehicle.seatingCapacity}</p>
-          <p>Fuel Type: {selectedVehicle.fuelType}</p>
-          <p>Car Type: {selectedVehicle.carType}</p>
-          <p>Fuel Type: {selectedVehicle.fuelType}</p>
-          <p>Features: {selectedVehicle.featuresAndAmenities.join(', ')}</p>
 
-          <p>{selectedVehicle.rentalTermsAndConditions}</p>
-
-
-          <button onClick={handleBookNowButtonClick}>Book Now</button>
-        </div>
-      )}
     </div>
   );
 }
