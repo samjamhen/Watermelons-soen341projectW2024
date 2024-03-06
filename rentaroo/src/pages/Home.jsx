@@ -15,7 +15,7 @@ const Home = () => {
         Discover the joy of driving with our carefully selected fleet of vehicles. From compact cars to spacious SUVs, we have the perfect vehicle for your next adventure.
       </p>
       <Link to="/Catalog" className="home-button">
-        See Our Vehicle Catalog
+        View Our Vehicle Selection
       </Link>
       </div>
       </main>
