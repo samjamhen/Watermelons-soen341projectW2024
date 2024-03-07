@@ -10,8 +10,8 @@ const reservations = new mongoose.Schema({
     },
 
     userID:{
-        type: String, 
-        required: True
+        type: String,
+        default: "Will be implemented when we have a login"
     },
     fullName:{
         type: String,
@@ -40,6 +40,10 @@ const reservations = new mongoose.Schema({
         type: Date,
         required: true
     },
+    driversLicenseNumber:{
+        type: String,
+        required: true
+    }
 }, {timestamps: true});
 
 const Reservation = mongoose.model('Reservations', reservations)

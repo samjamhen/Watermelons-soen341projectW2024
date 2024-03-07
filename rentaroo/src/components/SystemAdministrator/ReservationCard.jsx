@@ -172,6 +172,11 @@ const ReservationCard = ({ reservation, onDelete }) => {
                 required
               />
             </p>
+
+            <p>
+              <strong>Driver's License:</strong>
+              <input type="text" name="driversLicense" value={editedData.driversLicenseNumber} onChange={handleChange} />
+            </p>
           </>
         ) : (
           <>
@@ -197,6 +202,10 @@ const ReservationCard = ({ reservation, onDelete }) => {
 
             <p>
               <strong>Return Date:</strong> {formattedReturnDate}
+            </p>
+
+            <p>
+              <strong>Driver's License:</strong> {editedData.driversLicenseNumber}
             </p>
           </>
         )}
