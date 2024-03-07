@@ -41,7 +41,7 @@ const BookingForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Here we send data to the server for processing and confirming the reservation
-    const reservation = { fullName: formData.fullName, vehicle: formData.vehicle, email: formData.email, 
+    const reservation = { fullName: formData.fullName, vehicle: vehicle.make, email: formData.email, 
       phone: formData.phone, pickupAddress: formData.pickupAddress, pickupDate: formData.pickupDate, returnDate: formData.returnDate}
     console.log(formData);
 

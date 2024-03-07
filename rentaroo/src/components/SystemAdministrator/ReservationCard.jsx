@@ -13,6 +13,8 @@ const ReservationCard = ({ reservation, onDelete }) => {
     pickupDate: new Date(reservation.pickupDate),
     returnDate: new Date(reservation.returnDate)
   });
+  const [validDates, setValidDates] = useState(true)
+
 
   const handleDeleteClick = () => {
     onDelete(editedData._id);
@@ -25,6 +27,11 @@ const ReservationCard = ({ reservation, onDelete }) => {
 
   const handleSaveClick = async (e) => {
     e.preventDefault();
+
+    if (editedData.returnDate <= editedData.pickupDate) {
+        setValidDates(false)
+        return;
+      }
 
     try {
       // POST request to update reservation
@@ -41,6 +48,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
       }
 
       setIsEditing(false);
+      setValidDates(true);
       console.log('Reservation updated successfully');
     } catch (error) {
       console.error('Error updating reservation:', error.message);
@@ -58,6 +66,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
     // Reset editedData to original values
     setEditedData(resetData);
     setIsEditing(false);
+    setValidDates(true);
   };
   
 
@@ -103,6 +112,9 @@ const ReservationCard = ({ reservation, onDelete }) => {
         <p>
           <strong>Reservation ID:</strong> {reservation.id}
         </p>
+        <p>
+            <strong>Vehicle Model:</strong> {reservation.vehicle}
+        </p>
         {isEditing ? (
           <>
             <p>
@@ -132,7 +144,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
             </p>
 
             <p>
-              <strong>Pickup Date:</strong>
+              <strong>Pickup Date:</strong>{validDates ? null : (<p style={{ color: 'red' }}>Pickup Date must be before return Date.</p>)}
               <DatePicker
                 selected={new Date(editedData.pickupDate)}
                 onChange={(date) => handleDateChange(date, 'pickupDate')}
