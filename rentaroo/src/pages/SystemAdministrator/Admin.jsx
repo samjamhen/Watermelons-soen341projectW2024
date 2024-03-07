@@ -19,7 +19,7 @@ const Admin = () => {
         <Link to="/VehiclesManagement">Vehicles</Link>
       </li>
       <li>
-        <Link to="/ClientsManagement">Clients</Link>
+        <Link to="/ClientsManagement">Users</Link>
       </li>
     </ul>
   

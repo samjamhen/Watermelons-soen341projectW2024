@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom'; //Import useNavigate
 import VehicleCard from "./VehicleCard.jsx";
 import "../styles/Catalog.css";
 
 function Catalog() {
-  const navigate = useNavigate()
   const [vehicles, setVehicles] = useState([]);
   const [sortedVehicles, setSortedVehicles] = useState([]);
   const [selectedSortOption, setSelectedSortOption] = useState();
@@ -73,11 +71,6 @@ function Catalog() {
   function handlePopupCloseButtonClick() {
     setSelectedVehicle(null);
 
-  }
-
-  function handleBookNowButtonClick() {
-    // Navigate to the booking form with selected vehicle's information
-    navigate('/ReservationPage', { state: { vehicle: selectedVehicle } });
   }
 
   function renderVehicles() {
