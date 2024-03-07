@@ -86,9 +86,9 @@ const updateReservation = async (req, res) => {
 
 //delete a reservation by reference number 
 const deleteReservationByID = async (req, res) => {
-    const { id } = req.params
+    const { _id } = req.params
 
-    const reservation = await Reservation.findOneAndDelete({ id: id })
+    const reservation = await Reservation.findOneAndDelete({ _id: _id })
 
     if(!reservation){
         return res.status(400).json({error: "No such reservation"})

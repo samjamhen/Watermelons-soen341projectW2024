@@ -27,8 +27,8 @@ router.get('/Phone/:phone', getReservationByPhone);
 //POST a new reservation
 router.post("/", bookReservation);
 
-//DELETE a reservation by reference number
-router.delete('/ReferenceNumber/:id', deleteReservationByName);
+//DELETE a reservation by id
+router.delete('/:_id', deleteReservationByID);
 
 //DELETE a reservation by name
 router.delete('/Name/:fullName', deleteReservationByName);
