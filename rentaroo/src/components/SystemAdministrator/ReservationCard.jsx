@@ -25,6 +25,11 @@ const ReservationCard = ({ reservation, onDelete }) => {
     setEditedData({ ...editedData, [name]: date || new Date() });
   };
 
+  const formattedReturnDate = `${editedData.returnDate.getFullYear()}/${editedData.returnDate.getMonth() + 1}/${editedData.returnDate.getDate()}`;
+  const formattedPickupDate = `${editedData.pickupDate.getFullYear()}/${editedData.pickupDate.getMonth() + 1}/${editedData.pickupDate.getDate()}`;
+
+
+
   const handleSaveClick = async (e) => {
     e.preventDefault();
 
@@ -113,7 +118,10 @@ const ReservationCard = ({ reservation, onDelete }) => {
           <strong>Reservation ID:</strong> {reservation.id}
         </p>
         <p>
-            <strong>Vehicle Model:</strong> {reservation.vehicle}
+            <strong>Vehicle ID:</strong> {reservation.vehicle}
+        </p>
+        <p>
+          <strong>User ID:</strong> {reservation.userID}
         </p>
         {isEditing ? (
           <>
@@ -149,7 +157,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
                 selected={new Date(editedData.pickupDate)}
                 onChange={(date) => handleDateChange(date, 'pickupDate')}
                 minDate={new Date()}
-                dateFormat="yyyy-MM-dd"
+                dateFormat="YYYY-MM-dd"
                 required
               />
             </p>
@@ -160,7 +168,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
                 selected={new Date(editedData.returnDate)}
                 onChange={(date) => handleDateChange(date, 'returnDate')}
                 minDate={new Date()}
-                dateFormat="yyyy-MM-dd"
+                dateFormat="YYYY-MM-dd"
                 required
               />
             </p>
@@ -184,11 +192,11 @@ const ReservationCard = ({ reservation, onDelete }) => {
             </p>
 
             <p>
-              <strong>Pickup Date:</strong> {editedData.pickupDate.toLocaleDateString()}
+              <strong>Pickup Date:</strong> {formattedPickupDate}
             </p>
 
             <p>
-              <strong>Return Date:</strong> {editedData.returnDate.toLocaleDateString()}
+              <strong>Return Date:</strong> {formattedReturnDate}
             </p>
           </>
         )}

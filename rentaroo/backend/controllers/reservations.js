@@ -60,9 +60,9 @@ const getReservationByPhone = async (req, res) => {
 
 //create a reservation
 const bookReservation = async (req, res) =>{
-    const {id, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate} = req.body
+    const {id, userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate} = req.body
     try{
-        const reservation = await Reservation.create({id, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate})
+        const reservation = await Reservation.create({id, userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate})
         //return status
         res.status(200).json(reservation)
     } catch(error){

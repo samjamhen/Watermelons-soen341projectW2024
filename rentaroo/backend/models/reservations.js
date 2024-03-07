@@ -9,6 +9,10 @@ const reservations = new mongoose.Schema({
         required: true
     },
 
+    userID:{
+        type: String, 
+        required: True
+    },
     fullName:{
         type: String,
         required: true
