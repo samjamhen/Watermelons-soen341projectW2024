@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "../../styles/VehicleCard.css";
+import "../../styles/SystemAdministrator/VehicleForm.css";
 // import { onDeleteVehicleButtonClick } from "./AdminCatalog";
 import { useVehicleContext } from "../../hooks/useVehicleContext";
 import { onModifyVehicleButtonClick } from "./AdminCatalog";
 
 function AdminVehicleCard({ vehicle }) {
   const { dispatch } = useVehicleContext();
+
   const handleClick = async () => {
     const response = await fetch("/api/vehicles/" + vehicle._id, {
       method: "DELETE",
@@ -16,17 +18,6 @@ function AdminVehicleCard({ vehicle }) {
       dispatch({ type: "DELETE_VEHICLE", payload: vehicle._id });
     }
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const response = await fetch("/api/vehicles/" + vehicle._id, {
-      method: "PATCH",
-      body: JSON.stringify(vehicle), // Assuming vehicle is the updated vehicle object
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedVehicle, setEditedVehicle] = useState(vehicle);
@@ -35,10 +26,27 @@ function AdminVehicleCard({ vehicle }) {
     setIsEditing(true);
   };
 
-  const handleSaveClick = () => {
-    // Perform saving logic here, such as updating the data in the backend
-    // using editedVehicle to call onModifyVehicleButtonClick funtion to savse new vehicle data in database
-    setIsEditing(false);
+  const handleSaveClick = async () => {
+    try {
+      const response = await fetch("/api/vehicles/" + editedVehicle._id, {
+        method: "PATCH",
+        body: JSON.stringify(editedVehicle),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const updatedVehicle = await response.json();
+
+      if (response.ok) {
+        dispatch({ type: "UPDATE_VEHICLE", payload: updatedVehicle });
+        setIsEditing(false);
+      } else {
+        // Handle error if update request fails
+        console.error("Failed to update vehicle:", updatedVehicle.error);
+      }
+    } catch (error) {
+      console.error("Error updating vehicle:", error.message);
+    }
   };
 
   const handleCancelClick = () => {
@@ -264,7 +272,7 @@ function AdminVehicleCard({ vehicle }) {
           <button
             className="select-button"
             id="save-vehicle-button"
-            onClick={handleSaveClick}
+            onClick={(e) => handleSaveClick(e)}
           >
             Save
           </button>
