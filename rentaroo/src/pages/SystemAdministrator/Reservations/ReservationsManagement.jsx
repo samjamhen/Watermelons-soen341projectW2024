@@ -73,6 +73,7 @@ const ReservationsManagement = () => {
           placeholder="Enter reservation search term"
         />
         <button>Search</button>
+        <button onClick = {() => window.location.href = 'http://localhost:3000/StartReservation'}>Add</button>
         <div>
           {reservations.length > 0 ? (
             reservations.map((reservation) => (

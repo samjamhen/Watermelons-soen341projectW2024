@@ -7,7 +7,7 @@ const getReservations = async (req, res) => {
     res.status(200).json(reservations)
 }
 
-//get a single reservation by fullName
+//get a single reservation by its reference Number
 const getReservationByID = async (req, res) => {
     const { id } = req.params
 
