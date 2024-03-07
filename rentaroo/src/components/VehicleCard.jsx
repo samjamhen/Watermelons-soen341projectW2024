@@ -1,5 +1,7 @@
 import React from 'react';
 import '../styles/VehicleCard.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+
 
 function addInfoStyles(additionalInfoVisible) {
   return additionalInfoVisible ? { display: "block" } : { display: "none" };
@@ -10,6 +12,7 @@ function VehicleCard({
   onSelectButtonClick,
 }) {
   const [additionalInfoVisible, setAdditionalInfoVisible] = React.useState(false);
+  const navigate = useNavigate(); // Create a navigate function
 
   const handleSelectButtonClick = () => {
     setAdditionalInfoVisible(true);
@@ -20,7 +23,7 @@ function VehicleCard({
     setAdditionalInfoVisible(false);
   };
   function handleBookNowButtonClick() {
-    // TODO: Implement booking functionality
+    navigate('/ReservationPage', { state: { vehicle } });
   }
 
 
