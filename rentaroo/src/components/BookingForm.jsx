@@ -1,24 +1,19 @@
 import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import { useLocation } from 'react-router-dom'; // Import useLocation
-
+import DatePicker from 'react-datepicker'; //install "npm install react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
 
 const BookingForm = () => {
-
-  const location = useLocation(); // Access location object
-  const vehicle = location.state?.vehicle; // Access vehicle information passed through state
-
   const [formData, setFormData] = useState({
     fullName: '',
+    vehicle: '',
     email: '',
     phone: '',
     pickupAddress: '',
     pickupDate: new Date(),
     returnDate: new Date(),
-    drivingLicenseNumber: '',
   });
+  const [error, setError] = useState('')
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -26,39 +21,60 @@ const BookingForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle date picker changes
-  const handleDateChange = (date, name) => {
-    setFormData({ ...formData, [name]: date });
+  // Handle pickup address change
+  const handlePickupAddressChange = (e) => {
+    const { value } = e.target;
+    setFormData({ ...formData, pickupAddress: value });
   };
 
+  // Handle date picker changes
+  const handleDateChange = (date, name) => {
+    setFormData({ ...formData, [name]: date || new Date() });
+  };  
+
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Here we send data to the server for processing and confirming the reservation
+    const reservation = { fullName: formData.fullName, vehicle: formData.vehicle, email: formData.email, 
+      phone: formData.phone, pickupAddress: formData.pickupAddress, pickupDate: formData.pickupDate, returnDate: formData.returnDate}
     console.log(formData);
+
+    const response = await fetch('/api/reservations', {
+      method: 'POST',
+      body: JSON.stringify(reservation), 
+      headers: {
+          'Content-Type': 'application/json'
+      }
+    })
+
+    const json = await response.json()
+
+        if (!response.ok){
+            setError(json.error)
+        }
+        if (response.ok){
+            setError(null)
+            setFormData({
+              fullName : '',
+              email: '', 
+              phone: '',
+              pickupAddress: '',
+              pickupDate: new Date(),
+              returnDate: new Date() 
+            })
+            console.log('new reservation added')
+
+        }
   };
 
   return (
     <div className="booking-container">
-      {vehicle && (
-        <div className="information-placeholder">
-          {/* Display vehicle information */}
-          <img src={vehicle.imageUrl || 'path/to/default/image.jpg'} alt={`${vehicle.make} ${vehicle.model}`} />
-          <h3>{`${vehicle.yearOfManufacture} ${vehicle.make} ${vehicle.model}`}</h3>
-          <p>Price: ${vehicle.price} per day</p>
-          <ul className="vehicle-details">
-            <li>Color: {vehicle.color}</li>
-            <li>Mileage: {vehicle.mileage}</li>
-            <li>Transmission: {vehicle.transmissionType}</li>
-            <li>Seating Capacity: {vehicle.seatingCapacity}</li>
-            <li>Fuel Type: {vehicle.fuelType}</li>
-            <li>Car Type: {vehicle.carType}</li>
-            <li>Features: {vehicle.featuresAndAmenities.join(', ')}</li>
-          </ul>
-
-          {/* Add more vehicle details as needed */}
-        </div>
-      )}
+      <div className="car-image-placeholder">
+        {/* Placeholder for the car image */}
+        {/* You can replace this with an actual image */}
+        Image Placeholder
+      </div>
       <form onSubmit={handleSubmit} className="booking-form">
         <h2>Booking Form</h2>
         <div>
@@ -76,6 +92,7 @@ const BookingForm = () => {
         <div>
           <label htmlFor="pickupAddress">Pickup Address:
             <select id="pickupAddress" name="pickupAddress" value={formData.pickupAddress} onChange={handleChange} required>
+              <option value="">Select</option>
               <option value="Montreal">Montreal</option>
               <option value="Toronto">Toronto</option>
               <option value="Ottawa">Ottawa</option>
@@ -102,13 +119,8 @@ const BookingForm = () => {
             required
           />
         </div>
-        <div>
-          <label htmlFor="drivingLicenseNumber">Driving License Number:</label>
-          <input type="text" id="drivingLicenseNumber" name="drivingLicenseNumber" value={formData.drivingLicenseNumber} onChange={handleChange} required />
-        </div>
-      
-        <button type="submit">Submit</button>
-      </form>
+      <button type="submit">Submit</button>
+    </form>
     </div>
   );
 };
