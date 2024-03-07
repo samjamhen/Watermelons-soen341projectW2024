@@ -73,9 +73,7 @@ function Catalog() {
 
   }
 
-  function handleBookNowButtonClick() {
-    // TODO: Implement booking functionality
-  }
+
 
   function renderVehicles() {
     return sortedVehicles.map((vehicle) => (
@@ -86,7 +84,7 @@ function Catalog() {
         selectedVehicle={selectedVehicle}
 
         handlePopupCloseButtonClick={handlePopupCloseButtonClick}
-        handleBookNowButtonClick={handleBookNowButtonClick} />
+        />
     ));
   }
 
