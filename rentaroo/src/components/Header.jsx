@@ -30,7 +30,11 @@ const Header = () => {
                 System Administrator
               </Link>
             </li>
-
+            <li>
+              <Link to="/ViewReservationPage" id="link">
+                My Reservation
+              </Link>
+            </li>
             <li>
               <Link to="/about" id="link">
                 About
