@@ -16,8 +16,8 @@ const router = express.Router();
 //GET all reservations
 router.get("/", getReservations);
 
-//GET a single reservation by reference number
-router.get('/ReferenceNumber/:id', getReservationByID);
+//GET a single reservation by id
+router.get('/:_id', getReservationByID);
 
 //GET a single reservation by name
 router.get('/Name/:fullName', getReservationByName);
@@ -32,7 +32,7 @@ router.get('/:userID', getReservationByUserID);
 router.post("/", bookReservation);
 
 //DELETE a reservation by id
-router.delete('/:_id', deleteReservationByID);
+router.delete('/:_id', deleteReservationByID); //this is object id or reservation id?
 
 //DELETE a reservation by name
 router.delete('/Name/:fullName', deleteReservationByName);

@@ -1,30 +1,50 @@
-import React from 'react';
-import ReservationDetails from '../components/ReservationDetails'; 
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import React, { useState } from 'react';
+import axios from 'axios';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import FindReservation from '../components/FindReservation';
+import ReservationCard from '../components/SystemAdministrator/ReservationCard'; // Import ReservationCard 
 
-const ViewReservationPage = () => {
-  // Example static reservation data
-  const exampleReservation = {
-    reservationId: '123456',
-    fullName: 'Jane Doe',
-    email: 'jane.doe@example.com',
-    phone: '555-1234',
-    pickupAddress: '123 Main St, Anytown, AT 12345',
-    pickupDate: new Date('2024-04-01'),
-    returnDate: new Date('2024-04-07'),
-    drivingLicenseNumber: 'D987654321',
+function ViewReservationPage() {
+  const [reservation, setReservation] = useState(null);
+
+  const fetchReservationDetails = async (reservationNumber) => {
+    try {
+      const response = await fetch(`/api/reservations/${reservationNumber}`);
+      console.log(reservationNumber)
+      if (response.ok) {
+        const json = await response.json();
+        setReservation(json);
+      } else {
+        throw new Error('Failed to fetch reservations');
+      }
+    } catch (error) {
+      console.error('Error fetching reservations:', error);
+    };
+};
+
+  // Function to handle the deletion of a reservation
+  const handleDeleteReservation = (reservationId) => {
+    axios.delete(`/api/reservations/${reservationId}`)
+      .then(() => {
+        alert('Reservation successfully deleted');
+        setReservation(null); // Clear the reservation state to remove it from the UI
+      })
+      .catch(error => {
+        console.error('Error deleting the reservation:', error);
+        alert('Failed to delete the reservation');
+      });
   };
 
   return (
     <div>
       <Header />
-      <h1>Reservation Page</h1>
-      {/* Render the ReservationDetails component with the example reservation */}
-      <ReservationDetails reservation={exampleReservation} />
+      <h1>View My Reservation</h1>
+      {!reservation && <FindReservation onFetch={fetchReservationDetails} />}
+      {reservation && <ReservationCard reservation={reservation} onDelete={handleDeleteReservation} />}
       <Footer />
     </div>
   );
-};
+}
 
 export default ViewReservationPage;
