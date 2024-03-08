@@ -44,7 +44,8 @@ function VehicleCard({
         {additionalInfoVisible && (
           <>
             <p className="vehicle-additional-info"> {vehicle.additionalInfo}</p>
-            
+          <p>Location: {vehicle.location}</p>
+
           <p>Seating Capacity {vehicle.seatingCapacity}</p>
           <p>Fuel Type: {vehicle.fuelType}</p>
           <p>Car Type: {vehicle.carType}</p>
