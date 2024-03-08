@@ -73,8 +73,6 @@ function Catalog() {
 
   }
 
-
-
   function renderVehicles() {
     return sortedVehicles.map((vehicle) => (
       <VehicleCard  

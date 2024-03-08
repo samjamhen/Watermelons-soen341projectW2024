@@ -14,10 +14,10 @@ const BookingForm = () => {
     fullName: '',
     email: '',
     phone: '',
-    pickupAddress: '',
+    pickupAddress: 'Montreal',
     pickupDate: new Date(),
     returnDate: new Date(),
-    drivingLicenseNumber: '',
+    driversLicenseNumber: '',
   });
 
   // Handle form input changes
@@ -32,11 +32,52 @@ const BookingForm = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
+// Handle form submission
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
     // Here we send data to the server for processing and confirming the reservation
-    console.log(formData);
-  };
+    const reservation = {
+      fullName: formData.fullName,
+      vehicle: vehicle._id,
+      email: formData.email, 
+      phone: formData.phone,
+      pickupAddress: formData.pickupAddress,
+      pickupDate: formData.pickupDate,
+      returnDate: formData.returnDate,
+      driversLicenseNumber: formData.driversLicenseNumber
+    };
+
+    const response = await fetch('/api/reservations', {
+      method: 'POST',
+      body: JSON.stringify(reservation), 
+      headers: {
+          'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to submit reservation');
+    }
+
+    // Reset form fields
+    setFormData({
+      fullName: '',
+      email: '',
+      phone: '',
+      pickupAddress: 'Montreal',
+      pickupDate: new Date(),
+      returnDate: new Date(),
+      driversLicenseNumber: '',
+    });
+
+    console.log('Reservation submitted successfully');
+  } catch (error) {
+    console.error('Error submitting reservation:', error.message);
+  }
+};
+
 
   return (
     <div className="booking-container">
@@ -103,8 +144,8 @@ const BookingForm = () => {
           />
         </div>
         <div>
-          <label htmlFor="drivingLicenseNumber">Driving License Number:</label>
-          <input type="text" id="drivingLicenseNumber" name="drivingLicenseNumber" value={formData.drivingLicenseNumber} onChange={handleChange} required />
+          <label htmlFor="driversLicenseNumber">Driving License Number:</label>
+          <input type="text" id="driversLicenseNumber" name="driversLicenseNumber" value={formData.driversLicenseNumber} onChange={handleChange} required />
         </div>
       
         <button type="submit">Submit</button>
