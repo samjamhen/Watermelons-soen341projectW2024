@@ -9,7 +9,6 @@ function Catalog() {
   const [selectedSortOption, setSelectedSortOption] = useState();
   const [selectedVehicle, setSelectedVehicle] = useState(null);
 
-
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
@@ -65,12 +64,10 @@ function Catalog() {
 
   function handleSelectButtonClick(vehicle) {
     setSelectedVehicle(vehicle);
-
   }
 
   function handlePopupCloseButtonClick() {
     setSelectedVehicle(null);
-
   }
 
   function renderVehicles() {
@@ -80,9 +77,8 @@ function Catalog() {
         vehicle={vehicle}
         onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
         selectedVehicle={selectedVehicle}
-
         handlePopupCloseButtonClick={handlePopupCloseButtonClick}
-
+      />
     ));
   }
 
@@ -94,9 +90,13 @@ function Catalog() {
   return (
     <div className="catalog-page">
       <h1>FIND THE RIGHT CAR FOR YOU WITH RENTAROO</h1>
-      <Link to="/StartReservation" class-name="select-button" id="start-reservation-button">
+      <Link
+        to="/StartReservation"
+        class-name="select-button"
+        id="start-reservation-button"
+      >
         Start a Reservation
-        </Link>
+      </Link>
       <div className="sorting-section">
         <label htmlFor="sort-by"> Sort results by: </label>
         <button value="year" onClick={handleSortOptionClick}>
@@ -110,7 +110,6 @@ function Catalog() {
         </button>
       </div>
       <ul className="vehicle-list">{renderVehicles()}</ul>
-
     </div>
   );
 }
