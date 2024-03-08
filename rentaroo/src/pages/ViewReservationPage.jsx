@@ -3,24 +3,25 @@ import axios from 'axios';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import FindReservation from '../components/FindReservation';
-import ReservationCard from '../components/SystemAdministrator/ReservationCard'; // Import ReservationCard instead of ReservationDetails
+import ReservationCard from '../components/SystemAdministrator/ReservationCard'; // Import ReservationCard 
 
 function ViewReservationPage() {
   const [reservation, setReservation] = useState(null);
 
-  const fetchReservationDetails = (reservationNumber) => {
-    axios.get(`/api/reservations/ReferenceNumber/${reservationNumber}`) // this doesnt seem to work
-      .then(response => {
-        setReservation(response.data); // Set the fetched reservation data
-      })
-      .catch(error => {
-        if (error.response && error.response.status === 404) {
-          alert('No reservation was found');
-        } else {
-          console.error('Error fetching reservation details:', error);
-        }
-      });
-  };
+  const fetchReservationDetails = async (reservationNumber) => {
+    try {
+      const response = await fetch(`/api/reservations/${reservationNumber}`);
+      console.log(reservationNumber)
+      if (response.ok) {
+        const json = await response.json();
+        setReservation(json);
+      } else {
+        throw new Error('Failed to fetch reservations');
+      }
+    } catch (error) {
+      console.error('Error fetching reservations:', error);
+    };
+};
 
   // Function to handle the deletion of a reservation
   const handleDeleteReservation = (reservationId) => {
@@ -39,7 +40,7 @@ function ViewReservationPage() {
     <div>
       <Header />
       <h1>View My Reservation</h1>
-      <FindReservation onFetch={fetchReservationDetails} />
+      {!reservation && <FindReservation onFetch={fetchReservationDetails} />}
       {reservation && <ReservationCard reservation={reservation} onDelete={handleDeleteReservation} />}
       <Footer />
     </div>

@@ -8,7 +8,7 @@ function FindReservation({ onFetch }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Call the onFetch function passed from the parent component, passing the reservationNumber
-    onFetch(fullName);
+    onFetch(reservationNumber);
   };
 
   return (

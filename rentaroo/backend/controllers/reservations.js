@@ -9,10 +9,10 @@ const getReservations = async (req, res) => {
 
 //get a single reservation by its reference Number
 const getReservationByID = async (req, res) => {
-    const { id } = req.params
+    const { _id } = req.params
 
     try{
-        const reservation = await Reservation.findOne({ id: id})
+        const reservation = await Reservation.findOne({ _id: _id})
         if (!reservation) {
             return res.status(404).json({error: 'No such reservation'})
         }
