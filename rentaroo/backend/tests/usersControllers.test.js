@@ -147,7 +147,7 @@ describe('User Controller', () => {
         };
         req.body = updatedUserData;
 
-        jest.spyOn(User, 'findByIdAndUpdate').mockResolvedValueOnce(null);
+        jest.spyOn(User,'findByIdAndUpdate').mockResolvedValueOnce(null);
 
         await updateUser(req, res);
 
