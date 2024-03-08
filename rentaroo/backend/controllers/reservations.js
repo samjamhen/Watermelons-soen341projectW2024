@@ -58,6 +58,23 @@ const getReservationByPhone = async (req, res) => {
     }
 }
 
+//get a single reservation by userID reference Number
+const getReservationByUserID = async (req, res) => {
+    const { userID } = req.params
+
+    try{
+        const reservation = await Reservation.findOne({ userID: userID})
+        if (!reservation) {
+            return res.status(404).json({error: 'No such reservation'})
+        }
+        res.status(200).json(reservation)
+    }
+    catch (error){
+        console.error('Error finding reservation: ', error)
+        res.status(500).json({message: 'Server error'})
+    }
+}
+
 //create a reservation
 const bookReservation = async (req, res) =>{
     const {id, userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber} = req.body
@@ -124,4 +141,4 @@ const deleteReservationByPhone = async (req, res) => {
 }
 
 
-module.exports = { bookReservation, getReservations, getReservationByID, getReservationByName, getReservationByPhone, updateReservation, deleteReservationByID, deleteReservationByName, deleteReservationByPhone }
+module.exports = { bookReservation, getReservations, getReservationByID, getReservationByName, getReservationByPhone, getReservationByUserID, updateReservation, deleteReservationByID, deleteReservationByName, deleteReservationByPhone }

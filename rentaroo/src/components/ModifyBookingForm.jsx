@@ -4,10 +4,23 @@ import { useLocation } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
 
-const ModifyBookingForm = ({ reservation, searchTerm, searchOption, onFormSubmitComplete}) => {
+const ModifyBookingForm = () => {
   // Initialize form state with reservation data or null values if no reservation is provided
-  const [formData, setFormData] = useState({...reservation});
+  const [formData, setFormData] = useState({
+    id: '',
+    fullName: '',
+    email: '',
+    phone: '',
+    pickupAddress: '',
+    pickupDate: new Date(), // default pickup date
+    returnDate: new Date(), // default return date
+    driversLicenseNumber: ''
+  });  
+  const [initialFormData, setInitialFormData] = useState({});
   const [editMode, setEditMode] = useState(false);
+  const [validDates, setValidDates] = useState(true)
+  //id for now
+  const fakeUserId = "Will be implemented when we have a login";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,11 +31,35 @@ const ModifyBookingForm = ({ reservation, searchTerm, searchOption, onFormSubmit
     setFormData({ ...formData, [name]: date });
   };
 
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch(`/api/reservations/${fakeUserId}`);
+        if (response.ok) {
+          const json = await response.json();
+          setFormData(json);
+          setInitialFormData(json);
+        } else {
+          throw new Error('Failed to fetch reservations');
+        }
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
+    };
+
+    fetchReservations();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Logic to update the reservation
     console.log('Updating reservation with data:', formData);
     // Make an API call to update the reservation in your backend
+    if (new Date(formData.returnDate) <= new Date(formData.pickupDate)) {
+      console.log('Dates are not valid');
+      setValidDates(false)
+      return;
+    }
     try {
       const response = await fetch(`/api/reservations/${formData._id}`, {
         method: 'PATCH',
@@ -34,8 +71,9 @@ const ModifyBookingForm = ({ reservation, searchTerm, searchOption, onFormSubmit
       if (!response.ok) {
         throw new Error('Network response was not okay');
       }
+      setInitialFormData(formData)
+      setValidDates(true)
       console.log('Reservation updated successfully');
-      onFormSubmitComplete();
       // Optionally, you can redirect or perform any other action upon successful update
     } catch (error) {
       console.error('Error updating reservation:', error);
@@ -49,8 +87,10 @@ const ModifyBookingForm = ({ reservation, searchTerm, searchOption, onFormSubmit
 
   const handleCancelClick = () => {
     setEditMode(false);
-    setFormData({...reservation});
-  }
+    setFormData(initialFormData);
+    setValidDates(true);
+  };
+  
 
   return (
     <div className="booking-container">
@@ -117,7 +157,7 @@ const ModifyBookingForm = ({ reservation, searchTerm, searchOption, onFormSubmit
         {/* Add more input fields for other reservation data */}
         {/* Date picker for pickup date */}
         <div>
-          <label>Pickup Date:</label>
+          <label>Pickup Date:</label>{validDates ? null : (<p style={{ color: 'red' }}>Pickup Date must be before return Date.</p>)}
           <DatePicker
             selected={formData.pickupDate}
             onChange={(date) => handleDateChange(date, 'pickupDate')}
@@ -133,6 +173,18 @@ const ModifyBookingForm = ({ reservation, searchTerm, searchOption, onFormSubmit
             onChange={(date) => handleDateChange(date, 'returnDate')}
             disabled={!editMode}
             dateFormat="MM/dd/yyyy"
+          />
+        </div>
+        <div>
+          <label htmlFor="driversLicenseNumber">Driving License Number:</label>
+          <input
+            type="text"
+            id="driversLicenseNumber"
+            name="driversLicenseNumber"
+            value={formData.driversLicenseNumber}
+            onChange={handleChange}
+            disabled={!editMode}
+            placeholder="Enter Driver's License Number"
           />
         </div>
         <button type="button" onClick={editMode? handleCancelClick: handleEditClick}>{editMode? "Cancel": "Edit"}</button>
