@@ -10,6 +10,10 @@ const vehicleSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    price: {
+      type: Number,
+      required: true,
+    },
     model: {
       type: String,
       required: true,

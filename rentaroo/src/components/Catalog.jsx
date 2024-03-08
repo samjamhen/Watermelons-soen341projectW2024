@@ -75,14 +75,14 @@ function Catalog() {
 
   function renderVehicles() {
     return sortedVehicles.map((vehicle) => (
-      <VehicleCard  
-        key={vehicle._id} 
+      <VehicleCard
+        key={vehicle._id}
         vehicle={vehicle}
         onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
         selectedVehicle={selectedVehicle}
 
         handlePopupCloseButtonClick={handlePopupCloseButtonClick}
-        />
+
     ));
   }
 
@@ -90,7 +90,6 @@ function Catalog() {
     const sortOption = event.target.value;
     setSelectedSortOption(sortOption);
   }
-  
 
   return (
     <div className="catalog-page">
@@ -111,6 +110,7 @@ function Catalog() {
         </button>
       </div>
       <ul className="vehicle-list">{renderVehicles()}</ul>
+
     </div>
   );
 }

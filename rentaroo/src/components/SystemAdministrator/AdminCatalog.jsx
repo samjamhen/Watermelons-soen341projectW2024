@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import AdminVehicleCard from "./AdminVehicleCard";
-import "../../styles/Catalog.css";
-
-export function onDeleteVehicleButtonClick(id) {
-    console.log('Delete vehicle button clicked');
-    console.log(id);
-  }
-  export   function onModifyVehicleButtonClick() {
-    console.log('Modify vehicle clicked');
-  }
+// import "../../styles/Catalog.css";
+//import { router } from 'react-router-dom';
+import axios from "axios";
+// import { BASE_URL } from "../../constants";
+import { useVehicleContext } from "../../hooks/useVehicleContext";
 
 function AdminCatalog() {
-  const [vehicles, setVehicles] = useState([]);
+  // const [vehicles, setVehicles] = useState([]);
   const [sortedVehicles, setSortedVehicles] = useState([]);
   const [selectedSortOption, setSelectedSortOption] = useState();
   const [reload, setReload] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
+  const { vehicles, dispatch } = useVehicleContext();
 
   useEffect(() => {
     if (reload) {
@@ -29,11 +26,13 @@ function AdminCatalog() {
     const fetchVehicles = async () => {
       try {
         const response = await fetch("/api/vehicles");
+        const json = await response.json();
+
         if (!response.ok) {
           throw new Error("Failed to fetch vehicles");
         }
-        const json = await response.json();
-        setVehicles(json);
+        dispatch({ type: "SET_VEHICLES", payload: json });
+        // setVehicles(json);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }
@@ -80,10 +79,7 @@ function AdminCatalog() {
 
   function renderVehicles() {
     return sortedVehicles.map((vehicle) => (
-      <AdminVehicleCard  
-        key={vehicle._id} 
-        vehicle={vehicle}
-        />
+      <AdminVehicleCard key={vehicle._id} vehicle={vehicle} />
     ));
   }
 
@@ -110,7 +106,9 @@ function AdminCatalog() {
           Price
         </button>
       </div>
-      <ul className="vehicle-list">{renderVehicles()}</ul>
+      <div className="create-list-display">
+        <ul className="vehicle-list">{renderVehicles()}</ul>
+      </div>
     </div>
   );
 }

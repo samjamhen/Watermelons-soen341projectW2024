@@ -1,101 +1,100 @@
-import React, { useState } from 'react';
-import '../../styles/SystemAdministrator/VehicleForm.css';
+import React, { useState } from "react";
+import "../../styles/SystemAdministrator/VehicleForm.css";
+import { useVehicleContext } from "../../hooks/useVehicleContext";
 
 const AddVehicleForm = () => {
-  const [make, setMake] = useState('');
-  const [model, setModel] = useState('');
-  const [availabilityStatus, setAvailabilityStatus] = useState('available');
-  const [yearOfManufacture, setYearOfManufacture] = useState('');
-  const [price, setPrice] = useState('');
-  const [mileage, setMileage] = useState('');
-  const [color, setColor] = useState('');
-  const [transmissionType, setTransmissionType] = useState('automatic');
-  const [seatingCapacity, setSeatingCapacity] = useState('');
-  const [fuelType, setFuelType] = useState('gasoline');
-  const [carType, setCarType] = useState('sedan');
-  const [featuresAndAmenities, setFeaturesAndAmenities] = useState('');
-  const [rentalTermsAndConditions, setRentalTermsAndConditions] = useState('');
-  const [vehicleImage, setVehicleImage] = useState('');
+  const { dispatch } = useVehicleContext();
+
+  const [make, setMake] = useState("");
+  const [model, setModel] = useState("");
+  const [availabilityStatus, setAvailabilityStatus] = useState("available");
+  const [yearOfManufacture, setYearOfManufacture] = useState("");
+  const [price, setPrice] = useState("");
+  const [mileage, setMileage] = useState("");
+  const [color, setColor] = useState("");
+  const [location, setLocation] = useState("");
+  const [transmissionType, setTransmissionType] = useState("automatic");
+  const [seatingCapacity, setSeatingCapacity] = useState("");
+  const [fuelType, setFuelType] = useState("gasoline");
+  const [carType, setCarType] = useState("sedan");
+  const [featuresAndAmenities, setFeaturesAndAmenities] = useState("");
+  const [rentalTermsAndConditions, setRentalTermsAndConditions] = useState("");
+  const [photos, setPhotos] = useState([""]);
+  const [error, setError] = useState(null);
   const [imageError, setImageError] = useState(false);
-  const [formError, setFormError] = useState(false);
+  const [vehicleImage, setVehicleImage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(""); // New state for success message
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // POST request to add vehicle
-      const formData = new FormData();
-      formData.append('make', make);
-      formData.append('model', model);
-      formData.append('availabilityStatus', availabilityStatus);
-      formData.append('yearOfManufacture', yearOfManufacture);
-      formData.append('price', price);
-      formData.append('mileage', mileage);
-      formData.append('color', color);
-      formData.append('transmissionType', transmissionType);
-      formData.append('seatingCapacity', seatingCapacity);
-      formData.append('fuelType', fuelType);
-      formData.append('carType', carType);
-      formData.append('featuresAndAmenities', featuresAndAmenities);
-      formData.append('rentalTermsAndConditions', rentalTermsAndConditions);
-      formData.append('vehicleImage', vehicleImage);
+      const vehicle = {
+        make,
+        model,
+        color,
+        carType,
+        transmissionType,
+        fuelType,
+        seatingCapacity,
+        featuresAndAmenities,
+        rentalTermsAndConditions,
+        location,
+        availabilityStatus,
+        yearOfManufacture,
+        mileage,
+        price,
+        photos,
+      };
 
-      const response = await fetch('/api/vehicles', {
-        method: 'POST',
-        body: formData,
+      const response = await fetch("/api/vehicles", {
+        method: "POST",
+        body: JSON.stringify(vehicle),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
-      console.log('Response:', response); // Log the response received from the API
+      const json = await response.json();
 
       if (!response.ok) {
-        const errorResponse = await response.json();
+        setError(json.error);
+      } else {
+        setMake("");
+        setModel("");
+        setColor("");
+        setCarType("");
+        setTransmissionType("");
+        setFuelType("");
+        setSeatingCapacity("");
+        setFeaturesAndAmenities("");
+        setRentalTermsAndConditions("");
+        setLocation("");
+        setAvailabilityStatus("");
+        setYearOfManufacture("");
+        setMileage("");
+        setPrice("");
+        setPhotos([""]);
 
-        if (response.status === 400) {
-          console.log('Error Response:', errorResponse); // Log the error response from the API
-          if (errorResponse.error && errorResponse.error.includes('duplicate key error')) {
-            setFormError(true);
-          }
-        }
-        else {
-          throw new Error('Failed to add vehicle');
-        }
+        setError(null);
+        console.log("Vehicle created successfully", json);
+        setSuccessMessage("Vehicle created successfully");
+        dispatch({ type: "CREATE_VEHICLE", payload: json });
       }
-
-      else {
-        console.log('Vehicle added successfully');
-        // Reset form after successful submission
-        setMake('');
-        setModel('');
-        setAvailabilityStatus('available');
-        setYearOfManufacture('');
-        setPrice('');
-        setMileage('');
-        setColor('');
-        setTransmissionType('automatic');
-        setSeatingCapacity('');
-        setFuelType('gasoline');
-        setCarType('sedan');
-        setFeaturesAndAmenities('');
-        setRentalTermsAndConditions('');
-        setVehicleImage('');
-        setFormError(false);
-      }
-    }
-    catch (error) {
-      console.error('Error adding vehicle:', error.message);
+    } catch (error) {
+      console.error("Error adding vehicle:", error.message);
     }
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
       setVehicleImage(file);
       setImageError(false);
-    }
-    else {
-      setVehicleImage('');
+    } else {
+      setVehicleImage("");
       setImageError(true);
-      <span style={{ color: 'red' }}>Please upload a JPEG or PNG image.</span>
+      <span style={{ color: "red" }}>Please upload a JPEG or PNG image.</span>;
     }
   };
 
@@ -103,7 +102,6 @@ const AddVehicleForm = () => {
     <form className="vehicle-form" onSubmit={handleSubmit}>
       <h1>Vehicle Form</h1>
       <h4>Add a new Vehicule to the Database</h4>
-      
 
       <label>
         Make:
@@ -127,7 +125,10 @@ const AddVehicleForm = () => {
 
       <label>
         Availability Status:
-        <select value={availabilityStatus} onChange={(e) => setAvailabilityStatus(e.target.value)}>
+        <select
+          value={availabilityStatus}
+          onChange={(e) => setAvailabilityStatus(e.target.value)}
+        >
           <option value="available">Available</option>
           <option value="unavailable">Unavailable</option>
         </select>
@@ -172,10 +173,19 @@ const AddVehicleForm = () => {
           required
         />
       </label>
+      <label>Location:</label>
+      <input
+        type="text"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+      />
 
       <label>
         Transmission Type:
-        <select value={transmissionType} onChange={(e) => setTransmissionType(e.target.value)}>
+        <select
+          value={transmissionType}
+          onChange={(e) => setTransmissionType(e.target.value)}
+        >
           <option value="automatic">Automatic</option>
           <option value="manual">Manual</option>
         </select>
@@ -227,19 +237,34 @@ const AddVehicleForm = () => {
           required
         />
       </label>
-
+      <label>Photos:</label>
+      <input
+        type="text"
+        value={photos.join(",")}
+        onChange={(e) => setPhotos(e.target.value.split(","))}
+      />
       <label>
         Vehicle Image (JPEG or PNG):
         <input type="file" onChange={handleImageChange} />
-        {imageError && <span style={{ color: 'red' }}>Please upload a JPEG or      PNG image.</span>
-    }
-    {imageError && <span style={{ color: 'red' }}>Please upload a JPEG or PNG image.</span>}
-  </label>
+        {imageError && (
+          <span style={{ color: "red" }}>
+            Please upload a JPEG or PNG image.
+          </span>
+        )}
+        {imageError && (
+          <span style={{ color: "red" }}>
+            Please upload a JPEG or PNG image.
+          </span>
+        )}
+      </label>
 
-  {formError && <span style={{ color: 'red' }}>This vehicle already exists. Please add a different vehicle.</span>}
-
-  <button type="submit">Add Vehicle</button>
-</form>
-); };
+      <button type="submit">Add Vehicle</button>
+      {error && <div className="alert alert-danger">{error}</div>}
+      {successMessage && (
+        <div className="alert alert-success">{successMessage}</div>
+      )}
+    </form>
+  );
+};
 
 export default AddVehicleForm;
