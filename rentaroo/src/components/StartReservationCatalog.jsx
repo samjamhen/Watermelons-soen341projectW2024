@@ -11,12 +11,15 @@ function StartReservationCatalog() {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
   const [filteredVehicles, setFilteredVehicles] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState("Montreal");
 
   const [filterOptions, setFilterOptions] = useState({
     minPrice: 0,
     maxPrice: 100,
     carTypes: ["CARs", "SUVs", "Vans", "Trucks"],
-    categories: ["compact", "standard", "intermediate", "large"]
+    categories: ["compact", "standard", "intermediate", "large"],
+    location: ["Montreal", "Laval"]
+
   });
 
   function handleShowFilters() {
@@ -53,10 +56,14 @@ function StartReservationCatalog() {
 
   function handleSearchFilteredVehicles() {
     const { minPrice, maxPrice } = filterOptions;
-    const filteredVehicles = vehicles.filter((vehicle) => {
-      return vehicle.price >= minPrice && vehicle.price <= maxPrice;
-    });
-  
+    const filteredVehicles = vehicles.filter(
+      (vehicle) =>
+        vehicle.price >= minPrice &&
+        vehicle.price <= maxPrice &&
+        (selectedLocation === "Montreal"
+          ? vehicle.location === "Montreal"
+          : vehicle.location === "Laval")
+    );
     setFilteredVehicles(filteredVehicles);
   }
 
@@ -96,6 +103,31 @@ function StartReservationCatalog() {
     <div className="catalog-page">
       <h1>Start a Reservation</h1>
         <div className="filter-options">
+        <div className="filter-row">
+  <label htmlFor="location">Location:</label>
+  <div>
+    <label htmlFor="Montreal">
+      <input
+        type="radio"
+        name="location"
+        value="Montreal"
+        checked={selectedLocation === "Montreal"}
+        onChange={() => setSelectedLocation("Montreal")}
+      />
+      Montreal
+    </label>
+    <label htmlFor="Laval">
+      <input
+        type="radio"
+        name="location"
+        value="Laval"
+        checked={selectedLocation === "Laval"}
+        onChange={() => setSelectedLocation("Laval")}
+      />
+      Laval
+    </label>
+  </div>
+</div>
           <div className="filter-row">
             <label htmlFor="minPrice">Minimum Daily Rental Price:</label>
             <input
@@ -189,6 +221,7 @@ function StartReservationCatalog() {
             large
           </label>
         </div>
+
         
       </div>
           <div className="filter-row">

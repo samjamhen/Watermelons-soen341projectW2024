@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AdminVehicleCard from "./AdminVehicleCard";
 // import "../../styles/Catalog.css";
-//import { router } from 'react-router-dom';
-//import axios from "axios";
-// import { BASE_URL } from "../../constants";
 import { useVehicleContext } from "../../hooks/useVehicleContext";
 
 function AdminCatalog() {
