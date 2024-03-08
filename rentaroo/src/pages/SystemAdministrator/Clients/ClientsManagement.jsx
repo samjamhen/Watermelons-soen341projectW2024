@@ -26,7 +26,7 @@ const ClientsManagement = () => {
 
   const handleDelete = async (id) => {
     try {
-      if (window.confirm('Are you sure you want to delete this client?')) {
+      if (window.confirm('Are you sure you want to delete this user?')) {
         const response = await fetch(`/api/users/${id}`, {
           method: 'DELETE',
         });
@@ -41,19 +41,15 @@ const ClientsManagement = () => {
     }
   };
   
-
-
-
-
   return (
     <div>
       <Header />
       <main>
         <h2>Welcome to Administrator Page</h2>
-        <h3>Client Management</h3>
+        <h3>User Management</h3>
 
           <button>Sort</button>
-          <Link to= "/ClientForm"><button>Add New Client</button></Link>
+          <Link to= "/ClientForm"><button>Add New User</button></Link>
          
 
         <div>

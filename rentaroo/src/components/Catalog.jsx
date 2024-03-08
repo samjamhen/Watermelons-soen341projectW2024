@@ -8,7 +8,7 @@ function Catalog() {
   const [sortedVehicles, setSortedVehicles] = useState([]);
   const [selectedSortOption, setSelectedSortOption] = useState();
   const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -65,16 +65,12 @@ function Catalog() {
 
   function handleSelectButtonClick(vehicle) {
     setSelectedVehicle(vehicle);
-    setIsPopupVisible(true);
+
   }
 
   function handlePopupCloseButtonClick() {
     setSelectedVehicle(null);
-    setIsPopupVisible(false);
-  }
 
-  function handleBookNowButtonClick() {
-    // TODO: Implement booking functionality
   }
 
   function renderVehicles() {
@@ -84,10 +80,9 @@ function Catalog() {
         vehicle={vehicle}
         onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
         selectedVehicle={selectedVehicle}
-        isPopupVisible={isPopupVisible}
+
         handlePopupCloseButtonClick={handlePopupCloseButtonClick}
-        handleBookNowButtonClick={handleBookNowButtonClick}
-      />
+
     ));
   }
 
@@ -99,8 +94,11 @@ function Catalog() {
   return (
     <div className="catalog-page">
       <h1>FIND THE RIGHT CAR FOR YOU WITH RENTAROO</h1>
+      <Link to="/StartReservation" class-name="select-button" id="start-reservation-button">
+        Start a Reservation
+        </Link>
       <div className="sorting-section">
-        <label htmlFor="sort-by">Sort results by: </label>
+        <label htmlFor="sort-by"> Sort results by: </label>
         <button value="year" onClick={handleSortOptionClick}>
           Year
         </button>
@@ -112,34 +110,7 @@ function Catalog() {
         </button>
       </div>
       <ul className="vehicle-list">{renderVehicles()}</ul>
-      {selectedVehicle && isPopupVisible && (
-        <div className="popup">
-          <button onClick={handlePopupCloseButtonClick}>Close</button>
-          <h2>{`${selectedVehicle.yearOfManufacture} ${selectedVehicle.make} ${selectedVehicle.model}`}</h2>
-          <p
-            className={`availability-status ${
-              selectedVehicle.availabilityStatus === "available"
-                ? "available"
-                : "unavailable"
-            }`}
-          >
-            {selectedVehicle.availabilityStatus}
-          </p>
-          <p>Color: {selectedVehicle.color}</p>
-          <p>Mileage: {selectedVehicle.mileage}</p>
-          <p>Price: ${selectedVehicle.price} per day</p>
-          <p>Transmission: {selectedVehicle.transmissionType}</p>
-          <p>Seating Capacity {selectedVehicle.seatingCapacity}</p>
-          <p>Fuel Type: {selectedVehicle.fuelType}</p>
-          <p>Car Type: {selectedVehicle.carType}</p>
-          <p>Fuel Type: {selectedVehicle.fuelType}</p>
-          <p>Features: {selectedVehicle.featuresAndAmenities.join(", ")}</p>
 
-          <p>{selectedVehicle.rentalTermsAndConditions}</p>
-
-          <button onClick={handleBookNowButtonClick}>Book Now</button>
-        </div>
-      )}
     </div>
   );
 }

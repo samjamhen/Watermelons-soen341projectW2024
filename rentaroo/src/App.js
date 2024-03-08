@@ -12,6 +12,8 @@ import VehiclesManagement from './pages/SystemAdministrator/Vehicules/VehiclesMa
 import ReservationsManagement from './pages/SystemAdministrator/Reservations/ReservationsManagement';
 import ClientForm from './pages/SystemAdministrator/Clients/ClientForm';
 import VehicleForm from './pages/SystemAdministrator/Vehicules/VehicleForm';
+import StartReservation from './pages/StartReservation';
+import ViewReservationPage from "./pages/ViewReservationPage";
 
 //import './App.css';
 
@@ -30,14 +32,16 @@ function App() {
           <Route path="/Home" element={<Home />} /> 
           <Route path="/ReservationPage" element={<ReservationPage/>} />
           <Route path="/Admin" element = {<Admin/>} />
+          <Route path="/ViewReservationPage" element ={<ViewReservationPage/>} />
         </Routes>
 
         <Routes>
-          <Route  path="/ClientsManagement" element={<ClientsManagement/>} />
+          <Route  path="/UsersManagement" element={<ClientsManagement/>} />
           <Route  path="/ReservationsManagement" element={<ReservationsManagement/>} />
           <Route  path="/VehiclesManagement" element={<VehiclesManagement/>} />
           <Route  path="/ClientForm" element={<ClientForm/>}/>
           <Route  path="/VehicleForm" element={<VehicleForm/>}/>
+          <Route  path="/StartReservation" element={<StartReservation/>}/>
 
         </Routes>
 

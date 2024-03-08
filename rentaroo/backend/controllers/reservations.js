@@ -7,7 +7,7 @@ const getReservations = async (req, res) => {
     res.status(200).json(reservations)
 }
 
-//get a single reservation by fullName
+//get a single reservation by its reference Number
 const getReservationByID = async (req, res) => {
     const { id } = req.params
 
@@ -58,11 +58,28 @@ const getReservationByPhone = async (req, res) => {
     }
 }
 
+//get a single reservation by userID reference Number
+const getReservationByUserID = async (req, res) => {
+    const { userID } = req.params
+
+    try{
+        const reservation = await Reservation.findOne({ userID: userID})
+        if (!reservation) {
+            return res.status(404).json({error: 'No such reservation'})
+        }
+        res.status(200).json(reservation)
+    }
+    catch (error){
+        console.error('Error finding reservation: ', error)
+        res.status(500).json({message: 'Server error'})
+    }
+}
+
 //create a reservation
 const bookReservation = async (req, res) =>{
-    const {id, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate} = req.body
+    const {id, userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber} = req.body
     try{
-        const reservation = await Reservation.create({id, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate})
+        const reservation = await Reservation.create({id, userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber})
         //return status
         res.status(200).json(reservation)
     } catch(error){
@@ -70,11 +87,11 @@ const bookReservation = async (req, res) =>{
     }
 }
 
-// update a reservation 
+// update a reservation by name
 const updateReservation = async (req, res) => {
-    const { fullName } = req.params
+    const { _id } = req.params
 
-    const reservation = await Reservation.findOneAndUpdate({ fullName: fullName}, {
+    const reservation = await Reservation.findOneAndUpdate({ _id: _id}, {
         ...req.body
     })
 
@@ -84,8 +101,21 @@ const updateReservation = async (req, res) => {
     res.status(200).json(reservation)
 }
 
-//delete a reservation
-const deleteReservation = async (req, res) => {
+//delete a reservation by reference number 
+const deleteReservationByID = async (req, res) => {
+    const { _id } = req.params
+
+    const reservation = await Reservation.findOneAndDelete({ _id: _id })
+
+    if(!reservation){
+        return res.status(400).json({error: "No such reservation"})
+    }
+
+    res.status(200).json(reservation)
+}
+
+//delete a reservation by name
+const deleteReservationByName = async (req, res) => {
     const { fullName } = req.params
 
     const reservation = await Reservation.findOneAndDelete({ fullName: fullName })
@@ -97,5 +127,18 @@ const deleteReservation = async (req, res) => {
     res.status(200).json(reservation)
 }
 
+//delete a reservation by name
+const deleteReservationByPhone = async (req, res) => {
+    const { phone } = req.params
 
-module.exports = { bookReservation, getReservations, getReservationByID, getReservationByName, getReservationByPhone, updateReservation, deleteReservation }
+    const reservation = await Reservation.findOneAndDelete({ phone: phone })
+
+    if(!reservation){
+        return res.status(400).json({error: "No such reservation"})
+    }
+
+    res.status(200).json(reservation)
+}
+
+
+module.exports = { bookReservation, getReservations, getReservationByID, getReservationByName, getReservationByPhone, getReservationByUserID, updateReservation, deleteReservationByID, deleteReservationByName, deleteReservationByPhone }
