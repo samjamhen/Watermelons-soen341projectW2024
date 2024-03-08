@@ -2,19 +2,19 @@
   display: flex;
   flex-direction: column;
   align-items: left;
-  padding:2rem;
-  position:relative;
+  padding: 2rem;
+  position: relative;
 }
-table{
+table {
   align-items: center;
 }
 .vehicle-card {
   display: flex;
   flex-direction: row;
   align-items: center;
-  width:fit-content;
-  min-width:600px;
-  height:fit-content;
+  width: fit-content;
+  min-width: 600px;
+  height: fit-content;
   background-color: #f0f0f0;
   border-radius: 8px;
   padding-bottom: 16px;
@@ -51,13 +51,13 @@ p {
   color: #909090;
 }
 
-.sorting-section{
+.sorting-section {
   min-height: 2rem;
-  width:auto;
+  width: auto;
   padding-inline-start: 40px;
-  padding-top:0.5rem;
+  padding-top: 0.5rem;
 }
-.sorting-section button{
+.sorting-section button {
   margin-left: 2rem;
   min-width: 6rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -65,13 +65,15 @@ p {
   background-color: #b4b4b442;
   color:black;
 }
-.sorting-section button:focus{
+.sorting-section button:focus {
   background-color: #cccccc;
 }
-.sorting-section button:hover{
-  box-shadow: 0 4px 6px rgba(102, 102, 102, 0.384);
+
+.sorting-section button:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
 }
-#sorting-menu{
+#sorting-menu {
   align-items: flex-start;
 }
 
@@ -79,7 +81,7 @@ p {
   background-color: #007bff;
   color: white;
   border: none;
-  width:fit-content;
+  width: fit-content;
   border-radius: 4px;
   padding: 8px 16px;
   cursor: pointer;
@@ -98,6 +100,7 @@ p {
   background-color: #0056b3;
 }
 
+
 .availability-status {
   color: black;
 }
@@ -110,21 +113,80 @@ p {
   color: red;
 }
 
-#delete-vehicle-button{
+#delete-vehicle-button {
   background-color: #7e0000;
-  color:#e0e0e0;
-  margin-left:10px;
+  color: #e0e0e0;
+  margin-left: 10px;
 }
-#delete-vehicle-button:hover{
+#delete-vehicle-button:hover {
   background-color: #470000;
 }
-#modify-vehicle-button{
+#modify-vehicle-button {
   background-color: #004949;
-  color:#e0e0e0;
-  margin-left:10px;
+  color: #e0e0e0;
+  margin-left: 10px;
 }
-#modify-vehicle-button:hover{
+#modify-vehicle-button:hover {
   background-color: #002e2e;
+}
+/* New Vehicle Form */
+.create-list-display {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.create-vehicle-form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: left;
+  padding: 2rem;
+  position: relative;
+}
+label,
+input {
+  display: block;
+  margin-bottom: 0px;
+}
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+form button {
+  background: var(--primary-color);
+
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+form button:hover {
+  background-color: #0056b3;
+}
+form button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+form button:disabled:hover {
+  background-color: #cccccc;
+}
+div.error {
+  color: red;
+  margin-bottom: 10px;
 }
 
 #start-reservation-button{
@@ -145,3 +207,4 @@ p {
 #start-reservation-button:hover{
   background-color: #bbbabad3;
 }
+
