@@ -82,7 +82,7 @@ function Catalog() {
         selectedVehicle={selectedVehicle}
 
         handlePopupCloseButtonClick={handlePopupCloseButtonClick}
-
+      />
     ));
   }
 

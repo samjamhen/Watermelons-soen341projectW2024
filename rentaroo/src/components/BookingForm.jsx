@@ -35,7 +35,7 @@ const BookingForm = () => {
 // Handle form submission
 const handleSubmit = async (e) => {
   e.preventDefault();
-
+  console.log("Booking Form Submitted...")
   try {
     // Here we send data to the server for processing and confirming the reservation
     const reservation = {
@@ -56,7 +56,7 @@ const handleSubmit = async (e) => {
           'Content-Type': 'application/json'
       }
     });
-
+    
     if (!response.ok) {
       throw new Error('Failed to submit reservation');
     }
@@ -76,6 +76,8 @@ const handleSubmit = async (e) => {
   } catch (error) {
     console.error('Error submitting reservation:', error.message);
   }
+  alert("Reservation Form has been sucessfully submitted!")
+
 };
 
 
@@ -88,6 +90,7 @@ const handleSubmit = async (e) => {
           <h3>{`${vehicle.yearOfManufacture} ${vehicle.make} ${vehicle.model}`}</h3>
           <p>Price: ${vehicle.price} per day</p>
           <ul className="vehicle-details">
+            <li>Location: {vehicle.location}</li>
             <li>Color: {vehicle.color}</li>
             <li>Mileage: {vehicle.mileage}</li>
             <li>Transmission: {vehicle.transmissionType}</li>
