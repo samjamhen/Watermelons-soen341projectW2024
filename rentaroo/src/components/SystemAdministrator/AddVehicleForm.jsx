@@ -22,7 +22,7 @@ const AddVehicleForm = () => {
   const [photos, setPhotos] = useState([""]);
   const [error, setError] = useState(null);
   const [imageError, setImageError] = useState(false);
-  const [vehicleImage, setVehicleImage] = useState(null);
+  // const [vehicleImage, setVehicleImage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(""); // New state for success message
 
   const handleSubmit = async (e) => {
@@ -89,10 +89,10 @@ const AddVehicleForm = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
-      setVehicleImage(file);
+      // setVehicleImage(file);
       setImageError(false);
     } else {
-      setVehicleImage("");
+      // setVehicleImage("");
       setImageError(true);
       <span style={{ color: "red" }}>Please upload a JPEG or PNG image.</span>;
     }
