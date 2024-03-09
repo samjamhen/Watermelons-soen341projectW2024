@@ -14,6 +14,7 @@ import ClientForm from './pages/SystemAdministrator/Clients/ClientForm';
 import VehicleForm from './pages/SystemAdministrator/Vehicules/VehicleForm';
 import StartReservation from './pages/StartReservation';
 import ViewReservationPage from "./pages/ViewReservationPage";
+import TermsAndConditions from './pages/TermsAndConditions';
 
 //import './App.css';
 
@@ -33,6 +34,7 @@ function App() {
           <Route path="/ReservationPage" element={<ReservationPage/>} />
           <Route path="/Admin" element = {<Admin/>} />
           <Route path="/ViewReservationPage" element ={<ViewReservationPage/>} />
+          <Route  path="/TermsAndConditions" element={<TermsAndConditions/>} />
         </Routes>
 
         <Routes>

@@ -1,0 +1,25 @@
+/* TermsAndConditions.css */
+.terms-container {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.terms-container h1 {
+    color: #007bff;
+}
+
+.terms-container h2 {
+    color: #333;
+}
+
+.terms-container p {
+    margin: 10px 0;
+}
+
+section {
+    background-color: #f4f4f4;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
