@@ -8,14 +8,13 @@ import ReservationPage from './pages/ReservationPage';
 import ClientsManagement from './pages/SystemAdministrator/Clients/ClientsManagement';
 import ClientCard from './components/SystemAdministrator/ClientCard';
 import VehiclesManagement from './pages/SystemAdministrator/Vehicules/VehiclesManagement';
-// import VehiclesManagement from './pages/SystemAdministrator/Vehicles/VehiclesManagement';
 import ReservationsManagement from './pages/SystemAdministrator/Reservations/ReservationsManagement';
 import ClientForm from './pages/SystemAdministrator/Clients/ClientForm';
 import VehicleForm from './pages/SystemAdministrator/Vehicules/VehicleForm';
 import StartReservation from './pages/StartReservation';
 import ViewReservationPage from "./pages/ViewReservationPage";
+import Login from "./pages/Login";
 
-//import './App.css';
 
 
 function App() {
@@ -33,6 +32,9 @@ function App() {
           <Route path="/ReservationPage" element={<ReservationPage/>} />
           <Route path="/Admin" element = {<Admin/>} />
           <Route path="/ViewReservationPage" element ={<ViewReservationPage/>} />
+          <Route path="/Login"  element={<Login/>} />
+
+       
         </Routes>
 
         <Routes>
