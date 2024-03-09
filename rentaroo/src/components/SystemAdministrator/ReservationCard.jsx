@@ -14,6 +14,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
     returnDate: new Date(reservation.returnDate)
   });
   const [validDates, setValidDates] = useState(true)
+  const [validLicense, setValidLicense] = useState(true);
 
 
   const handleDeleteClick = () => {
@@ -33,11 +34,14 @@ const ReservationCard = ({ reservation, onDelete }) => {
   const handleSaveClick = async (e) => {
     e.preventDefault();
 
-    if (editedData.returnDate <= editedData.pickupDate) {
+    if (editedData.returnDate < editedData.pickupDate) {
         setValidDates(false)
         return;
       }
 
+      if(!validLicense || phoneNumberFormatError || emailFormatError){
+        return
+      }
     try {
       // POST request to update reservation
       const response = await fetch(`/api/reservations/${editedData._id}`, {
@@ -52,8 +56,11 @@ const ReservationCard = ({ reservation, onDelete }) => {
         throw new Error('Failed to update reservation');
       }
 
+      setValidLicense(true)
       setIsEditing(false);
       setValidDates(true);
+      setPhoneNumberFormatError(false)
+      setEmailFormatError(false)
       console.log('Reservation updated successfully');
     } catch (error) {
       console.error('Error updating reservation:', error.message);
@@ -69,9 +76,12 @@ const ReservationCard = ({ reservation, onDelete }) => {
     };
     
     // Reset editedData to original values
+    setValidLicense(true)
     setEditedData(resetData);
     setIsEditing(false);
     setValidDates(true);
+    setPhoneNumberFormatError(false)
+    setEmailFormatError(false)
   };
   
 
@@ -108,6 +118,20 @@ const ReservationCard = ({ reservation, onDelete }) => {
     setEditedData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleLicenseChange = (e) => {
+    const { name, value } = e.target;
+    if(/^[A-Za-z0-9]{8}$/.test(value)){
+        setValidLicense(true);
+    } else{
+        setValidLicense(false);
+    }
+
+    setEditedData((prevData) => ({
+        ...prevData,
+        [name]: value,
     }));
   };
 
@@ -174,8 +198,8 @@ const ReservationCard = ({ reservation, onDelete }) => {
             </p>
 
             <p>
-              <strong>Driver's License:</strong>
-              <input type="text" name="driversLicense" value={editedData.driversLicenseNumber} onChange={handleChange} />
+              <strong>Driver's License:</strong>{validLicense ? null : (<p style={{ color: 'red' }}>A valid Driver's License is 8 Alphanumeric Characters</p>)}
+              <input type="text" name="driversLicenseNumber" value={editedData.driversLicenseNumber} onChange={handleLicenseChange} />
             </p>
           </>
         ) : (

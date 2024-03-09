@@ -20,10 +20,10 @@ const AdminBookingForm = () => {
     returnDate: new Date(),
     driversLicenseNumber: '',
   });
-  const [validDates, setValidDates] = useState(true)
-  const [validLicense, setValidLicense] = useState(true)
-  const licenseRegex = /^[A-Za-z0-9]{8}$/;
-
+  const [validDates, setValidDates] = useState(true);
+  const [validLicense, setValidLicense] = useState(true);
+  const [emailFormatError, setEmailFormatError] = useState(false);
+  const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +35,46 @@ const AdminBookingForm = () => {
     setFormData({ ...formData, [name]: date });
   };
 
+  const handleEmailAddressChange = (e) => {
+    const { name, value } = e.target;
+    if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+      setEmailFormatError(false);
+    } else {
+      setEmailFormatError(true);
+    }
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    const { name, value } = e.target;
+    if (/^\d{3}-\d{3}-\d{4}$/.test(value)) {
+      setPhoneNumberFormatError(false);
+    } else {
+      setPhoneNumberFormatError(true);
+    }
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleLicenseChange = (e) => {
+    const {name, value} = e.target;
+    if(/^[A-Za-z0-9]{8}$/){
+        setValidLicense(true);
+    } else{
+        setValidLicense(false);
+    }
+
+    setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+    }));
+  };
   // Handle form submission
 // Handle form submission
 const handleSubmit = async (e) => {
@@ -44,8 +84,7 @@ const handleSubmit = async (e) => {
     return;
   }
 
-  if (!licenseRegex.test(formData.driversLicenseNumber)){
-    setValidLicense(false)
+  if(!validLicense || phoneNumberFormatError || emailFormatError){
     return
   }
   console.log("Booking Form Submitted...")
@@ -76,6 +115,8 @@ const handleSubmit = async (e) => {
     }
     setValidLicense(true)
     setValidDates(true)
+    setPhoneNumberFormatError(false)
+    setEmailFormatError(false)
     // Reset form fields
     setFormData({
       userID: '',
@@ -131,12 +172,12 @@ const handleSubmit = async (e) => {
           <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} required />
         </div>
         <div>
-          <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+          <label htmlFor="email">Email:</label>{emailFormatError && <span style={{ color: 'red' }}>Please enter a valid email address.</span>}
+          <input type="email" id="email" name="email" value={formData.email} onChange={handleEmailAddressChange} required />
         </div>
         <div>
-          <label htmlFor="phone">Phone Number:</label>
-          <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required />
+          <label htmlFor="phone">Phone Number:</label>{phoneNumberFormatError && <span style={{ color: 'red' }}>Please enter a phone number in the correct format.</span>}
+          <input type="tel" id="phone" name="phone" placeholder="XXX-XXX-XXXX" value={formData.phone} onChange={handlePhoneNumberChange} required />
         </div>
         <div>
           <label htmlFor="pickupAddress">Pickup Address:
@@ -169,7 +210,7 @@ const handleSubmit = async (e) => {
         </div>
         <div>
           <label htmlFor="driversLicenseNumber">Driving License Number:</label>{validLicense ? null : (<p style={{ color: 'red' }}>A valid Driver's License is 8 Alphanumeric Characters</p>)}
-          <input type="text" id="driversLicenseNumber" name="driversLicenseNumber" value={formData.driversLicenseNumber} onChange={handleChange} required />
+          <input type="text" id="driversLicenseNumber" name="driversLicenseNumber" value={formData.driversLicenseNumber} onChange={handleLicenseChange} required />
         </div>
       
         <button type="submit">Submit</button>

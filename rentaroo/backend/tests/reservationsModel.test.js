@@ -42,13 +42,14 @@ describe('Reservation Model', () => {
     //Create a new user
     const reservationData = {
       fullName: 'Test reservation',
+      userID: "12345678",
       email: 'test@example.com',
       phone: '5141231234',
       vehicle: 'car',
       pickupAddress: 'Montreal',
       pickupDate: '2024-02-26T18:20:13.122Z',
       returnDate: '2024-02-26T18:20:13.122Z',
-      driversLicenseNumber: ''
+      driversLicenseNumber: '12345678'
     };
 
     //Save the user to the database
@@ -56,7 +57,7 @@ describe('Reservation Model', () => {
     await reservation.save();
 
     //Fetch the user from the database
-    const savedReservation = await users.findOne({ email: '' });
+    const savedReservation = await users.findOne({ email: 'test@example.com' });
 
   });
 });
