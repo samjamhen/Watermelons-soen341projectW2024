@@ -30,12 +30,6 @@ const TermsAndConditions = () => {
             </section>
             
             <section>
-                <h2>Insurance and Liability</h2>
-                <p>Renters are responsible for selecting an insurance option during the rental process. Rentaroo offers various levels of insurance coverage that renters can choose from.</p>
-                <p>Rentaroo is not responsible for personal property left in the vehicle. Renters are encouraged to remove all personal belongings at the end of the rental period.</p>
-            </section>
-            
-            <section>
                 <h2>Fees and Payments</h2>
                 <p>All rentals are subject to applicable taxes and fees as outlined during the booking process.</p>
                 <p>Late returns may incur additional charges. Renters should return vehicles at the agreed-upon time to avoid extra fees.</p>

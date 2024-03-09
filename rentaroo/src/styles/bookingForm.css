@@ -90,6 +90,20 @@
     cursor: pointer;
     transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
+.terms-checkbox {
+    display: flex;
+    align-items: center; /* Aligns the checkbox and label vertically */
+    margin-top: 20px; /* Adds some space above the terms and conditions section */
+  }
+  
+  .terms-checkbox input[type="checkbox"] {
+    cursor: pointer; /* Changes the cursor to a pointer when hovering over the checkbox */
+  }
+  
+  .terms-checkbox label {
+    margin: 0; /* Removes any default margin from the label */
+    cursor: pointer; /* Changes the cursor to a pointer when hovering over the label */
+  }
 
 /* Style for submit button on hover */
 .booking-form button[type="submit"]:hover {
