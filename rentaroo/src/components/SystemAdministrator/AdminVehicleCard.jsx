@@ -74,9 +74,9 @@ function AdminVehicleCard({ vehicle }) {
   return (
     <div className="vehicle-card">
       <img
-        src=""
-        width="40"
-        height="40"
+        src={vehicle.photos[0] || "https://via.placeholder.com/150"}
+        width="300"
+        height="100"
         alt="Placeholder"
         className="vehicle-image"
       />
@@ -149,7 +149,7 @@ function AdminVehicleCard({ vehicle }) {
         </p>
         <p className="vehicle-mileage">
           {" "}
-          Mileage:{" "}
+          <strong>Mileage:</strong>{" "}
           {isEditing ? (
             <input
               type="number"
@@ -161,13 +161,17 @@ function AdminVehicleCard({ vehicle }) {
             <>{editedVehicle.mileage}Km</>
           )}
         </p>
-        <p className="vehicle-color">Color: {vehicle.color}</p>
+        <p className="vehicle-color">
+          <strong>Color:</strong>
+          {vehicle.color}
+        </p>
         <p className="vehicle-transmission">
-          Transmission: {vehicle.transmissionType}
+          <strong>Transmission:</strong>
+          {vehicle.transmissionType}
         </p>
 
         <p className="vehicle-color">
-          Color:{" "}
+          <strong>Color:</strong>{" "}
           {isEditing ? (
             <input
               type="text"
@@ -180,7 +184,7 @@ function AdminVehicleCard({ vehicle }) {
           )}
         </p>
         <p className="vehicle-transmission">
-          Transmission:{" "}
+          <strong>Transmission:</strong>{" "}
           {isEditing ? (
             <input
               type="text"
@@ -193,7 +197,7 @@ function AdminVehicleCard({ vehicle }) {
           )}
         </p>
         <p>
-          Seating Capacity{" "}
+          <strong>Seating Capacity:</strong>{" "}
           {isEditing ? (
             <input
               type="number"
@@ -206,7 +210,7 @@ function AdminVehicleCard({ vehicle }) {
           )}
         </p>
         <p>
-          Fuel Type:{" "}
+          <strong>Fuel Type:</strong>{" "}
           {isEditing ? (
             <input
               type="text"
@@ -219,7 +223,7 @@ function AdminVehicleCard({ vehicle }) {
           )}
         </p>
         <p>
-          Car Type:{" "}
+          <strong>Car Type:</strong>{" "}
           {isEditing ? (
             <input
               type="text"
@@ -233,7 +237,7 @@ function AdminVehicleCard({ vehicle }) {
         </p>
         <p>
           {" "}
-          Features:{" "}
+          <strong>Features:</strong>{" "}
           {isEditing ? (
             <input
               type="text"
