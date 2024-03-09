@@ -10,7 +10,7 @@ const Header = () => {
       <nav className="sticky">
         <div className="logo">
           <Link to="/" id="link">
-            <img src={"./logo.png"} alt="Rentaroo Logo" />
+            <img src={"./logo2.png"} alt="Rentaroo Logo" />
           </Link>
         </div>
         <div>
