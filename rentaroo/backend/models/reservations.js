@@ -1,9 +1,10 @@
 const mongoose = require("mongoose")
 
 const reservations = new mongoose.Schema({
+
     userID:{
         type: String,
-        default: "Will be implemented when we have a login"
+        default: '65e4edb5ec1fef666ac7a8c9'
     },
     fullName:{
         type: String,

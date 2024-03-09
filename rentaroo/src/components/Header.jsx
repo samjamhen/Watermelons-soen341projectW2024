@@ -10,7 +10,7 @@ const Header = () => {
       <nav className="sticky">
         <div className="logo">
           <Link to="/" id="link">
-            <img src={"./logo.png"} alt="Rentaroo Logo" />
+            <img src={"./logo2.png"} alt="Rentaroo Logo" />
           </Link>
         </div>
         <div>
@@ -30,10 +30,14 @@ const Header = () => {
                 System Administrator
               </Link>
             </li>
-
             <li>
-              <Link to="/about" id="link">
-                About
+              <Link to="/ViewReservationPage" id="link">
+                My Reservation
+              </Link>
+            </li>
+            <li>
+              <Link to="/Login" id="link">
+                Log in
               </Link>
             </li>
           </ul>
