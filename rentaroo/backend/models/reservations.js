@@ -1,14 +1,6 @@
 const mongoose = require("mongoose")
-const { v4: uuidv4 } = require('uuid');
 
 const reservations = new mongoose.Schema({
-
-    id:{
-        type: String,
-        default: uuidv4,
-        required: true
-    },
-
     userID:{
         type: String,
         default: "Will be implemented when we have a login"

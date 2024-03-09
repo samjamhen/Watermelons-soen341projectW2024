@@ -17,7 +17,7 @@ const router = express.Router();
 router.get("/", getReservations);
 
 //GET a single reservation by reference number
-router.get('/ReferenceNumber/:id', getReservationByID);
+router.get('/:_id', getReservationByID);
 
 //GET a single reservation by name
 router.get('/Name/:fullName', getReservationByName);

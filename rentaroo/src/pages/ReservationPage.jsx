@@ -1,5 +1,5 @@
 import React from 'react';
-import BookingForm from '../components/BookingForm'; 
+import AdminBookingForm from '../components/SystemAdministrator/AdminBookingForm'; 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -9,7 +9,7 @@ const ReservationPage = () => {
       <Header />
       <h1>Reservation Page</h1>
       {/* Render the BookingForm component */}
-      <BookingForm />
+      <AdminBookingForm />
       <Footer />
     </div>
   );

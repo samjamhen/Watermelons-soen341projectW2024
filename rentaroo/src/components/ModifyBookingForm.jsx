@@ -102,7 +102,7 @@ const ModifyBookingForm = () => {
             type="text"
             id="reservationId"
             name="reservationId"
-            value={formData.id}
+            value={formData._id}
             onChange={handleChange}
             disabled="true"
             placeholder="Enter reservation ID"
