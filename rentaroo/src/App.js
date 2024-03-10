@@ -14,13 +14,7 @@ import VehicleForm from './pages/SystemAdministrator/Vehicules/VehicleForm';
 import StartReservation from './pages/StartReservation';
 import ViewReservationPage from "./pages/ViewReservationPage";
 import Login from "./pages/Login";
-
-
-import HomeCustomer from './pages/Customer/CustomerHome';
-import HomeCSR from './pages/Service_rep/ServiceHome';
-import HomeAdmin from './pages/SystemAdministrator/AdminHome';
-
-
+import Signup from "./pages/Signup";
 
 
 
@@ -49,6 +43,9 @@ function App() {
           <Route path="/Admin" element = {<Admin/>} />
           <Route path="/ViewReservationPage" element ={<ViewReservationPage/>} />
           <Route path="/Login"  element={<Login/>} />
+          <Route path="/Signup"  element={<Signup/>} />
+
+          
         </Routes>
 
         <Routes>

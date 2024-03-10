@@ -23,9 +23,9 @@ const Admin = () => {
     </li>
     <li>
       <div class="link-box">
-      <a href="/UsersManagement">Clients </a>
+      <a href="/UsersManagement">Users </a>
       </div>
-      <p>Access and manage your clients' accounts.</p>
+      <p>Access and manage your users' accounts.</p>
     </li>
     <li>
       <div class="link-box">

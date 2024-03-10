@@ -22,6 +22,15 @@ nav {
     width: 150px; /* Adjust height as needed */
     padding: 0;
   }
+
+  .logged-in {
+    display: flex;
+    align-items: center;
+  }
+
+  .logout-button {
+    margin-left: 20px;
+  }
   
   #navbar {
     list-style-type: none;
