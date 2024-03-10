@@ -22,7 +22,9 @@ const BookingForm = () => {
 
   // Handle form input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const target = e.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
     setFormData({ ...formData, [name]: value });
   };
 
@@ -149,6 +151,19 @@ const handleSubmit = async (e) => {
         <div>
           <label htmlFor="driversLicenseNumber">Driving License Number:</label>
           <input type="text" id="driversLicenseNumber" name="driversLicenseNumber" value={formData.driversLicenseNumber} onChange={handleChange} required />
+        </div>
+        <div className="terms-checkbox">
+          <input
+            type="checkbox"
+            id="agreedToTerms"
+            name="agreedToTerms"
+            checked={formData.agreedToTerms}
+            onChange={handleChange}
+            required // Makes checking this box obligatory
+          />
+          <label htmlFor="agreedToTerms">
+            I agree to the <a href="/TermsAndConditions">Terms and Conditions</a>
+          </label>
         </div>
       
         <button type="submit">Submit</button>

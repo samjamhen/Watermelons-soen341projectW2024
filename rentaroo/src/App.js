@@ -13,6 +13,7 @@ import ClientForm from './pages/SystemAdministrator/Clients/ClientForm';
 import VehicleForm from './pages/SystemAdministrator/Vehicules/VehicleForm';
 import StartReservation from './pages/StartReservation';
 import ViewReservationPage from "./pages/ViewReservationPage";
+import TermsAndConditions from './pages/TermsAndConditions';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
@@ -46,6 +47,7 @@ function App() {
           <Route path="/Signup"  element={<Signup/>} />
 
           
+          <Route path="/TermsAndConditions" element = {<TermsAndConditions/>} />
         </Routes>
 
         <Routes>
