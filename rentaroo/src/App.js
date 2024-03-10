@@ -17,6 +17,10 @@ import TermsAndConditions from './pages/TermsAndConditions';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
+import HomeCustomer from "./pages/Customer/CustomerHome";
+import HomeCSR from "./pages/Service_rep/ServiceHome";
+import HomeAdmin from "./pages/SystemAdministrator/AdminHome";
+
 
 
 function App() {
