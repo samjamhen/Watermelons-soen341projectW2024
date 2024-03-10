@@ -7,6 +7,7 @@ const AddVehicleForm = () => {
 
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
+  const [category, setcategory] = useState("");
   const [availabilityStatus, setAvailabilityStatus] = useState("available");
   const [yearOfManufacture, setYearOfManufacture] = useState("");
   const [price, setPrice] = useState("");
@@ -33,6 +34,7 @@ const AddVehicleForm = () => {
         make,
         model,
         color,
+        category,
         carType,
         transmissionType,
         fuelType,
@@ -62,6 +64,7 @@ const AddVehicleForm = () => {
       } else {
         setMake("");
         setModel("");
+        setcategory("");
         setColor("");
         setCarType("");
         setTransmissionType("");
@@ -119,6 +122,15 @@ const AddVehicleForm = () => {
           type="text"
           value={model}
           onChange={(e) => setModel(e.target.value)}
+          required
+        />
+      </label>
+      <label>
+        Category:
+        <input
+          type="text"
+          value={category}
+          onChange={(e) => setcategory(e.target.value)}
           required
         />
       </label>
