@@ -1,21 +1,62 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLogin } from '../hooks/useLogin';
 
 const LoginCard = () => {
-  const [selectedRole, setSelectedRole] = useState('customer');
+  const [selectedRole, setSelectedRole] = useState('client');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, error, isLoading } = useLogin();
+  const navigate = useNavigate();
+
 
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
+    
   };
+
+
+
+  // const handleLogIn = async (e) => {
+  //   e.preventDefault();
+  //   await login(email, password);
+
+
+
+
+
+  // };
 
   const handleLogIn = async (e) => {
     e.preventDefault();
-    await login(email, password);
+    try {
+      // Perform the login operation
+      const loginResponse = await login(email, password);
+  
+      // Extract the user's role from the login response
+      const userRole = loginResponse.roleType; 
+ 
+
+        switch (userRole) {
+          case 'client':
+            navigate("/HomeCustomer")
+            break;
+          case 'customer_representative':
+            navigate("/HomeCSR")
+            break;
+          case 'system_administrator':
+            navigate("/HomeAdmin")
+            break;
+          default:
+            return null;
+        }
+      //}
+    } catch (error) {
+
+      console.error('Login error:', error);
+    }
   };
+  
 
   return (
     <div className="login-card">
