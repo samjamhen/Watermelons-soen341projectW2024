@@ -30,6 +30,15 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/Catalog" element={<CatalogPage />} /> 
           <Route path="/Home" element={<Home />} /> 
+          <Route exact path="/HomeCustomer" element={<HomeCustomer />} />
+          <Route exact path="/HomeCSR" element={<HomeCSR />} />
+          <Route exact path="/HomeAdmin" element={<HomeAdmin />} />
+
+
+
+
+
+          
           <Route path="/ReservationPage" element={<ReservationPage/>} />
           <Route path="/Admin" element = {<Admin/>} />
           <Route path="/ViewReservationPage" element ={<ViewReservationPage/>} />
