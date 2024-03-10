@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 
 //express app
 const app = express();
+const dotenv = require("dotenv");
+dotenv.config();
 
 const PORT = process.env.PORT || 8000;
 const reservationRoutes = require("./routes/reservations");

@@ -15,6 +15,7 @@ import StartReservation from './pages/StartReservation';
 import ViewReservationPage from "./pages/ViewReservationPage";
 import TermsAndConditions from './pages/TermsAndConditions';
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 
 
@@ -30,9 +31,22 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/Catalog" element={<CatalogPage />} /> 
           <Route path="/Home" element={<Home />} /> 
+          {/* <Route exact path="/HomeCustomer" element={<HomeCustomer />} />
+          <Route exact path="/HomeCSR" element={<HomeCSR />} />
+          <Route exact path="/HomeAdmin" element={<HomeAdmin />} /> */}
+
+
+
+
+
+          
           <Route path="/ReservationPage" element={<ReservationPage/>} />
           <Route path="/Admin" element = {<Admin/>} />
           <Route path="/ViewReservationPage" element ={<ViewReservationPage/>} />
+          <Route path="/Login"  element={<Login/>} />
+          <Route path="/Signup"  element={<Signup/>} />
+
+          
           <Route path="/TermsAndConditions" element = {<TermsAndConditions/>} />
         </Routes>
 
