@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useLogin } from '../hooks/useLogin';
 
 const LoginCard = () => {
   const [selectedRole, setSelectedRole] = useState('customer');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login, error, isLoading } = useLogin();
 
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
   };
 
-  const handleLogIn = () => {
-    console.log(`Logging in as ${selectedRole} with email: ${email} and password: ${password}`);
-  };
-
-  const handleSignUp = () => {
-    console.log(`Signing up as ${selectedRole} with email: ${email} and password: ${password}`);
+  const handleLogIn = async (e) => {
+    e.preventDefault();
+    await login(email, password);
   };
 
   return (
@@ -33,8 +33,12 @@ const LoginCard = () => {
       )}
       {selectedRole === 'customer' && (
         <div>
-          <button onClick={handleLogIn}>Log in</button>
-          <p>Don't have an account? <a href="/Signup">Sign up here</a></p>
+          <button disabled = {isLoading} onClick={handleLogIn}>Log in</button>
+          {error && <div className="error">{error}</div>}
+          <p>Don't have an account?</p>
+          <Link to="/Signup">
+            Sign up here
+          </Link>
         </div>
       )}
     </div>

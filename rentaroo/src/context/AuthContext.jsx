@@ -2,6 +2,8 @@ import {createContext, useReducer} from 'react';
 
 export const AuthContext = createContext();
 
+const user = JSON.parse(localStorage.getItem('user')) || null;
+
 export const authReducer = (state, action) => {
     switch (action.type) {
         case 'LOGIN':
@@ -15,7 +17,7 @@ export const authReducer = (state, action) => {
 
 export const AuthContextProvider = ({children}) => {
     const [state, dispatch] = useReducer(authReducer, {
-        user: null
+        user: user
     });
 
     console.log('AuthContext state: ', state)
