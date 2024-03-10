@@ -1,50 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import FindReservation from '../components/FindReservation';
-import ReservationCard from '../components/SystemAdministrator/ReservationCard'; // Import ReservationCard 
+import ReservationCard from '../components/SystemAdministrator/ReservationCard';
 
 function ViewReservationPage() {
-  const [reservation, setReservation] = useState(null);
+    const [reservations, setReservations] = useState([]);
 
-  const fetchReservationDetails = async (reservationNumber) => {
-    try {
-      const response = await fetch(`/api/reservations/${reservationNumber}`);
-      console.log(reservationNumber)
-      if (response.ok) {
-        const json = await response.json();
-        setReservation(json);
-      } else {
-        throw new Error('Failed to fetch reservations');
+    useEffect(() => {
+      fetchAllReservations();
+  }, []);
+
+  const fetchAllReservations = async () => {
+      try {
+          const response = await axios.get('/api/reservations');
+          if (response.status === 200) {
+              setReservations(response.data); // Assuming the API returns an array of all reservations
+          } else {
+              throw new Error('Unable to fetch reservations');
+          }
+      } catch (error) {
+          console.error('Error fetching reservations:', error);
       }
-    } catch (error) {
-      console.error('Error fetching reservations:', error);
-    };
-};
-
-  // Function to handle the deletion of a reservation
-  const handleDeleteReservation = (reservationId) => {
-    axios.delete(`/api/reservations/${reservationId}`)
-      .then(() => {
-        alert('Reservation successfully deleted');
-        setReservation(null); // Clear the reservation state to remove it from the UI
-      })
-      .catch(error => {
-        console.error('Error deleting the reservation:', error);
-        alert('Failed to delete the reservation');
-      });
   };
 
-  return (
-    <div>
-      <Header />
-      <h1>View My Reservation</h1>
-      {!reservation && <FindReservation onFetch={fetchReservationDetails} />}
-      {reservation && <ReservationCard reservation={reservation} onDelete={handleDeleteReservation} />}
-      <Footer />
-    </div>
-  );
+
+  const handleDeleteReservation = async (reservationId) => {
+    const storedData = localStorage.getItem('user');
+    const user = storedData ? JSON.parse(storedData) : null;
+
+    if (user && user.token) {
+        try {
+            await axios.delete(`/api/reservations/${reservationId}`, {
+                headers: { Authorization: `Bearer ${user.token}` },
+            });
+            setReservations(current => current.filter(res => res._id !== reservationId));
+            alert('Reservation successfully deleted');
+        } catch (error) {
+            console.error('Error deleting the reservation:', error);
+            alert('Failed to delete the reservation');
+        }
+    } else {
+        console.error("User token not found.");
+    }
+  };
+
+
+    return (
+        <div>
+            <Header />
+            <h1>My Reservations</h1>
+            {reservations.map(reservation => (
+              <ReservationCard reservation={reservation} onDelete={() => handleDeleteReservation(reservation._id)} />
+            ))}
+            <Footer />
+        </div>
+    );
 }
 
 export default ViewReservationPage;

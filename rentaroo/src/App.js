@@ -16,6 +16,7 @@ import ViewReservationPage from "./pages/ViewReservationPage";
 import TermsAndConditions from './pages/TermsAndConditions';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import ConfirmationPage from './components/Confirmation';
 
 
 
@@ -45,8 +46,6 @@ function App() {
           <Route path="/ViewReservationPage" element ={<ViewReservationPage/>} />
           <Route path="/Login"  element={<Login/>} />
           <Route path="/Signup"  element={<Signup/>} />
-
-          
           <Route path="/TermsAndConditions" element = {<TermsAndConditions/>} />
         </Routes>
 
