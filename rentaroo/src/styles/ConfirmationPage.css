@@ -1,0 +1,51 @@
+.confirmation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .confirmation-container h1 {
+    color: #126414;
+    margin-bottom: 20px;
+  }
+  
+  .confirmation-container p,
+  .confirmation-container ul {
+    color: #333;
+  }
+  
+  .confirmation-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .confirmation-container li {
+    margin: 10px 0;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Additional styling to make it "cute" */
+  .confirmation-container {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #fff0f0; /* Soft pink background */
+    border: 2px solid #ffcccc; /* Lighter pink border */
+  }
+  
+  .confirmation-container ul li {
+    background-color: #ffefef; /* Very light pink */
+    color: #666; /* Darker text for contrast */
+    border-bottom: 2px solid #ffcccc; /* Lighter pink border at the bottom of list items */
+  }
+  

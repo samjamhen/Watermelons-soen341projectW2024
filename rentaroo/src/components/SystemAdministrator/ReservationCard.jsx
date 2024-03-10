@@ -115,7 +115,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
     <div className="client-etiquette">
       <div className="client-info">
         <p>
-          <strong>Reservation ID:</strong> {reservation.id}
+          <strong>Reservation ID:</strong> {reservation._id}
         </p>
         <p>
             <strong>Vehicle ID:</strong> {reservation.vehicle}

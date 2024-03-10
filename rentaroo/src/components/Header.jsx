@@ -3,14 +3,23 @@ import "../styles/Header.css";
 import { Link } from "react-router-dom";
 // import logo from './logo.png'
 import "../styles/Header.css";
+import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Header = () => {
+  const {logout} = useLogout();
+  const {user} = useAuthContext();
+
+  const handleLogout = () => {
+    logout();
+  }
+
   return (
     <div className="navBar">
       <nav className="sticky">
         <div className="logo">
           <Link to="/" id="link">
-            <img src={"./logo.png"} alt="Rentaroo Logo" />
+            <img src={"./logo2.png"} alt="Rentaroo Logo" />
           </Link>
         </div>
         <div>
@@ -26,18 +35,28 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link to="/Admin" id="link">
+              {/* <Link to="/Admin" id="link">
                 System Administrator
-              </Link>
+              </Link> */}
             </li>
-
-            <li>
-              <Link to="/about" id="link">
-                About
-              </Link>
-            </li>
+              {user && (
+            <li><Link to="/ViewReservationPage">My Reservations</Link></li>
+              )}
           </ul>
         </div>
+        {!user && (
+        <div id = "navbar">
+          <Link to="/Login" id="link">
+            Log in
+          </Link>
+        </div>
+        )}
+        {user && (
+          <div className = "logged-in">
+            <span>Welcome, {user.user.name}</span>
+            <button onClick={handleLogout} className="logout-button">Logout</button>
+          </div>
+        )}
       </nav>
     </div>
   );

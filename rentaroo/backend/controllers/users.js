@@ -1,4 +1,10 @@
 const User = require('../models/users')
+const jwt = require('jsonwebtoken')
+
+//Create a token
+const createToken = (_id) => {
+    return jwt.sign({ _id }, `${process.env.JWT_SECRET_KEY}`, { expiresIn: '2d' })
+}
 
 //CREATE
 const createUser = async(req, res) => {
@@ -69,4 +75,36 @@ const deleteUser = async (req, res) => {
     }
 }
 
-module.exports = {createUser, getUsers, getUser, updateUser, deleteUser}
+//LOGIN
+const loginUser = async (req, res) => {
+    const {email, password} = req.body
+
+    try {
+        const user = await User.login(email, password)
+        if (!user) {
+            return res.status(404).json({error: 'User not found'})
+        }
+        const token = createToken(user._id) //Create token
+        res.status(200).json({user, token})
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+//SIGNUP
+const signupUser = async (req, res) => {
+    const {name, email, password, phoneNumber} = req.body
+
+    try {
+        const user = await User.signup(name, email, password, phoneNumber)
+        if (!user) {
+            return res.status(404).json({error: 'User not created'})
+        }
+        const token = createToken(user._id) //Create token
+        res.status(200).json({user, token})
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+module.exports = {createUser, getUsers, getUser, updateUser, deleteUser, loginUser, signupUser}
