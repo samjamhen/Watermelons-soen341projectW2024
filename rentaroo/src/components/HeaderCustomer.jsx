@@ -31,9 +31,9 @@ const Header = () => {
               </Link> */}
             </li>
             <li>
-              {/* <Link to="/ViewReservationPage" id="link">
+              <Link to="/ViewReservationPage" id="link">
                 My Reservation
-              </Link> */}
+              </Link>
             </li>
             <li>
               <Link to="/Login" id="link">

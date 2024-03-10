@@ -16,6 +16,13 @@ import ViewReservationPage from "./pages/ViewReservationPage";
 import Login from "./pages/Login";
 
 
+import HomeCustomer from './pages/Customer/CustomerHome';
+import HomeCSR from './pages/Service_rep/ServiceHome';
+import HomeAdmin from './pages/SystemAdministrator/AdminHome';
+
+
+
+
 
 function App() {
   return (
@@ -29,12 +36,19 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/Catalog" element={<CatalogPage />} /> 
           <Route path="/Home" element={<Home />} /> 
+          <Route exact path="/HomeCustomer" element={<HomeCustomer />} />
+          <Route exact path="/HomeCSR" element={<HomeCSR />} />
+          <Route exact path="/HomeAdmin" element={<HomeAdmin />} />
+
+
+
+
+
+          
           <Route path="/ReservationPage" element={<ReservationPage/>} />
           <Route path="/Admin" element = {<Admin/>} />
           <Route path="/ViewReservationPage" element ={<ViewReservationPage/>} />
           <Route path="/Login"  element={<Login/>} />
-
-       
         </Routes>
 
         <Routes>
