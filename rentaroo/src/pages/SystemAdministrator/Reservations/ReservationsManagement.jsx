@@ -1,6 +1,6 @@
 // ReservationsManagement.js
 import React, { useEffect, useState } from 'react';
-import Header from '../../../components/Header';
+import Header from '../../../components/HeaderAdmin';
 import Footer from '../../../components/Footer';
 import ReservationCard from '../../../components/SystemAdministrator/ReservationCard';
 
