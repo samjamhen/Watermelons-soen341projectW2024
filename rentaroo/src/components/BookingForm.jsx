@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'; // Import useLocation
 import { isDateDisabled } from './utils/utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const BookingForm = ({onSuccessfulSubmission}) => {
 
@@ -24,6 +25,7 @@ const BookingForm = ({onSuccessfulSubmission}) => {
   const [validLicense, setValidLicense] = useState(true)
   const [unavailableDates, setUnavailableDates] = useState([])
   const [reservations, setReservations] = useState([])
+  const { user } = useAuthContext();
 
   // Fetch reservations associated with the vehicle
   useEffect(() => {
@@ -237,6 +239,12 @@ const handleSubmit = async (e) => {
       )}
       <form onSubmit={handleSubmit} className="booking-form">
         <h2>Booking Form</h2>
+        {user.user.userType === 'system_administrator' ? 
+        <div>
+          <label htmlFor="userID">User ID:</label>
+          <input type="text" id="userID" name="userID" value={formData.userID} onChange={handleChange} required />
+        </div> : null
+        }
         <div>
           <label htmlFor="fullName">Full Name:</label>
           <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} required />
