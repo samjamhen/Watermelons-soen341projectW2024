@@ -57,7 +57,7 @@ function App() {
           />
 
 
-          <Route path="/ReservationPage" element={<ReservationPage/>} />
+          <Route path="/ReservationPage" element={user ? <ReservationPage/> : <Navigate to="/Login"/>} />
           <Route path="/Admin" element={ user ? (
             user.user.userType === 'system_administrator' ? <Admin /> :
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
