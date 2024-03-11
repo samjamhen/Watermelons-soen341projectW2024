@@ -62,10 +62,16 @@ const BookingForm = ({onSuccessfulSubmission}) => {
   }, [vehicle]);
   
   useEffect(() => {
-    // Update totalPrice whenever pickupDate or returnDate changes
+    // Calculate the difference in milliseconds between pickupDate and returnDate
+    const differenceInMilliseconds = formData.returnDate - formData.pickupDate;
+    // Convert the difference to days and round up using Math.ceil()
+    const differenceInDays = Math.ceil(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+    // Calculate the totalPrice
+    const totalPrice = vehicle.price * (differenceInDays + 1);
+    // Update the formData with the new totalPrice
     setFormData(prevData => ({
-      ...prevData,
-      totalPrice: vehicle.price * (Math.abs(formData.returnDate - formData.pickupDate) / (1000 * 60 * 60 * 24) + 1)
+    ...prevData,
+    totalPrice: totalPrice
     }));
 
     if (new Date(formData.returnDate) < new Date(formData.pickupDate)) {
