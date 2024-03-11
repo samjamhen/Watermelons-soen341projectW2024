@@ -97,15 +97,16 @@ const getReservationByVehicleID = async (req, res) => {
 }
 
 //create a reservation
-const bookReservation = async (req, res) =>{
-    const {userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber} = req.body
-    try{
+const bookReservation = async (req, res) => {
+    const { userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber } = req.body;
+    try {
         // Check if the vehicle is available for the selected pickup and return dates
         const overlappingReservations = await Reservation.find({
             vehicle,
             $or: [
-                { pickupDate: { $lt: returnDate }, returnDate: { $gt: pickupDate } },
-                { pickupDate: { $lte: pickupDate }, returnDate: { $gte: returnDate } },
+                { pickupDate: { $lt: returnDate }, returnDate: { $gt: pickupDate } }, // Check if pickupDate is between existing reservation dates
+                { pickupDate: { $lte: pickupDate }, returnDate: { $gte: returnDate } }, // Check if returnDate is between existing reservation dates
+                { pickupDate: { $gte: pickupDate }, returnDate: { $lte: returnDate } } // Check if existing reservation dates are between pickupDate and returnDate
             ],
         });
 
@@ -114,31 +115,55 @@ const bookReservation = async (req, res) =>{
         }
 
         // Create reservation
-        const reservation = await Reservation.create({userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber});
-        
+        const reservation = await Reservation.create({ userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber });
+
         // Mark the vehicle as unavailable for the reservation dates
         await Vehicle.updateOne({ _id: vehicle }, { available: false });
 
         // Return status
         res.status(200).json(reservation);
-    } catch(error){
-        res.status(400).json({error: error.message});
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
-}
+};
+
 
 // update a reservation by id
 const updateReservation = async (req, res) => {
-    const { _id } = req.params
+    const { _id } = req.params;
 
-    const reservation = await Reservation.findOneAndUpdate({ _id: _id}, {
-        ...req.body
-    })
+    try {
+        const updatedReservation = req.body;
+        const existingReservation = await Reservation.findById(_id);
 
-    if(!reservation){
-        return res.status(400).json({error: 'No such reservation'})
+        if (!existingReservation) {
+            return res.status(400).json({ error: 'No such reservation' });
+        }
+
+        // Check if the updated reservation overlaps with existing reservations
+        const overlappingReservations = await Reservation.find({
+            vehicle: existingReservation.vehicle,
+            _id: { $ne: _id }, // Exclude the current reservation from the check
+            $or: [
+                { pickupDate: { $lt: updatedReservation.returnDate }, returnDate: { $gt: updatedReservation.pickupDate } }, // Check if pickupDate is between existing reservation dates
+                { pickupDate: { $lte: updatedReservation.pickupDate }, returnDate: { $gte: updatedReservation.returnDate } }, // Check if returnDate is between existing reservation dates
+                { pickupDate: { $gte: updatedReservation.pickupDate }, returnDate: { $lte: updatedReservation.returnDate } } // Check if existing reservation dates are between pickupDate and returnDate
+            ],
+        });
+
+        if (overlappingReservations.length > 0) {
+            return res.status(400).json({ error: 'Updated reservation overlaps with existing reservations' });
+        }
+
+        // Update reservation
+        const updated = await Reservation.findByIdAndUpdate(_id, updatedReservation, { new: true });
+
+        res.status(200).json(updated);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
-    res.status(200).json(reservation)
-}
+};
+
 
 //delete a reservation by id 
 const deleteReservationByID = async (req, res) => {

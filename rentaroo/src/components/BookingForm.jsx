@@ -32,7 +32,7 @@ const BookingForm = ({onSuccessfulSubmission}) => {
         const response = await fetch(`/api/reservations/vehicle/${vehicle._id}`);
         if (response.ok) {
           const reservations = await response.json();
-          console.log("hi")
+
           if (Array.isArray(reservations)) {
             // Handle the case when reservations is an array
             console.log("fetched");
@@ -71,6 +71,7 @@ const BookingForm = ({onSuccessfulSubmission}) => {
   // Handle date picker changes
   const handleDateChange = (date, name) => {
     setFormData({ ...formData, [name]: date });
+    setValidDates(true)
   };
 
   const handleEmailAddressChange = (e) => {
@@ -129,6 +130,7 @@ const handleSubmit = async (e) => {
     setValidDates(false)
     return;
   }
+
   console.log("Booking Form Submitted...");
   try {
     // Here we send data to the server for processing and confirming the reservation
@@ -232,7 +234,7 @@ const handleSubmit = async (e) => {
           </label>
         </div>
         <div>
-          <label>Pickup Date:</label>
+          <label>Pickup Date:</label>{!validDates && <span style={{ color: 'red' }}>Please enter valid dates.</span>}
           <DatePicker
             selected={formData.pickupDate}
             onChange={(date) => handleDateChange(date, 'pickupDate')}

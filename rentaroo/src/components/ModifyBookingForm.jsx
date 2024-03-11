@@ -22,7 +22,41 @@ const ModifyBookingForm = () => {
   const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
   const [validDates, setValidDates] = useState(true)
   const [validLicense, setValidLicense] = useState(true)
+  const [unavailableDates, setUnavailableDates] = useState([]);
+  const [reservationDates, setReservationDates] = useState([]);
 
+  useEffect(() => {
+    // Construct an array containing all dates within the reservation range
+    const dates = [];
+    let currentDate = new Date(editedData.pickupDate);
+    while (currentDate <= editedData.returnDate) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    setReservationDates(dates);
+
+  }, [formData]);
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch(`/api/reservations/vehicle/${formData.vehicle}`);
+        if (response.ok) {
+          const reservations = await response.json();
+          const dates = reservations.map(reservation => ({
+            startDate: new Date(reservation.pickupDate),
+            endDate: new Date(reservation.returnDate)
+          }));
+          setUnavailableDates(dates);
+        } else {
+          console.error('Failed to fetch reservations');
+        }
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
+    };
+    fetchReservations();
+  }, [formData]);
   //id for now
   const fakeUserId = "Will be implemented when we have a login";
 
@@ -213,6 +247,8 @@ const ModifyBookingForm = () => {
             selected={formData.pickupDate}
             onChange={(date) => handleDateChange(date, 'pickupDate')}
             disabled={!editMode}
+            minDate={() => new Date()}
+            filterDate={date => isDateDisabledModify(date, unavailableDates, reservationDates)}
             dateFormat="MM/dd/yyyy"
           />
         </div>
@@ -223,6 +259,7 @@ const ModifyBookingForm = () => {
             selected={formData.returnDate}
             onChange={(date) => handleDateChange(date, 'returnDate')}
             disabled={!editMode}
+            filterDate={date => isDateDisabledModify(date, unavailableDates, reservationDates)}
             dateFormat="MM/dd/yyyy"
           />
         </div>

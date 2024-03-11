@@ -1,8 +1,9 @@
 // ReservationCard.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; // Import CSS
 import '../../styles/SystemAdministrator/ClientManagement.css';
+import { isDateDisabledModify } from '../utils/utils';
 
 const ReservationCard = ({ reservation, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -15,8 +16,22 @@ const ReservationCard = ({ reservation, onDelete }) => {
   });
   const [validDates, setValidDates] = useState(true)
   const [validLicense, setValidLicense] = useState(true);
+  const [unavailableDates, setUnavailableDates] = useState([]);
+  const [reservationDates, setReservationDates] = useState([]);
+
+  useEffect(() => {
+    // Construct an array containing all dates within the reservation range
+    const dates = [];
+    let currentDate = new Date(editedData.pickupDate);
+    while (currentDate <= editedData.returnDate) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    setReservationDates(dates);
+  }, [editedData]);
 
 
+  
   const handleDeleteClick = () => {
     onDelete(editedData._id);
   };
@@ -30,6 +45,26 @@ const ReservationCard = ({ reservation, onDelete }) => {
   const formattedPickupDate = `${editedData.pickupDate.getFullYear()}/${editedData.pickupDate.getMonth() + 1}/${editedData.pickupDate.getDate()}`;
 
 
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch(`/api/reservations/vehicle/${reservation.vehicle}`);
+        if (response.ok) {
+          const reservations = await response.json();
+          const dates = reservations.map(reservation => ({
+            startDate: new Date(reservation.pickupDate),
+            endDate: new Date(reservation.returnDate)
+          }));
+          setUnavailableDates(dates);
+        } else {
+          console.error('Failed to fetch reservations');
+        }
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
+    };
+    fetchReservations();
+  }, [editedData]);
 
   const handleSaveClick = async (e) => {
     e.preventDefault();
@@ -181,6 +216,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
                 selected={new Date(editedData.pickupDate)}
                 onChange={(date) => handleDateChange(date, 'pickupDate')}
                 minDate={new Date()}
+                filterDate={date => isDateDisabledModify(date, unavailableDates, reservationDates)}
                 dateFormat="YYYY-MM-dd"
                 required
               />
@@ -192,6 +228,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
                 selected={new Date(editedData.returnDate)}
                 onChange={(date) => handleDateChange(date, 'returnDate')}
                 minDate={new Date()}
+                filterDate={date => isDateDisabledModify(date, unavailableDates, reservationDates)}
                 dateFormat="YYYY-MM-dd"
                 required
               />
