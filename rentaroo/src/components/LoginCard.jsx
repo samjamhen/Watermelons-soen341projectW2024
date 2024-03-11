@@ -32,10 +32,20 @@ const LoginCard = () => {
           <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
       )}
-      {selectedRole === 'client' && (
+      
+      
+      {selectedRole && (
         <div>
           <button disabled = {isLoading} onClick={handleLogIn}>Log in</button>
           {error && <div className="error">{error}</div>}
+
+        </div>
+      )}
+      
+      {selectedRole === 'client' && (
+        <div>
+          {/* <button disabled = {isLoading} onClick={handleLogIn}>Log in</button>
+          {error && <div className="error">{error}</div>} */}
           <p>Don't have an account?</p>
           <Link to="/Signup">
             Sign up here
