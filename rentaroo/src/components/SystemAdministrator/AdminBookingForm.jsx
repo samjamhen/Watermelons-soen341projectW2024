@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { useLocation } from 'react-router-dom'; // Import useLocation
-
+import { isDateDisabled } from './utils/utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import '/Users/samuelhenderson/Watermelons-soen341projectW2024/rentaroo/src/styles/bookingForm.css';
 
@@ -9,7 +9,6 @@ const AdminBookingForm = () => {
 
   const location = useLocation(); // Access location object
   const vehicle = location.state?.vehicle; // Access vehicle information passed through state
-
   const [formData, setFormData] = useState({
     userID: '',
     fullName: '',
@@ -24,6 +23,42 @@ const AdminBookingForm = () => {
   const [validLicense, setValidLicense] = useState(true);
   const [emailFormatError, setEmailFormatError] = useState(false);
   const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
+  const [unavailableDates, setUnavailableDates] = useState([])
+  const [reservations, setReservations] = useState([])
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch(`/api/reservations/vehicle/${vehicle._id}`);
+        if (response.ok) {
+          const reservations = await response.json();
+
+          if (Array.isArray(reservations)) {
+            // Handle the case when reservations is an array
+            console.log("fetched");
+            setReservations(reservations); // Store reservations in state
+            const dates = reservations.map(reservation => ({
+              startDate: new Date(reservation.pickupDate),
+              endDate: new Date(reservation.returnDate)
+            }));
+            setUnavailableDates(dates);
+            console.log("Unavailable dates:", dates);
+          } else {
+            // Handle the case when reservations is not an array
+            console.error('Response is not an array of reservations:', reservations);
+          }
+        } else {
+          console.error('Failed to fetch reservations');
+        }
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
+    };
+    if (vehicle) {
+      fetchReservations(); // Call fetchReservations if vehicle is available
+    }
+    
+  }, [vehicle]);
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -194,6 +229,7 @@ const handleSubmit = async (e) => {
             selected={formData.pickupDate}
             onChange={(date) => handleDateChange(date, 'pickupDate')}
             minDate={new Date()}
+            filterDate={date => isDateDisabled(date, unavailableDates)}
             dateFormat="yyyy-MM-dd"
             required
           />
@@ -204,6 +240,7 @@ const handleSubmit = async (e) => {
             selected={formData.returnDate}
             onChange={(date) => handleDateChange(date, 'returnDate')}
             minDate={formData.pickupDate} // Minimum date should be the same or after the pickup date
+            filterDate={date => isDateDisabled(date, unavailableDates)}
             dateFormat="yyyy-MM-dd"
             required
           />

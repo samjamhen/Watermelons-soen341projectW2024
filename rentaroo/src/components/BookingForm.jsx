@@ -17,6 +17,7 @@ const BookingForm = ({onSuccessfulSubmission}) => {
     pickupDate: new Date(),
     returnDate: new Date(),
     driversLicenseNumber: '',
+    totalPrice: 0
   });
   const [emailFormatError, setEmailFormatError] = useState(false);
   const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
@@ -32,7 +33,7 @@ const BookingForm = ({onSuccessfulSubmission}) => {
         const response = await fetch(`/api/reservations/vehicle/${vehicle._id}`);
         if (response.ok) {
           const reservations = await response.json();
-          console.log("hi")
+
           if (Array.isArray(reservations)) {
             // Handle the case when reservations is an array
             console.log("fetched");
@@ -60,6 +61,23 @@ const BookingForm = ({onSuccessfulSubmission}) => {
     
   }, [vehicle]);
   
+  useEffect(() => {
+    // Update totalPrice whenever pickupDate or returnDate changes
+    setFormData(prevData => ({
+      ...prevData,
+      totalPrice: vehicle.price * (Math.abs(formData.returnDate - formData.pickupDate) / (1000 * 60 * 60 * 24) + 1)
+    }));
+
+    if (new Date(formData.returnDate) < new Date(formData.pickupDate)) {
+      console.log('Dates are not valid');
+      setValidDates(false)
+      // Set totalPrice to 0 if return date is before pickup date
+      setFormData(prevData => ({
+        ...prevData,
+        totalPrice: 0
+      }))
+    }
+  }, [formData.pickupDate, formData.returnDate]);
   // Handle form input changes
   const handleChange = (e) => {
     const target = e.target;
@@ -71,6 +89,7 @@ const BookingForm = ({onSuccessfulSubmission}) => {
   // Handle date picker changes
   const handleDateChange = (date, name) => {
     setFormData({ ...formData, [name]: date });
+    setValidDates(true)
   };
 
   const handleEmailAddressChange = (e) => {
@@ -129,6 +148,7 @@ const handleSubmit = async (e) => {
     setValidDates(false)
     return;
   }
+
   console.log("Booking Form Submitted...");
   try {
     // Here we send data to the server for processing and confirming the reservation
@@ -141,7 +161,8 @@ const handleSubmit = async (e) => {
       pickupAddress: formData.pickupAddress,
       pickupDate: formData.pickupDate,
       returnDate: formData.returnDate,
-      driversLicenseNumber: formData.driversLicenseNumber
+      driversLicenseNumber: formData.driversLicenseNumber,
+      totalPrice: formData.totalPrice
     };
 
     const response = await fetch('/api/reservations', {
@@ -170,6 +191,7 @@ const handleSubmit = async (e) => {
       pickupDate: new Date(),
       returnDate: new Date(),
       driversLicenseNumber: '',
+      totalPrice: 0
     });
 
     console.log('Reservation submitted successfully');
@@ -203,6 +225,7 @@ const handleSubmit = async (e) => {
             <li>Fuel Type: {vehicle.fuelType}</li>
             <li>Car Type: {vehicle.carType}</li>
             <li>Features: {vehicle.featuresAndAmenities.join(', ')}</li>
+            <li>Total Price: {formData.totalPrice}</li>
           </ul>
 
           {/* Add more vehicle details as needed */}
@@ -232,7 +255,7 @@ const handleSubmit = async (e) => {
           </label>
         </div>
         <div>
-          <label>Pickup Date:</label>
+          <label>Pickup Date:</label>{!validDates && <span style={{ color: 'red' }}>Please enter valid dates.</span>}
           <DatePicker
             selected={formData.pickupDate}
             onChange={(date) => handleDateChange(date, 'pickupDate')}

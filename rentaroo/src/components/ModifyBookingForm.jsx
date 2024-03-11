@@ -14,7 +14,8 @@ const ModifyBookingForm = () => {
     pickupAddress: '',
     pickupDate: new Date(), // default pickup date
     returnDate: new Date(), // default return date
-    driversLicenseNumber: ''
+    driversLicenseNumber: '',
+    totalPrice: 0
   });  
   const [initialFormData, setInitialFormData] = useState({});
   const [editMode, setEditMode] = useState(false);
@@ -22,7 +23,59 @@ const ModifyBookingForm = () => {
   const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
   const [validDates, setValidDates] = useState(true)
   const [validLicense, setValidLicense] = useState(true)
+  const [unavailableDates, setUnavailableDates] = useState([]);
+  const [reservationDates, setReservationDates] = useState([]);
 
+  useEffect(() => {
+    // Update totalPrice whenever pickupDate or returnDate changes
+    setFormData(prevData => ({
+      ...prevData,
+      totalPrice: vehicle.price * (Math.abs(formData.returnDate - formData.pickupDate) / (1000 * 60 * 60 * 24) + 1)
+    }));
+
+    if (new Date(formData.returnDate) < new Date(formData.pickupDate)) {
+      console.log('Dates are not valid');
+      setValidDates(false)
+      // Set totalPrice to 0 if return date is before pickup date
+      setFormData(prevData => ({
+        ...prevData,
+        totalPrice: 0
+      }))
+    }
+  }, [formData.pickupDate, formData.returnDate]);
+
+  useEffect(() => {
+    // Construct an array containing all dates within the reservation range
+    const dates = [];
+    let currentDate = new Date(editedData.pickupDate);
+    while (currentDate <= editedData.returnDate) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    setReservationDates(dates);
+
+  }, [formData]);
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch(`/api/reservations/vehicle/${formData.vehicle}`);
+        if (response.ok) {
+          const reservations = await response.json();
+          const dates = reservations.map(reservation => ({
+            startDate: new Date(reservation.pickupDate),
+            endDate: new Date(reservation.returnDate)
+          }));
+          setUnavailableDates(dates);
+        } else {
+          console.error('Failed to fetch reservations');
+        }
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
+    };
+    fetchReservations();
+  }, [formData]);
   //id for now
   const fakeUserId = "Will be implemented when we have a login";
 
@@ -93,6 +146,7 @@ const ModifyBookingForm = () => {
     };
 
     fetchReservations();
+    console.log(formData.vehicle)
   }, []);
 
   const handleSubmit = async (e) => {
@@ -213,6 +267,8 @@ const ModifyBookingForm = () => {
             selected={formData.pickupDate}
             onChange={(date) => handleDateChange(date, 'pickupDate')}
             disabled={!editMode}
+            minDate={() => new Date()}
+            filterDate={date => isDateDisabledModify(date, unavailableDates, reservationDates)}
             dateFormat="MM/dd/yyyy"
           />
         </div>
@@ -223,6 +279,7 @@ const ModifyBookingForm = () => {
             selected={formData.returnDate}
             onChange={(date) => handleDateChange(date, 'returnDate')}
             disabled={!editMode}
+            filterDate={date => isDateDisabledModify(date, unavailableDates, reservationDates)}
             dateFormat="MM/dd/yyyy"
           />
         </div>
@@ -237,6 +294,20 @@ const ModifyBookingForm = () => {
             disabled={!editMode}
             placeholder="Enter Driver's License Number"
           />
+        </div>
+        <div>
+        <div>
+          <label htmlFor="totalPrice">Total Price:</label>
+          <input
+            type="text"
+            id="totalPrice"
+            name="totalPrice"
+            value={formData.totalPrice}
+            onChange={handleChange}
+            disabled="true"
+            placeholder=""
+          />
+        </div>
         </div>
         <button type="button" onClick={editMode? handleCancelClick: handleEditClick}>{editMode? "Cancel": "Edit"}</button>
         {editMode && <button type="submit">Update Reservation</button>}
