@@ -88,12 +88,13 @@ const ReservationCard = ({ reservation, onDelete }) => {
       if (!response.ok) {
         throw new Error('Failed to update reservation');
       }
-
+      
       setValidLicense(true)
       setIsEditing(false);
       setValidDates(true);
       setPhoneNumberFormatError(false)
       setEmailFormatError(false)
+      alert('Reservation updated successfully');
       console.log('Reservation updated successfully');
     } catch (error) {
       console.error('Error updating reservation:', error.message);
@@ -200,12 +201,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
             {phoneNumberFormatError && <span style={{ color: 'red' }}>Please enter a phone number in the correct format.</span>}
 
             <p>
-              <strong>Pickup Address:</strong>{' '}
-              <select name="pickupAddress" value={editedData.pickupAddress} onChange={handleChange}>
-                <option value="Montreal">Montreal</option>
-                <option value="Toronto">Toronto</option>
-                <option value="Ottawa">Ottawa</option>
-              </select>
+              <strong>Pickup Address:</strong>{reservation.pickupAddress}
             </p>
 
             <p>
