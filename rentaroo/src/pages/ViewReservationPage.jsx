@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Header from "../components/Header";
+import Header from "../components/HeaderCustomer";
 import Footer from "../components/Footer";
 import ReservationCard from '../components/SystemAdministrator/ReservationCard';
 

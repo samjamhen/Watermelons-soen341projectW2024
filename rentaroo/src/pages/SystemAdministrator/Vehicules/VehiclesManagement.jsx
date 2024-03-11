@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../../../components/Header';
+import Header from '../../../components/HeaderAdmin';
 import Footer from '../../../components/Footer';
 // import '../styles/Home.css'
 import AdminCatalog from '../../../components/SystemAdministrator/AdminCatalog';
