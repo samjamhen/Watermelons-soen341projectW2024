@@ -63,14 +63,6 @@ function AdminVehicleCard({ vehicle }) {
     }));
   };
 
-  // return (
-
-  //   if (response.ok) {
-  //     dispatch({ type: "UPDATE_VEHICLE", payload: vehicle._id });
-  //     <ModifyVehicleForm vehicleId={vehicle._id} />;
-  //   }
-  // };
-
   return (
     <div className="vehicle-card">
       <img
