@@ -49,7 +49,8 @@ describe('Reservation Model', () => {
       pickupAddress: 'Montreal',
       pickupDate: '2024-02-26T18:20:13.122Z',
       returnDate: '2024-02-26T18:20:13.122Z',
-      driversLicenseNumber: '12345678'
+      driversLicenseNumber: '12345678',
+      totalPrice: 0
     };
 
     //Save the user to the database
