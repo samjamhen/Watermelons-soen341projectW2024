@@ -35,13 +35,15 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              {/* <Link to="/Admin" id="link">
+              <Link to="/Admin" id="link">
                 System Administrator
+              </Link>
+            </li>
+            <li>
+              {/* <Link to="/ViewReservationPage" id="link">
+                My Reservation
               </Link> */}
             </li>
-              {user && (
-            <li><Link to="/ViewReservationPage">My Reservations</Link></li>
-              )}
           </ul>
         </div>
         {!user && (

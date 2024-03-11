@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../../../components/Header.jsx';
+import Header from '../../../components/HeaderAdmin.jsx';
 import Footer from '../../../components/Footer.jsx';
 import AddClientForm from '../../../components/SystemAdministrator/AddClientForm.jsx';
 

@@ -1,13 +1,18 @@
 // ReservationsManagement.js
 import React, { useEffect, useState } from 'react';
-import Header from '../../../components/Header';
+import Header from '../../../components/HeaderAdmin';
+import HeaderCSR from '../../../components/HeaderCSR';
+import HeaderAdmin from '../../../components/HeaderAdmin';
+import HeaderCustomer from '../../../components/HeaderCustomer';
 import Footer from '../../../components/Footer';
 import ReservationCard from '../../../components/SystemAdministrator/ReservationCard';
+import { useAuthContext } from '../../../hooks/useAuthContext';
 
 const ReservationsManagement = () => {
   const [reservations, setReservations] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchOption, setSearchOption] = useState('referenceNumber');
+  const { user } = useAuthContext();
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -57,9 +62,27 @@ const ReservationsManagement = () => {
     }
   };*/}
 
+  const renderHeader = () => {
+    if (!user || !user.user || !user.user.userType) {
+      return <Header />;
+    }
+    
+    let userType = user.user.userType;
+    switch (userType) {
+      case "client":
+        return <HeaderCustomer />;
+      case "customer_representative":
+        return <HeaderCSR />;
+      case "system_administrator":
+        return <HeaderAdmin />;
+      default:
+        return <Header />;
+    }
+  };
+
   return (
     <div>
-      <Header />
+      {renderHeader()}
       <main>
         <select value={searchOption} onChange={(e) => setSearchOption(e.target.value)}>
           <option value="referenceNumber">Reference Number</option>

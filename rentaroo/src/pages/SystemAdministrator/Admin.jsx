@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../../components/Header';
+import Header from '../../components/HeaderAdmin';
 import Footer from '../../components/Footer';
 import { Link } from 'react-router-dom';
 import '../../styles/SystemAdministrator/Admin.css'
@@ -23,9 +23,9 @@ const Admin = () => {
     </li>
     <li>
       <div class="link-box">
-      <a href="/UsersManagement">Clients </a>
+      <a href="/ClientsManagement">Users </a>
       </div>
-      <p>Access and manage your clients' accounts.</p>
+      <p>Access and manage your users' accounts.</p>
     </li>
     <li>
       <div class="link-box">

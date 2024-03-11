@@ -13,7 +13,7 @@ const Header = () => {
   const handleLogout = () => {
     logout();
   }
-
+  
   return (
     <div className="navBar">
       <nav className="sticky">
@@ -39,9 +39,11 @@ const Header = () => {
                 System Administrator
               </Link> */}
             </li>
-              {user && (
-            <li><Link to="/ViewReservationPage">My Reservations</Link></li>
-              )}
+            <li>
+              <Link to="/ViewReservationPage" id="link">
+                My Reservation
+              </Link>
+            </li>
           </ul>
         </div>
         {!user && (

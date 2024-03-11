@@ -5,7 +5,7 @@ import { isDateDisabled } from './utils/utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
 
-const BookingForm = () => {
+const BookingForm = ({onSuccessfulSubmission}) => {
 
   const location = useLocation(); // Access location object
   const vehicle = location.state?.vehicle; // Access vehicle information passed through state
@@ -62,7 +62,9 @@ const BookingForm = () => {
   
   // Handle form input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const target = e.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
     setFormData({ ...formData, [name]: value });
   };
 
@@ -115,6 +117,9 @@ const BookingForm = () => {
 // Handle form submission
 const handleSubmit = async (e) => {
   e.preventDefault();
+  const storedUser = localStorage.getItem('user');
+  const user = JSON.parse(storedUser);
+  const userId = user?.user?._id; 
 
   if(!validLicense || emailFormatError || phoneNumberFormatError){
     return
@@ -124,13 +129,14 @@ const handleSubmit = async (e) => {
     setValidDates(false)
     return;
   }
-  console.log("Booking Form Submitted...")
+  console.log("Booking Form Submitted...");
   try {
     // Here we send data to the server for processing and confirming the reservation
     const reservation = {
       fullName: formData.fullName,
+      userID: userId, 
       vehicle: vehicle._id,
-      email: formData.email, 
+      email: formData.email,
       phone: formData.phone,
       pickupAddress: formData.pickupAddress,
       pickupDate: formData.pickupDate,
@@ -140,16 +146,17 @@ const handleSubmit = async (e) => {
 
     const response = await fetch('/api/reservations', {
       method: 'POST',
-      body: JSON.stringify(reservation), 
+      body: JSON.stringify(reservation),
       headers: {
-          'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
       }
     });
-    
+
     if (!response.ok) {
       throw new Error('Failed to submit reservation');
     }
 
+    const reservationDetails = await response.json();
     // Reset form fields
     setValidLicense(true)
     setValidDates(true)
@@ -166,12 +173,17 @@ const handleSubmit = async (e) => {
     });
 
     console.log('Reservation submitted successfully');
+    onSuccessfulSubmission(reservationDetails); // Call the callback with reservation details
+
+
+  
+    
     alert("Reservation Form has been sucessfully submitted!")
   } catch (error) {
     console.error('Error submitting reservation:', error.message);
   }
-
 };
+
 
 
   return (
@@ -179,7 +191,7 @@ const handleSubmit = async (e) => {
       {vehicle && (
         <div className="information-placeholder">
           {/* Display vehicle information */}
-          <img src={vehicle.imageUrl || 'path/to/default/image.jpg'} alt={`${vehicle.make} ${vehicle.model}`} />
+          <img src={vehicle.photos && vehicle.photos[0] ? vehicle.photos[0] : 'path/to/default/image.jpg'} alt={`${vehicle.make} ${vehicle.model}`} />
           <h3>{`${vehicle.yearOfManufacture} ${vehicle.make} ${vehicle.model}`}</h3>
           <p>Price: ${vehicle.price} per day</p>
           <ul className="vehicle-details">
@@ -243,6 +255,32 @@ const handleSubmit = async (e) => {
         <div>
           <label htmlFor="driversLicenseNumber">Driving License Number:</label>{validLicense ? null : (<p style={{ color: 'red' }}>A valid Driver's License is 8 Alphanumeric Characters</p>)}
           <input type="text" id="driversLicenseNumber" name="driversLicenseNumber" value={formData.driversLicenseNumber} onChange={handleLicenseChange} required />
+        </div>
+        <div className="terms-checkbox">
+          <input
+            type="checkbox"
+            id="agreedToTerms"
+            name="agreedToTerms"
+            checked={formData.agreedToTerms}
+            onChange={handleChange}
+            required // Makes checking this box obligatory
+          />
+          <label htmlFor="agreedToTerms">
+            I agree to the <a href="/TermsAndConditions">Terms and Conditions</a>
+          </label>
+        </div>
+        <div className="terms-checkbox">
+          <input
+            type="checkbox"
+            id="agreedToTerms"
+            name="agreedToTerms"
+            checked={formData.agreedToTerms}
+            onChange={handleChange}
+            required // Makes checking this box obligatory
+          />
+          <label htmlFor="agreedToTerms">
+            I agree to the <a href="/TermsAndConditions">Terms and Conditions</a>
+          </label>
         </div>
       
         <button type="submit">Submit</button>

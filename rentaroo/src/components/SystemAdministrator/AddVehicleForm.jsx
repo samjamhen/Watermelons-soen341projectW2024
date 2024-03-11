@@ -7,6 +7,7 @@ const AddVehicleForm = () => {
 
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
+  const [category, setcategory] = useState("");
   const [availabilityStatus, setAvailabilityStatus] = useState("available");
   const [yearOfManufacture, setYearOfManufacture] = useState("");
   const [price, setPrice] = useState("");
@@ -22,7 +23,7 @@ const AddVehicleForm = () => {
   const [photos, setPhotos] = useState([""]);
   const [error, setError] = useState(null);
   const [imageError, setImageError] = useState(false);
-  const [vehicleImage, setVehicleImage] = useState(null);
+  // const [vehicleImage, setVehicleImage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(""); // New state for success message
 
   const handleSubmit = async (e) => {
@@ -33,6 +34,7 @@ const AddVehicleForm = () => {
         make,
         model,
         color,
+        category,
         carType,
         transmissionType,
         fuelType,
@@ -62,6 +64,7 @@ const AddVehicleForm = () => {
       } else {
         setMake("");
         setModel("");
+        setcategory("");
         setColor("");
         setCarType("");
         setTransmissionType("");
@@ -89,10 +92,10 @@ const AddVehicleForm = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
-      setVehicleImage(file);
+      // setVehicleImage(file);
       setImageError(false);
     } else {
-      setVehicleImage("");
+      // setVehicleImage("");
       setImageError(true);
       <span style={{ color: "red" }}>Please upload a JPEG or PNG image.</span>;
     }
@@ -119,6 +122,15 @@ const AddVehicleForm = () => {
           type="text"
           value={model}
           onChange={(e) => setModel(e.target.value)}
+          required
+        />
+      </label>
+      <label>
+        Category:
+        <input
+          type="text"
+          value={category}
+          onChange={(e) => setcategory(e.target.value)}
           required
         />
       </label>
