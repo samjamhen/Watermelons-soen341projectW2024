@@ -18,7 +18,11 @@ const ModifyBookingForm = () => {
   });  
   const [initialFormData, setInitialFormData] = useState({});
   const [editMode, setEditMode] = useState(false);
+  const [emailFormatError, setEmailFormatError] = useState(false);
+  const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
   const [validDates, setValidDates] = useState(true)
+  const [validLicense, setValidLicense] = useState(true)
+
   //id for now
   const fakeUserId = "Will be implemented when we have a login";
 
@@ -29,6 +33,47 @@ const ModifyBookingForm = () => {
 
   const handleDateChange = (date, name) => {
     setFormData({ ...formData, [name]: date });
+  };
+
+  const handleEmailAddressChange = (e) => {
+    const { name, value } = e.target;
+    if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+      setEmailFormatError(false);
+    } else {
+      setEmailFormatError(true);
+    }
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    const { name, value } = e.target;
+    if (/^\d{3}-\d{3}-\d{4}$/.test(value)) {
+      setPhoneNumberFormatError(false);
+    } else {
+      setPhoneNumberFormatError(true);
+    }
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleLicenseChange = (e) => {
+    const { name, value } = e.target;
+    if(/^[A-Za-z0-9]{8}$/.test(value)){
+        setValidLicense(true);
+    } else{
+        setValidLicense(false);
+    }
+
+    setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+    }));
   };
 
   useEffect(() => {
@@ -73,6 +118,9 @@ const ModifyBookingForm = () => {
       }
       setInitialFormData(formData)
       setValidDates(true)
+      setEmailFormatError(false)
+      setPhoneNumberFormatError(false)
+      setValidLicense(true)
       console.log('Reservation updated successfully');
       // Optionally, you can redirect or perform any other action upon successful update
     } catch (error) {
@@ -88,7 +136,10 @@ const ModifyBookingForm = () => {
   const handleCancelClick = () => {
     setEditMode(false);
     setFormData(initialFormData);
-    setValidDates(true);
+    setValidDates(true)
+    setEmailFormatError(false)
+    setPhoneNumberFormatError(false)
+    setValidLicense(true)
   };
   
 
@@ -102,7 +153,7 @@ const ModifyBookingForm = () => {
             type="text"
             id="reservationId"
             name="reservationId"
-            value={formData.id}
+            value={formData._id}
             onChange={handleChange}
             disabled="true"
             placeholder="Enter reservation ID"
@@ -122,25 +173,25 @@ const ModifyBookingForm = () => {
           />
         </div>
         <div>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Email:</label>{emailFormatError && <span style={{ color: 'red' }}>Please enter a valid email address.</span>}
           <input
             type="email"
             id="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={handleEmailAddressChange}
             disabled={!editMode}
             placeholder="Enter email"
           />
         </div>
         <div>
-          <label htmlFor="phone">Phone Number:</label>
+          <label htmlFor="phone">Phone Number:</label>{phoneNumberFormatError && <span style={{ color: 'red' }}>Please enter a phone number in the correct format.</span>}
           <input
             type="tel"
             id="phone"
             name="phone"
             value={formData.phone}
-            onChange={handleChange}
+            onChange={handlePhoneNumberChange}
             disabled={!editMode}
             placeholder="Enter phone Number"
           />
@@ -176,13 +227,13 @@ const ModifyBookingForm = () => {
           />
         </div>
         <div>
-          <label htmlFor="driversLicenseNumber">Driving License Number:</label>
+          <label htmlFor="driversLicenseNumber">Driving License Number:</label>{validLicense ? null : (<p style={{ color: 'red' }}>A valid Driver's License is 8 Alphanumeric Characters</p>)}
           <input
             type="text"
             id="driversLicenseNumber"
             name="driversLicenseNumber"
             value={formData.driversLicenseNumber}
-            onChange={handleChange}
+            onChange={handleLicenseChange}
             disabled={!editMode}
             placeholder="Enter Driver's License Number"
           />
