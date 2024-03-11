@@ -1,30 +1,32 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import AdminVehicleCard from '../SystemAdministrator/AdminVehicleCard';
-import { VehicleContextProvider } from '../../contexts/VehicleContext';
-import { useVehicleContext } from '../../hooks/useVehicleContext';
 
 jest.mock('../../hooks/useVehicleContext', () => ({
-    useVehicleContext: jest.fn(),
-  }));
-  
-  test('renders the admin catalog with vehicles', () => {
-    const vehicles = [
-      { _id: '1', make: 'Toyota', model: 'Corolla' },
-      { _id: '2', make: 'Honda', model: 'Civic' },
-    ];
-    const dispatch = jest.fn();
-  
-    useVehicleContext.mockReturnValue({ vehicles, dispatch });
-  
-    const { getByText } = render(
-      <VehicleContextProvider>
-        <AdminCatalog />
-      </VehicleContextProvider>
-    );
-  
-    expect(getByText('ADMIN CATALOG')).toBeInTheDocument();
-  });
+  useVehicleContext: () => ({
+    dispatch: jest.fn(),
+  }),
+}));
+
+test('renders the admin vehicle card with delete and modify buttons', () => {
+    const vehicle = {
+        _id: '1',
+        make: 'Toyota',
+        model: 'Corolla',
+        availabilityStatus: 'available',
+        yearOfManufacture: 2020,
+        price: 50,
+        mileage: 10000,
+        color: 'blue',
+        transmissionType: 'automatic',
+        seatingCapacity: 5,
+        fuelType: 'gasoline',
+        carType: 'sedan',
+        featuresAndAmenities: ['Bluetooth', 'Backup Camera'],
+        rentalTermsAndConditions: 'Terms and conditions apply',
+        photos: ['https://example.com/photo.jpg'], // Add a photos array with at least one element
+      };
+      
 
   const { getByText } = render(<AdminVehicleCard vehicle={vehicle} />);
 
