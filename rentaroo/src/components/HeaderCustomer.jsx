@@ -41,7 +41,7 @@ const Header = () => {
             </li>
             <li>
               <Link to="/ViewReservationPage" id="link">
-                My Reservation
+                My Reservations
               </Link>
             </li>
           </ul>
