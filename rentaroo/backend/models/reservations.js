@@ -36,6 +36,10 @@ const reservations = new mongoose.Schema({
     driversLicenseNumber:{
         type: String,
         required: true
+    },
+    totalPrice:{
+        type: Number,
+        required: true
     }
 }, {timestamps: true});
 

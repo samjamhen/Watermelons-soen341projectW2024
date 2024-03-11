@@ -30,8 +30,6 @@ const ReservationCard = ({ reservation, onDelete }) => {
     setReservationDates(dates);
   }, [editedData]);
 
-
-  
   const handleDeleteClick = () => {
     onDelete(editedData._id);
   };
@@ -238,6 +236,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
               <strong>Driver's License:</strong>{validLicense ? null : (<p style={{ color: 'red' }}>A valid Driver's License is 8 Alphanumeric Characters</p>)}
               <input type="text" name="driversLicenseNumber" value={editedData.driversLicenseNumber} onChange={handleLicenseChange} />
             </p>
+
           </>
         ) : (
           <>

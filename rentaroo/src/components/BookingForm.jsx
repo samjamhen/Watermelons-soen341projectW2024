@@ -17,6 +17,7 @@ const BookingForm = ({onSuccessfulSubmission}) => {
     pickupDate: new Date(),
     returnDate: new Date(),
     driversLicenseNumber: '',
+    totalPrice: 0
   });
   const [emailFormatError, setEmailFormatError] = useState(false);
   const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
@@ -60,6 +61,23 @@ const BookingForm = ({onSuccessfulSubmission}) => {
     
   }, [vehicle]);
   
+  useEffect(() => {
+    // Update totalPrice whenever pickupDate or returnDate changes
+    setFormData(prevData => ({
+      ...prevData,
+      totalPrice: vehicle.price * (Math.abs(formData.returnDate - formData.pickupDate) / (1000 * 60 * 60 * 24) + 1)
+    }));
+
+    if (new Date(formData.returnDate) < new Date(formData.pickupDate)) {
+      console.log('Dates are not valid');
+      setValidDates(false)
+      // Set totalPrice to 0 if return date is before pickup date
+      setFormData(prevData => ({
+        ...prevData,
+        totalPrice: 0
+      }))
+    }
+  }, [formData.pickupDate, formData.returnDate]);
   // Handle form input changes
   const handleChange = (e) => {
     const target = e.target;
@@ -143,7 +161,8 @@ const handleSubmit = async (e) => {
       pickupAddress: formData.pickupAddress,
       pickupDate: formData.pickupDate,
       returnDate: formData.returnDate,
-      driversLicenseNumber: formData.driversLicenseNumber
+      driversLicenseNumber: formData.driversLicenseNumber,
+      totalPrice: formData.totalPrice
     };
 
     const response = await fetch('/api/reservations', {
@@ -172,6 +191,7 @@ const handleSubmit = async (e) => {
       pickupDate: new Date(),
       returnDate: new Date(),
       driversLicenseNumber: '',
+      totalPrice: 0
     });
 
     console.log('Reservation submitted successfully');
@@ -205,6 +225,7 @@ const handleSubmit = async (e) => {
             <li>Fuel Type: {vehicle.fuelType}</li>
             <li>Car Type: {vehicle.carType}</li>
             <li>Features: {vehicle.featuresAndAmenities.join(', ')}</li>
+            <li>Total Price: {formData.totalPrice}</li>
           </ul>
 
           {/* Add more vehicle details as needed */}

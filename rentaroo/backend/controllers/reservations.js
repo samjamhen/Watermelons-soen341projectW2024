@@ -98,7 +98,7 @@ const getReservationByVehicleID = async (req, res) => {
 
 //create a reservation
 const bookReservation = async (req, res) => {
-    const { userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber } = req.body;
+    const { userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice } = req.body;
     try {
         // Check if the vehicle is available for the selected pickup and return dates
         const overlappingReservations = await Reservation.find({
@@ -115,7 +115,7 @@ const bookReservation = async (req, res) => {
         }
 
         // Create reservation
-        const reservation = await Reservation.create({ userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber });
+        const reservation = await Reservation.create({ userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice });
 
         // Mark the vehicle as unavailable for the reservation dates
         await Vehicle.updateOne({ _id: vehicle }, { available: false });
