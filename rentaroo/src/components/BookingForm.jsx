@@ -186,7 +186,6 @@ const handleSubmit = async (e) => {
       fullName: '',
       email: '',
       phone: '',
-      pickupAddress: 'Montreal',
       pickupDate: new Date(),
       returnDate: new Date(),
       driversLicenseNumber: '',
@@ -282,20 +281,6 @@ const handleSubmit = async (e) => {
             I agree to the <a href="/TermsAndConditions">Terms and Conditions</a>
           </label>
         </div>
-        <div className="terms-checkbox">
-          <input
-            type="checkbox"
-            id="agreedToTerms"
-            name="agreedToTerms"
-            checked={formData.agreedToTerms}
-            onChange={handleChange}
-            required // Makes checking this box obligatory
-          />
-          <label htmlFor="agreedToTerms">
-            I agree to the <a href="/TermsAndConditions">Terms and Conditions</a>
-          </label>
-        </div>
-      
         <button type="submit">Submit</button>
       </form>
     </div>
