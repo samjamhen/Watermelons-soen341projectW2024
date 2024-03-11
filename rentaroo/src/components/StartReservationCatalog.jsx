@@ -14,22 +14,21 @@ function StartReservationCatalog() {
   const [filterOptions, setFilterOptions] = useState({
     minPrice: 0,
     maxPrice: 100,
-    carType: [],
-    categories: [],
+    carType: ["car", "suv", "Van", "Truck"],
+    categories: ["compact", "standard", "intermediate", "large"],
     location: ["Montreal", "Laval"],
   });
   const [selectedCarTypes, setSelectedCarTypes] = useState([]);
 
   function handleFilterChange(event) {
-    const { name, value, checked, carType } = event.target;
-    if (carType === "checkbox") {
-      setFilterOptions({
-        ...filterOptions,
-        carType: checked
-          ? [...(filterOptions.carType || []), carType]
-          : filterOptions.carType.filter((option) => option !== carType),
-      });
-      setSelectedCarTypes(filterOptions.carType);
+    const { name, value, checked, type } = event.target;
+
+    if (type === "checkbox" && name === "carType") {
+      const updatedCarTypes = checked
+        ? [...selectedCarTypes, value]
+        : selectedCarTypes.filter((type) => type !== value);
+
+      setSelectedCarTypes(updatedCarTypes);
     } else if (name === "minPrice" || name === "maxPrice") {
       setFilterOptions({
         ...filterOptions,
@@ -43,21 +42,27 @@ function StartReservationCatalog() {
   function handleLocationChange(location) {
     setSelectedLocation(location);
   }
-
   function handleSearchFilteredVehicles() {
-    const { minPrice, maxPrice, carType, categories } = filterOptions;
-    const filteredVehicles = vehicles.filter(
-      (vehicle) =>
-        vehicle.price >= minPrice &&
-        vehicle.price <= maxPrice &&
-        (carType.length === 0 || carType.includes(vehicle.type)) &&
-        (categories.length === 0 || categories.includes(vehicle.category)) &&
-        (selectedLocation === "Montreal"
+    const { minPrice, maxPrice } = filterOptions;
+
+    const filteredVehicles = vehicles.filter((vehicle) => {
+      const isPriceInRange =
+        vehicle.price >= minPrice && vehicle.price <= maxPrice;
+      const isCarTypeMatch = selectedCarTypes.includes(vehicle.carType);
+      const isCategoryMatch = filterOptions.categories.includes(
+        vehicle.category
+      );
+      const isLocationMatch =
+        selectedLocation === "Montreal"
           ? vehicle.location === "Montreal"
-          : vehicle.location === "Laval")
-    );
+          : vehicle.location === "Laval";
+
+      return (
+        isPriceInRange && isCategoryMatch && isCarTypeMatch && isLocationMatch
+      );
+    });
+
     setFilteredVehicles(filteredVehicles);
-    console.log("Selected Car Types:", selectedCarTypes);
   }
 
   useEffect(() => {
@@ -85,26 +90,31 @@ function StartReservationCatalog() {
     console.log("Selected Car Types:", selectedCarTypes);
 
     return filteredVehicles.map((vehicle) => (
-      <VehicleCard  
-        key={vehicle._id} 
+      <VehicleCard
+        key={vehicle._id}
         vehicle={vehicle}
         onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
-        selectedVehicle={selectedVehicle} />
+        selectedVehicle={selectedVehicle}
+      />
     ));
   }
 
   return (
-    
     <div className="catalog-page">
       <h1>Start a Reservation</h1>
-      <FilterForm componentDidMount={handleSearchFilteredVehicles}
+      <FilterForm
+        onApplyFilters={handleSearchFilteredVehicles} // Corrected prop name
         minPrice={filterOptions.minPrice}
         maxPrice={filterOptions.maxPrice}
         onMinPriceChange={(e) =>
-          handleFilterChange({ target: { name: "minPrice", value: e.target.value } })
+          handleFilterChange({
+            target: { name: "minPrice", value: e.target.value },
+          })
         }
         onMaxPriceChange={(e) =>
-          handleFilterChange({ target: { name: "maxPrice", value: e.target.value } })
+          handleFilterChange({
+            target: { name: "maxPrice", value: e.target.value },
+          })
         }
         onTypesChange={handleFilterChange}
         onCategoriesChange={handleFilterChange}
@@ -113,9 +123,7 @@ function StartReservationCatalog() {
         selectedLocation={selectedLocation}
         onSearchFilteredVehicles={handleSearchFilteredVehicles}
       />
-      <ul className="vehicle-list">
-        {renderVehicles()}
-      </ul>
+      <ul className="vehicle-list">{renderVehicles()}</ul>
     </div>
   );
 }
