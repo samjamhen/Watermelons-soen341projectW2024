@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import { useLocation } from 'react-router-dom'; // Import useLocation
-
+import { isDateDisabled } from './utils/utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
 
@@ -22,7 +22,44 @@ const BookingForm = () => {
   const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
   const [validDates, setValidDates] = useState(true)
   const [validLicense, setValidLicense] = useState(true)
+  const [unavailableDates, setUnavailableDates] = useState([])
+  const [reservations, setReservations] = useState([])
 
+  // Fetch reservations associated with the vehicle
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch(`/api/reservations/vehicle/${vehicle._id}`);
+        if (response.ok) {
+          const reservations = await response.json();
+          console.log("hi")
+          if (Array.isArray(reservations)) {
+            // Handle the case when reservations is an array
+            console.log("fetched");
+            setReservations(reservations); // Store reservations in state
+            const dates = reservations.map(reservation => ({
+              startDate: new Date(reservation.pickupDate),
+              endDate: new Date(reservation.returnDate)
+            }));
+            setUnavailableDates(dates);
+            console.log("Unavailable dates:", dates);
+          } else {
+            // Handle the case when reservations is not an array
+            console.error('Response is not an array of reservations:', reservations);
+          }
+        } else {
+          console.error('Failed to fetch reservations');
+        }
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
+    };
+    if (vehicle) {
+      fetchReservations(); // Call fetchReservations if vehicle is available
+    }
+    
+  }, [vehicle]);
+  
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -129,10 +166,10 @@ const handleSubmit = async (e) => {
     });
 
     console.log('Reservation submitted successfully');
+    alert("Reservation Form has been sucessfully submitted!")
   } catch (error) {
     console.error('Error submitting reservation:', error.message);
   }
-  alert("Reservation Form has been sucessfully submitted!")
 
 };
 
@@ -183,23 +220,24 @@ const handleSubmit = async (e) => {
           </label>
         </div>
         <div>
-          <label htmlFor="pickupDate">Pickup Date:</label>{validDates ? null : (<p style={{ color: 'red' }}>Pickup Date must be before return Date.</p>)}
+          <label>Pickup Date:</label>
           <DatePicker
             selected={formData.pickupDate}
             onChange={(date) => handleDateChange(date, 'pickupDate')}
-            minDate={new Date()}
-            dateFormat="yyyy-MM-dd"
-            required
+            filterDate={date => isDateDisabled(date, unavailableDates)}
+            dateFormat="MM/dd/yyyy"
+            minDate={new Date(new Date().setHours(0, 0, 0, 0))}
+            
           />
         </div>
         <div>
-          <label htmlFor="returnDate">Return Date:</label>
+          <label>Return Date:</label>
           <DatePicker
             selected={formData.returnDate}
             onChange={(date) => handleDateChange(date, 'returnDate')}
-            minDate={formData.pickupDate} // Minimum date should be the same or after the pickup date
-            dateFormat="yyyy-MM-dd"
-            required
+            filterDate={date => isDateDisabled(date, unavailableDates)}
+            dateFormat="MM/dd/yyyy"
+            minDate={new Date(new Date().setHours(0, 0, 0, 0))}
           />
         </div>
         <div>

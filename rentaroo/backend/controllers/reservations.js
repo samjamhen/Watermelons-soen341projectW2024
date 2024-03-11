@@ -1,4 +1,5 @@
 const Reservation = require('../models/reservations.js')
+const Vehicle = require('../models/vehicles.js')
 
 //get all reservations
 const getReservations = async (req, res) => {
@@ -78,15 +79,50 @@ const getReservationByUserID = async (req, res) => {
     }
 }
 
+//get a single reservation by vehicle
+const getReservationByVehicleID = async (req, res) => {
+    const { vehicle } = req.params
+
+    try{
+        const reservation = await Reservation.find({ vehicle: vehicle})
+        if (!reservation) {
+            return res.status(404).json({error: 'No such reservation'})
+        }
+        res.status(200).json(reservation)
+    }
+    catch (error){
+        console.error('Error finding reservation: ', error)
+        res.status(500).json({message: 'Server error'})
+    }
+}
+
 //create a reservation
 const bookReservation = async (req, res) =>{
     const {userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber} = req.body
     try{
-        const reservation = await Reservation.create({userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber})
-        //return status
-        res.status(200).json(reservation)
+        // Check if the vehicle is available for the selected pickup and return dates
+        const overlappingReservations = await Reservation.find({
+            vehicle,
+            $or: [
+                { pickupDate: { $lt: returnDate }, returnDate: { $gt: pickupDate } },
+                { pickupDate: { $lte: pickupDate }, returnDate: { $gte: returnDate } },
+            ],
+        });
+
+        if (overlappingReservations.length > 0) {
+            return res.status(400).json({ error: 'Vehicle is not available for the selected dates' });
+        }
+
+        // Create reservation
+        const reservation = await Reservation.create({userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber});
+        
+        // Mark the vehicle as unavailable for the reservation dates
+        await Vehicle.updateOne({ _id: vehicle }, { available: false });
+
+        // Return status
+        res.status(200).json(reservation);
     } catch(error){
-        res.status(400).json({error: error.message})
+        res.status(400).json({error: error.message});
     }
 }
 
@@ -106,15 +142,26 @@ const updateReservation = async (req, res) => {
 
 //delete a reservation by id 
 const deleteReservationByID = async (req, res) => {
-    const { _id } = req.params
+    const { _id } = req.params;
 
-    const reservation = await Reservation.findOneAndDelete({ _id: _id })
+    try {
+        // Find the reservation
+        const reservation = await Reservation.findById(_id);
+        if (!reservation) {
+            return res.status(404).json({error: 'Reservation not found'});
+        }
 
-    if(!reservation){
-        return res.status(400).json({error: "No such reservation"})
+        // Mark the vehicle as available for the reservation dates
+        await Vehicle.updateOne({ _id: reservation.vehicle }, { available: true });
+
+        // Delete the reservation
+        await Reservation.findByIdAndDelete(_id);
+
+        // Return success message
+        res.status(200).json({ message: 'Reservation canceled successfully' });
+    } catch(error) {
+        res.status(400).json({ error: error.message });
     }
-
-    res.status(200).json(reservation)
 }
 
 //delete a reservation by name
@@ -144,4 +191,4 @@ const deleteReservationByPhone = async (req, res) => {
 }
 
 
-module.exports = { bookReservation, getReservations, getReservationByID, getReservationByName, getReservationByPhone, getReservationByUserID, updateReservation, deleteReservationByID, deleteReservationByName, deleteReservationByPhone }
+module.exports = { bookReservation, getReservations, getReservationByID, getReservationByName, getReservationByPhone, getReservationByUserID, getReservationByVehicleID, updateReservation, deleteReservationByID, deleteReservationByName, deleteReservationByPhone }
