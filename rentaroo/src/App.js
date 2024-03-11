@@ -94,7 +94,7 @@ function App() {
             user.user.userType === 'system_administrator' ? <VehicleForm /> :
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
           />
-          <Route  path="/StartReservation" element={user ? <StartReservation/> : <Navigate to="/login"/>} />
+          <Route  path="/StartReservation" element={user ? <StartReservation/> : <Navigate to="/Login"/>} />
 
         </Routes>
 
