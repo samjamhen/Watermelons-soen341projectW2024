@@ -57,5 +57,10 @@
   },
   "presets": [
     "@babel/preset-react"
-  ]
+  ],
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  }
 }

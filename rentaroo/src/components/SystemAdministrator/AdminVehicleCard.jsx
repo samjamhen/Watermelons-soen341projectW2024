@@ -103,6 +103,7 @@ function AdminVehicleCard({ vehicle }) {
             </>
           )}
         </h2>
+
         <p
           className={`availability-status ${
             editedVehicle.availabilityStatus === "available"
@@ -147,6 +148,19 @@ function AdminVehicleCard({ vehicle }) {
             <>{editedVehicle.price}$ per day</>
           )}
         </p>
+        <p className="vehicle-category">
+          <strong>Category:</strong>{" "}
+          {isEditing ? (
+            <input
+              type="text"
+              name="category"
+              value={editedVehicle.category}
+              onChange={handleChange}
+            />
+          ) : (
+            editedVehicle.category
+          )}
+        </p>
         <p className="vehicle-mileage">
           {" "}
           <strong>Mileage:</strong>{" "}
@@ -160,14 +174,6 @@ function AdminVehicleCard({ vehicle }) {
           ) : (
             <>{editedVehicle.mileage}Km</>
           )}
-        </p>
-        <p className="vehicle-color">
-          <strong>Color:</strong>
-          {vehicle.color}
-        </p>
-        <p className="vehicle-transmission">
-          <strong>Transmission:</strong>
-          {vehicle.transmissionType}
         </p>
 
         <p className="vehicle-color">
