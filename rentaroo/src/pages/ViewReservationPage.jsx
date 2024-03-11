@@ -6,6 +6,9 @@ import ReservationCard from '../components/SystemAdministrator/ReservationCard';
 
 function ViewReservationPage() {
     const [reservations, setReservations] = useState([]);
+    const storedUser = localStorage.getItem('user');
+    const user = JSON.parse(storedUser);
+    const userId = user?.user?._id; 
 
     useEffect(() => {
       fetchAllReservations();
@@ -50,9 +53,16 @@ function ViewReservationPage() {
         <div>
             <Header />
             <h1>My Reservations</h1>
-            {reservations.map(reservation => (
-              <ReservationCard reservation={reservation} onDelete={() => handleDeleteReservation(reservation._id)} />
-            ))}
+            <p>User ID: {userId}</p> 
+            {reservations
+                .filter(reservation => reservation.userID === userId) // Filter reservations by userID
+                .map(reservation => (
+                  <ReservationCard 
+                    key={reservation._id}
+                    reservation={reservation} 
+                    onDelete={() => handleDeleteReservation(reservation._id)} 
+                  />
+                ))}
             <Footer />
         </div>
     );

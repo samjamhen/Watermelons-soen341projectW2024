@@ -37,11 +37,15 @@ const BookingForm = ({onSuccessfulSubmission}) => {
 // Handle form submission
 const handleSubmit = async (e) => {
   e.preventDefault();
+  const storedUser = localStorage.getItem('user');
+  const user = JSON.parse(storedUser);
+  const userId = user?.user?._id; 
   console.log("Booking Form Submitted...");
   try {
     // Here we send data to the server for processing and confirming the reservation
     const reservation = {
       fullName: formData.fullName,
+      userID: userId, 
       vehicle: vehicle._id,
       email: formData.email,
       phone: formData.phone,
