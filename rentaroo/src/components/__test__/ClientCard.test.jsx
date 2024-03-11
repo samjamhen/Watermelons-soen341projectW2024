@@ -1,8 +1,8 @@
 import React from 'react';import { render } from '@testing-library/react';
-import ClientCard from '../../components/SystemAdministrator/ClientCard'; // Assuming UserCardList component is used to render the list of user cards
+import ClientCard from '../../components/SystemAdministrator/ClientCard'; 
 
 describe('ClientCard', () => {
-    it('displays field titles correctly without any data', () => {
+    it('displays field titles correctly', () => {
       
       const { getByText } = render(<ClientCard clients={[]} />);
   
@@ -16,4 +16,6 @@ describe('ClientCard', () => {
       expect(getByText('Delete Client')).toBeInTheDocument();
     });
   });
+
+  
 

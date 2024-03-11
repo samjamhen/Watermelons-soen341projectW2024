@@ -6,7 +6,7 @@ describe('AddClientForm', () => {
   it('submits the form with valid data', async () => {
     const { getByLabelText, getByText } = render(<AddClientForm />);
     
-    // Fill out form fields with valid data
+ 
     fireEvent.change(getByLabelText('Name:'), { target: { value: 'John Smith' } });
     fireEvent.change(getByLabelText('Email:'), { target: { value: 'john@example.com' } });
     fireEvent.change(getByLabelText('Password:'), { target: { value: 'ABC123456!' } });
