@@ -29,6 +29,15 @@ function ViewReservationPage() {
 
 
   const handleDeleteReservation = async (reservationId) => {
+    // Display a confirmation dialog
+    const isConfirmed = window.confirm("Are you sure you want to delete this reservation?");
+
+    if (!isConfirmed) {
+        // If the user clicks "Cancel", exit the function
+        return;
+    }
+
+    // Proceed with deletion if the user confirmed
     const storedData = localStorage.getItem('user');
     const user = storedData ? JSON.parse(storedData) : null;
 
@@ -37,6 +46,7 @@ function ViewReservationPage() {
             await axios.delete(`/api/reservations/${reservationId}`, {
                 headers: { Authorization: `Bearer ${user.token}` },
             });
+            // Update the state to reflect the deleted reservation
             setReservations(current => current.filter(res => res._id !== reservationId));
             alert('Reservation successfully deleted');
         } catch (error) {
@@ -46,14 +56,14 @@ function ViewReservationPage() {
     } else {
         console.error("User token not found.");
     }
-  };
+};
+
 
 
     return (
         <div>
             <Header />
             <h1>My Reservations</h1>
-            <p>User ID: {userId}</p> 
             {reservations
                 .filter(reservation => reservation.userID === userId) // Filter reservations by userID
                 .map(reservation => (
