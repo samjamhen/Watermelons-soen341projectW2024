@@ -1,22 +1,23 @@
 const express = require('express')
 const User = require('../models/users')
 const {createUser, getUsers, getUser, updateUser, deleteUser, loginUser, signupUser} = require('../controllers/users')
+const requireAuth = require('../middleware/requireAuth')
 
 const router = express.Router()
 
-//CREATE
+// CREATE
 router.post('/', createUser)
 
-//READ ALL
+// READ ALL
 router.get('/', getUsers)
 
-//READ ONE
+// READ ONE
 router.get('/:id', getUser)
 
-//UPDATE
+// UPDATE
 router.put('/:id', updateUser)
 
-//DELETE
+// DELETE
 router.delete('/:id', deleteUser)
 
 // LOGIN

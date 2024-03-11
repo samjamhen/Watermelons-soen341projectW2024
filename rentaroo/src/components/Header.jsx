@@ -39,11 +39,9 @@ const Header = () => {
                 System Administrator
               </Link> */}
             </li>
-            <li>
-              {/* <Link to="/ViewReservationPage" id="link">
-                My Reservation
-              </Link> */}
-            </li>
+              {user && (
+            <li><Link to="/ViewReservationPage">My Reservations</Link></li>
+              )}
           </ul>
         </div>
         {!user && (

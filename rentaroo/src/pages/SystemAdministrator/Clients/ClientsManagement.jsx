@@ -1,6 +1,6 @@
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import Header from '../../../components/Header.jsx';
+import Header from '../../../components/HeaderAdmin.jsx';
 import Footer from '../../../components/Footer.jsx';
 import ClientCard from '../../../components/SystemAdministrator/ClientCard.jsx';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 const ClientsManagement = () => {
   const [users, setUsers] = useState([]);
   const [confirmDelete, setConfirmDelete] = useState(null);
-
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -22,6 +21,7 @@ const ClientsManagement = () => {
     }
 
     fetchUsers();
+
   }, []);
 
   const handleDelete = async (id) => {
@@ -67,7 +67,7 @@ const ClientsManagement = () => {
               />
             ))
             ) : (
-              <p>No users found.</p>
+              <p>No users found</p>
             )}
         </div>
 

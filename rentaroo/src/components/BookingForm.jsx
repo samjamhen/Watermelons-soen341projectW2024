@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'; // Import useLocation
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
 
-const BookingForm = () => {
+const BookingForm = ({onSuccessfulSubmission}) => {
 
   const location = useLocation(); // Access location object
   const vehicle = location.state?.vehicle; // Access vehicle information passed through state
@@ -37,13 +37,13 @@ const BookingForm = () => {
 // Handle form submission
 const handleSubmit = async (e) => {
   e.preventDefault();
-  console.log("Booking Form Submitted...")
+  console.log("Booking Form Submitted...");
   try {
     // Here we send data to the server for processing and confirming the reservation
     const reservation = {
       fullName: formData.fullName,
       vehicle: vehicle._id,
-      email: formData.email, 
+      email: formData.email,
       phone: formData.phone,
       pickupAddress: formData.pickupAddress,
       pickupDate: formData.pickupDate,
@@ -53,34 +53,28 @@ const handleSubmit = async (e) => {
 
     const response = await fetch('/api/reservations', {
       method: 'POST',
-      body: JSON.stringify(reservation), 
+      body: JSON.stringify(reservation),
       headers: {
-          'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
       }
     });
-    
+
     if (!response.ok) {
       throw new Error('Failed to submit reservation');
     }
 
-    // Reset form fields
-    setFormData({
-      fullName: '',
-      email: '',
-      phone: '',
-      pickupAddress: 'Montreal',
-      pickupDate: new Date(),
-      returnDate: new Date(),
-      driversLicenseNumber: '',
-    });
-
+    const reservationDetails = await response.json();
     console.log('Reservation submitted successfully');
+    onSuccessfulSubmission(reservationDetails); // Call the callback with reservation details
+
+
+  
+    
   } catch (error) {
     console.error('Error submitting reservation:', error.message);
   }
-  alert("Reservation Form has been sucessfully submitted!")
-
 };
+
 
 
   return (
@@ -88,7 +82,7 @@ const handleSubmit = async (e) => {
       {vehicle && (
         <div className="information-placeholder">
           {/* Display vehicle information */}
-          <img src={vehicle.imageUrl || 'path/to/default/image.jpg'} alt={`${vehicle.make} ${vehicle.model}`} />
+          <img src={vehicle.photos && vehicle.photos[0] ? vehicle.photos[0] : 'path/to/default/image.jpg'} alt={`${vehicle.make} ${vehicle.model}`} />
           <h3>{`${vehicle.yearOfManufacture} ${vehicle.make} ${vehicle.model}`}</h3>
           <p>Price: ${vehicle.price} per day</p>
           <ul className="vehicle-details">
