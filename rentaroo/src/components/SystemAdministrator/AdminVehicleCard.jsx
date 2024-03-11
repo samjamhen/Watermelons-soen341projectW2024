@@ -148,19 +148,7 @@ function AdminVehicleCard({ vehicle }) {
             <>{editedVehicle.price}$ per day</>
           )}
         </p>
-        <p className="vehicle-category">
-          <strong>Category:</strong>{" "}
-          {isEditing ? (
-            <input
-              type="text"
-              name="category"
-              value={editedVehicle.category}
-              onChange={handleChange}
-            />
-          ) : (
-            editedVehicle.category
-          )}
-        </p>
+
         <p className="vehicle-mileage">
           {" "}
           <strong>Mileage:</strong>{" "}
