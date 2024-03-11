@@ -3,10 +3,10 @@ import ClientCard from '../../components/SystemAdministrator/ClientCard'; // Ass
 
 describe('ClientCard', () => {
     it('displays field titles correctly without any data', () => {
-      // Render the UserCardList component with an empty list of clients
+      
       const { getByText } = render(<ClientCard clients={[]} />);
   
-      // Assert the presence of field titles
+      
       expect(getByText('User ID:')).toBeInTheDocument();
       expect(getByText('Name:')).toBeInTheDocument();
       expect(getByText('Email Address:')).toBeInTheDocument();
