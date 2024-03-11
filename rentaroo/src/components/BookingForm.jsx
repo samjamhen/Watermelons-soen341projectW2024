@@ -14,7 +14,6 @@ const BookingForm = ({onSuccessfulSubmission}) => {
     fullName: '',
     email: '',
     phone: '',
-    pickupAddress: 'Montreal',
     pickupDate: new Date(),
     returnDate: new Date(),
     driversLicenseNumber: '',
@@ -49,7 +48,7 @@ const handleSubmit = async (e) => {
       vehicle: vehicle._id,
       email: formData.email,
       phone: formData.phone,
-      pickupAddress: formData.pickupAddress,
+      pickupAddress: vehicle.location,
       pickupDate: formData.pickupDate,
       returnDate: formData.returnDate,
       driversLicenseNumber: formData.driversLicenseNumber
@@ -116,15 +115,6 @@ const handleSubmit = async (e) => {
         <div>
           <label htmlFor="phone">Phone Number:</label>
           <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required />
-        </div>
-        <div>
-          <label htmlFor="pickupAddress">Pickup Address:
-            <select id="pickupAddress" name="pickupAddress" value={formData.pickupAddress} onChange={handleChange} required>
-              <option value="Montreal">Montreal</option>
-              <option value="Toronto">Toronto</option>
-              <option value="Ottawa">Ottawa</option>
-            </select>
-          </label>
         </div>
         <div>
           <label htmlFor="pickupDate">Pickup Date:</label>

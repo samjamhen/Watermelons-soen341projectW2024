@@ -58,24 +58,26 @@ function ViewReservationPage() {
     }
 };
 
+const filteredReservations = reservations.filter(reservation => reservation.userID === userId);
 
-
-    return (
-        <div>
-            <Header />
-            <h1>My Reservations</h1>
-            {reservations
-                .filter(reservation => reservation.userID === userId) // Filter reservations by userID
-                .map(reservation => (
-                  <ReservationCard 
+return (
+    <div>
+        <Header />
+        <h1>My Reservations</h1>
+        {filteredReservations.length > 0 ? (
+            filteredReservations.map(reservation => (
+                <ReservationCard 
                     key={reservation._id}
                     reservation={reservation} 
                     onDelete={() => handleDeleteReservation(reservation._id)} 
-                  />
-                ))}
-            <Footer />
-        </div>
-    );
+                />
+            ))
+        ) : (
+            <h3>You have no reservations.</h3> // Display this message if there are no reservations
+        )}
+        <Footer />
+    </div>
+);
 }
 
 export default ViewReservationPage;
