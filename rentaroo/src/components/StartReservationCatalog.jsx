@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import VehicleCard from "./VehicleCard.jsx";
 import "../styles/Catalog.css";
 import "../styles/StartReservationCatalog.css";
-
-
+import FilterForm from "./FilterForm";
 
 function StartReservationCatalog() {
   const [vehicles, setVehicles] = useState([]);
@@ -12,58 +11,57 @@ function StartReservationCatalog() {
   const [showFilters, setShowFilters] = useState(false);
   const [filteredVehicles, setFilteredVehicles] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("Montreal");
-
   const [filterOptions, setFilterOptions] = useState({
     minPrice: 0,
     maxPrice: 100,
-    carTypes: ["CARs", "SUVs", "Vans", "Trucks"],
+    carType: ["car", "suv", "Van", "Truck"],
     categories: ["compact", "standard", "intermediate", "large"],
-    location: ["Montreal", "Laval"]
-
+    location: ["Montreal", "Laval"],
   });
-
-  function handleShowFilters() {
-    setShowFilters(true);
-  }
+  const [selectedCarTypes, setSelectedCarTypes] = useState([]);
 
   function handleFilterChange(event) {
-    const { name, value, checked, carType } = event.target;
-  
-    if (carType === "checkbox") {
-      if (checked) {
-        setFilterOptions({
-          ...filterOptions,
-          [name]: [...(filterOptions[name] || []), value]
-        });
-      } else {
-        setFilterOptions({
-          ...filterOptions,
-          [name]: filterOptions[name].filter((option) => option !== value)
-        });
-      }
+    const { name, value, checked, type } = event.target;
+
+    if (type === "checkbox" && name === "carType") {
+      const updatedCarTypes = checked
+        ? [...selectedCarTypes, value]
+        : selectedCarTypes.filter((type) => type !== value);
+
+      setSelectedCarTypes(updatedCarTypes);
     } else if (name === "minPrice" || name === "maxPrice") {
       setFilterOptions({
         ...filterOptions,
-        [name]: parseInt(value, 10)
+        [name]: parseInt(value, 10),
       });
-    }else if (name === "minPrice" || name === "maxPrice") {
-      setFilterOptions({
-        ...filterOptions,
-        [name]: parseInt(value, 10)
-      });
+    } else if (name === "location") {
+      setSelectedLocation(value);
     }
   }
 
+  function handleLocationChange(location) {
+    setSelectedLocation(location);
+  }
   function handleSearchFilteredVehicles() {
     const { minPrice, maxPrice } = filterOptions;
-    const filteredVehicles = vehicles.filter(
-      (vehicle) =>
-        vehicle.price >= minPrice &&
-        vehicle.price <= maxPrice &&
-        (selectedLocation === "Montreal"
+
+    const filteredVehicles = vehicles.filter((vehicle) => {
+      const isPriceInRange =
+        vehicle.price >= minPrice && vehicle.price <= maxPrice;
+      const isCarTypeMatch = selectedCarTypes.includes(vehicle.carType);
+      const isCategoryMatch = filterOptions.categories.includes(
+        vehicle.category
+      );
+      const isLocationMatch =
+        selectedLocation === "Montreal"
           ? vehicle.location === "Montreal"
-          : vehicle.location === "Laval")
-    );
+          : vehicle.location === "Laval";
+
+      return (
+        isPriceInRange && isCategoryMatch && isCarTypeMatch && isLocationMatch
+      );
+    });
+
     setFilteredVehicles(filteredVehicles);
   }
 
@@ -84,150 +82,55 @@ function StartReservationCatalog() {
     fetchVehicles();
   }, []);
 
-
   function handleSelectButtonClick(vehicle) {
     setSelectedVehicle(vehicle);
   }
 
   function renderVehicles() {
+    console.log("Selected Car Types:", selectedCarTypes);
+  
+    if (filteredVehicles.length === 0) {
+      return (
+        <div className="no-vehicles-message">
+          <p>No corresponding vehicles found. Change or select all search filters and try again.</p>
+        </div>
+      );
+    }
+  
     return filteredVehicles.map((vehicle) => (
-      <VehicleCard  
-        key={vehicle._id} 
+      <VehicleCard
+        key={vehicle._id}
         vehicle={vehicle}
         onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
-        selectedVehicle={selectedVehicle} />
+        selectedVehicle={selectedVehicle}
+      />
     ));
   }
 
   return (
     <div className="catalog-page">
       <h1>Start a Reservation</h1>
-        <div className="filter-options">
-        <div className="filter-row">
-  <label htmlFor="location">Location:</label>
-  <div>
-    <label htmlFor="Montreal">
-      <input
-        type="radio"
-        name="location"
-        value="Montreal"
-        checked={selectedLocation === "Montreal"}
-        onChange={() => setSelectedLocation("Montreal")}
+      <FilterForm
+        onApplyFilters={handleSearchFilteredVehicles} // Corrected prop name
+        minPrice={filterOptions.minPrice}
+        maxPrice={filterOptions.maxPrice}
+        onMinPriceChange={(e) =>
+          handleFilterChange({
+            target: { name: "minPrice", value: e.target.value },
+          })
+        }
+        onMaxPriceChange={(e) =>
+          handleFilterChange({
+            target: { name: "maxPrice", value: e.target.value },
+          })
+        }
+        onTypesChange={handleFilterChange}
+        onCategoriesChange={handleFilterChange}
+        onLocationChange={handleLocationChange}
+        filterOptions={filterOptions}
+        selectedLocation={selectedLocation}
+        onSearchFilteredVehicles={handleSearchFilteredVehicles}
       />
-      Montreal
-    </label>
-    <label htmlFor="Laval">
-      <input
-        type="radio"
-        name="location"
-        value="Laval"
-        checked={selectedLocation === "Laval"}
-        onChange={() => setSelectedLocation("Laval")}
-      />
-      Laval
-    </label>
-  </div>
-</div>
-          <div className="filter-row">
-            <label htmlFor="minPrice">Minimum Daily Rental Price:</label>
-            <input
-              type="number"
-              name="minPrice"
-              id="minPrice"
-              value={filterOptions.minPrice}
-              onChange={handleFilterChange}
-            />
-          </div>
-          <div className="filter-row">
-            <label htmlFor="maxPrice">Maximum Daily Rental Price:</label>
-            <input
-              type="number"
-              name="maxPrice"
-              id="maxPrice"
-              value={filterOptions.maxPrice} 
-              onChange={handleFilterChange}
-            />
-          </div>
-          <div className="filter-row">
-            <label htmlFor="types">Type of car:</label>
-            <div>
-              <label htmlFor="CARs">
-                <input
-                  type="checkbox"
-                  name="types"
-                  value="CARs"
-                />
-                CARs
-              </label>
-              <label htmlFor="SUVs">
-                <input
-                  type="checkbox"
-                  name="types"
-                  value="SUVs"
-                />
-                SUVs
-              </label>
-              <label htmlFor="Vans">
-                <input
-                  type="checkbox"
-                  name="types"
-                  value="Vans"
-                />
-                Vans
-              </label>
-              <label htmlFor="Trucks">
-                <input
-                  type="checkbox"
-                  name="types"
-                  value="Trucks"
-                />
-                Trucks
-              </label>
-            </div>
-          </div>
-          <div className="filter-row">
-            <label htmlFor="categories">Category of car:</label>
-            <div>
-              <label htmlFor="compact">
-                <input
-                  type="checkbox"
-                  name="categories"
-                  value="compact"
-                />
-                compact
-              </label>
-              <label htmlFor="standard">
-                <input
-                  type="checkbox"
-                  name="categories"
-                  value="standard"
-                />
-                standard
-              </label>
-              <label htmlFor="intermediate">
-                <input
-                  type="checkbox"
-                  name="categories"
-                  value="intermediate"
-            />
-            intermediate
-          </label>
-          <label htmlFor="large">
-            <input
-              type="checkbox"
-              name="categories"
-              value="large"
-            />
-            large
-          </label>
-        </div>
-
-        
-      </div>
-          <div className="filter-row">
-          <button onClick={handleSearchFilteredVehicles}>Search for corresponding vehicles</button></div>
-        </div>
-      
       <ul className="vehicle-list">{renderVehicles()}</ul>
     </div>
   );

@@ -249,26 +249,13 @@ const AddVehicleForm = () => {
           required
         />
       </label>
-      <label>Photos:</label>
+      <label>Photos (add a link):</label>
       <input
         type="text"
         value={photos.join(",")}
         onChange={(e) => setPhotos(e.target.value.split(","))}
+
       />
-      <label>
-        Vehicle Image (JPEG or PNG):
-        <input type="file" onChange={handleImageChange} />
-        {imageError && (
-          <span style={{ color: "red" }}>
-            Please upload a JPEG or PNG image.
-          </span>
-        )}
-        {imageError && (
-          <span style={{ color: "red" }}>
-            Please upload a JPEG or PNG image.
-          </span>
-        )}
-      </label>
 
       <button type="submit">Add Vehicle</button>
       {error && <div className="alert alert-danger">{error}</div>}
