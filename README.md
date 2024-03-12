@@ -89,3 +89,6 @@ PASSWORD: Password123!
 - System Administrator
 EMAIL : benjaminho@gmail.ca 
 PASSWORD : Qazwsxedc1!
+
+## FULL DEMO SHOWCASING ALL FEATURES
+Tap link [here](https://www.loom.com/share/6d2af05264cb4b38a1cadd11e0b09a14) to get access to our full demo where we showcase the core features.
