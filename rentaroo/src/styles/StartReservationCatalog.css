@@ -11,7 +11,17 @@
     grid-gap: 1rem;
     margin-bottom: 2rem;
   }
-  
+  .no-vehicles-message p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    font-size: 1rem;
+    color: #ac2323;
+    font-weight: bold;
+    background-color: rgb(243, 243, 243);
+    border-radius: 10px;
+  }
   .filter-row {
     display: flex;
     flex-direction: column;

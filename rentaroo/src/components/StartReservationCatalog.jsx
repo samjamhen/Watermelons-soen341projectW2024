@@ -88,7 +88,15 @@ function StartReservationCatalog() {
 
   function renderVehicles() {
     console.log("Selected Car Types:", selectedCarTypes);
-
+  
+    if (filteredVehicles.length === 0) {
+      return (
+        <div className="no-vehicles-message">
+          <p>No corresponding vehicles found. Change or select all search filters and try again.</p>
+        </div>
+      );
+    }
+  
     return filteredVehicles.map((vehicle) => (
       <VehicleCard
         key={vehicle._id}
