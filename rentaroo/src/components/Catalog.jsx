@@ -6,7 +6,7 @@ import "../styles/Catalog.css";
 function Catalog() {
   const [vehicles, setVehicles] = useState([]);
   const [sortedVehicles, setSortedVehicles] = useState([]);
-  const [selectedSortOption, setSelectedSortOption] = useState();
+  const [selectedSortOption, setSelectedSortOption] = useState('year'); // Set an initial value for selectedSortOption
   const [selectedVehicle, setSelectedVehicle] = useState(null);
 
   useEffect(() => {
@@ -31,27 +31,25 @@ function Catalog() {
   }, [selectedSortOption, vehicles]);
 
   function handleSortChange() {
-    const newSortedVehicles = sortVehiclesBy([...vehicles], selectedSortOption);
+    const newSortedVehicles = sortVehiclesBy([...vehicles], selectedSortOption.toLowerCase()); // Convert the selectedSortOption to lowercase
     setSortedVehicles(newSortedVehicles);
   }
 
   function sortVehiclesBy(vehicles, sortBy) {
     return vehicles.sort((a, b) => {
-      switch (sortBy) {
-        case "year":
-          return compareYears(a, b);
-        case "mileage":
-          return compareMileages(a, b);
-        case "price":
-          return comparePrices(a, b);
-        default:
-          return 0;
+      if (sortBy === 'year') {
+        return a.yearOfManufacture - b.yearOfManufacture;
+      } else if (sortBy === 'mileage') {
+        return a.mileage - b.mileage;
+      } else if (sortBy === 'price') {
+        return a.price - b.price;
       }
+      return 0;
     });
   }
 
   function compareYears(a, b) {
-    return a.year - b.year;
+    return a.yearOfManufacture - b.yearOfManufacture; // Sorting from the earliest to the oldest
   }
 
   function compareMileages(a, b) {
