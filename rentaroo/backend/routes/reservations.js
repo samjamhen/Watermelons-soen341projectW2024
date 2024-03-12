@@ -7,6 +7,7 @@ const { bookReservation,
   getReservationByPhone,
   getReservationByID,
   getReservationByUserID,
+  getReservationByVehicleID,
   deleteReservationByID, 
   deleteReservationByName,
   deleteReservationByPhone} = require("../controllers/reservations.js");
@@ -27,6 +28,9 @@ router.get('/Phone/:phone', getReservationByPhone);
 
 //GET a single reservation by userID
 router.get('/:userID', getReservationByUserID);
+
+//GET a single reservation by vehicle
+router.get('/vehicle/:vehicle', getReservationByVehicleID);
 
 //POST a new reservation
 router.post("/", bookReservation);
