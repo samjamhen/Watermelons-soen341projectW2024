@@ -1,5 +1,4 @@
-const Vehicle = require("../models/vehicles");
-const mongoose = require("mongoose");
+const Vehicle = require("../models/vehicles.js");
 
 //CREATE
 const createVehicle = async (req, res) => {
