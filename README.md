@@ -80,7 +80,7 @@ If you encounter any issues or have suggestions for improvement,reach out to any
 
 ## Note for Evaluators:
 In order to properly test the functionality of the webpage, we have created access codes for the System Administrator and Customer Service Representative portals.
-Use these accounts to log in. Note that for security reasons, as the website is visible to all users unclusing customers, there is no way to register as a CSR or Admin and access these functionalities if the passcodes have not been previously provided to you. 
+Use these accounts to log in. Note that for security reasons, as the login page is visible to all users including customers, there is no way to register as a CSR or Admin and access these functionalities if the passcodes for accounts have not been previously provided to you. 
 
 - Customer Service Representative
 EMAIL : ben514733@gmail.com 
