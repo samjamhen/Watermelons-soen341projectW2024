@@ -55,7 +55,7 @@ const Header = () => {
         )}
         {user && (
           <div className = "logged-in">
-            <span>Welcome, {user.user.name}</span>
+            <span>Welcome, {user.user.name} (Admin)</span>
             <button onClick={handleLogout} className="logout-button">Logout</button>
           </div>
         )}
