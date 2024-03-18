@@ -35,9 +35,9 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              {/* <Link to="/Admin" id="link">
-                System Administrator
-              </Link> */}
+            <Link to="/Branch" id="link">
+               Find a Branch
+              </Link>
             </li>
             <li>
               <Link to="/ViewReservationPage" id="link">
