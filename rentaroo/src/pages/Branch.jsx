@@ -5,6 +5,7 @@ import HeaderCSR from "../components/HeaderCSR";
 import HeaderCustomer from "../components/HeaderCustomer";
 import Footer from '../components/Footer';
 import BranchCard from '../components/BranchCard';
+import AdminBranchCard from '../components/SystemAdministrator/AdminBranchCard';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from "../hooks/useAuthContext";
 
@@ -31,6 +32,22 @@ const Branch = () => {
         return <Header />;
     }
 };
+
+const renderBranchCard = () => {
+  if (!user || !user.user || !user.user.userType) {
+    return <BranchCard />;
+  }
+
+  const userType = user.user.userType;
+
+  switch (userType) {
+    case 'system_administrator':
+      return <AdminBranchCard />;
+    default:
+      return <BranchCard />;
+  }
+};
+
   return (
     <div>
        {renderHeader()}
@@ -38,7 +55,7 @@ const Branch = () => {
   <div>
     <h2>Find a Branch</h2>
 
-    <BranchCard/>
+    {renderBranchCard()}
   
 
  </div>
