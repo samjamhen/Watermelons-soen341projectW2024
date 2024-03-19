@@ -52,13 +52,16 @@ const ReservationsManagement = () => {
   
 
   const handleSearch = async () => {
+   
     try {
       let url;
       if (searchTerm) {
         let encodedSearchTerm = encodeURIComponent(searchTerm);
         url = `/api/reservations/${searchOption}/${encodedSearchTerm}`;
 
-      } else {
+      } 
+      
+      else {
         // Otherwise, fetch all reservations
         fetchReservations();
         return;

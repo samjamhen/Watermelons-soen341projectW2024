@@ -22,6 +22,8 @@ import HomeCustomer from "./pages/Customer/CustomerHome";
 import HomeCSR from "./pages/Service_rep/ServiceHome";
 import HomeAdmin from "./pages/SystemAdministrator/AdminHome";
 
+import Branch from './pages/Branch';
+
 import { useAuthContext } from './hooks/useAuthContext';
 
 function App() {
@@ -56,12 +58,37 @@ function App() {
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
           />
 
-
           <Route path="/ReservationPage" element={user ? <ReservationPage/> : <Navigate to="/Login"/>} />
+
+
+
+
+
           <Route path="/Admin" element={ user ? (
             user.user.userType === 'system_administrator' ? <Admin /> :
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
           />
+
+
+          <Route path="/Branch" element={ <Branch/>}/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <Route path="/ViewReservationPage" element={ user ? (
             user.user.userType === 'client' ? <ViewReservationPage /> :
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
@@ -95,6 +122,7 @@ function App() {
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
           />
           <Route  path="/StartReservation" element={user ? <StartReservation/> : <Navigate to="/Login"/>} />
+
 
         </Routes>
 

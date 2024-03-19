@@ -45,9 +45,9 @@ const Header = () => {
               </Link> */}
             </li>
             <li>
-              {/* <Link to="/ViewReservationPage" id="link">
-                My Reservation
-              </Link> */}
+            <Link to="/Branch" id="link">
+               Find a Branch
+              </Link>
             </li>
           </ul>
         </div>
