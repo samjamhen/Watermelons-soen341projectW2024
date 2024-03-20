@@ -19,6 +19,7 @@ import VehicleForm from './pages/SystemAdministrator/Vehicules/VehicleForm';
 import ConfirmationPage from './components/Confirmation';
 
 import HomeCustomer from "./pages/Customer/CustomerHome";
+import Checkin from "./pages/Service_rep/Checkin";
 import HomeCSR from "./pages/Service_rep/ServiceHome";
 import HomeAdmin from "./pages/SystemAdministrator/AdminHome";
 
@@ -74,8 +75,8 @@ function App() {
           <Route path="/Branch" element={ <Branch/>}/>
           <Route path="/BranchForm" element={<BranchForm/>}/>
 
-
-
+          <Route path="/Checkin" element={<Checkin/>}/>
+          
 
 
 
