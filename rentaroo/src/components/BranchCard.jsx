@@ -11,7 +11,7 @@ return (
       
       <p className='city'>City</p>
       <p className='address'>Address</p>
-      <a href="" className='hoursServices'>Hours and Services</a>
+      <a href="" className='hoursServices'>Opening Hours</a>
       </div>  
    
   );

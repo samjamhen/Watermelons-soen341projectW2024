@@ -23,6 +23,7 @@ import HomeCSR from "./pages/Service_rep/ServiceHome";
 import HomeAdmin from "./pages/SystemAdministrator/AdminHome";
 
 import Branch from './pages/Branch';
+import BranchForm from './pages/SystemAdministrator/BranchForm';
 
 import { useAuthContext } from './hooks/useAuthContext';
 
@@ -71,6 +72,7 @@ function App() {
 
 
           <Route path="/Branch" element={ <Branch/>}/>
+          <Route path="/BranchForm" element={<BranchForm/>}/>
 
 
 
