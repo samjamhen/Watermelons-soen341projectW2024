@@ -20,6 +20,8 @@ import ConfirmationPage from './components/Confirmation';
 
 import HomeCustomer from "./pages/Customer/CustomerHome";
 import Checkin from "./pages/Service_rep/Checkin";
+import CarInspectionCheckin from "./pages/Service_rep/CarInspectionCheckin";
+
 import HomeCSR from "./pages/Service_rep/ServiceHome";
 import HomeAdmin from "./pages/SystemAdministrator/AdminHome";
 
@@ -76,6 +78,8 @@ function App() {
           <Route path="/BranchForm" element={<BranchForm/>}/>
 
           <Route path="/Checkin" element={<Checkin/>}/>
+          <Route path="/CarInspectionCheckin" element={<CarInspectionCheckin/>}/>
+
           
 
 

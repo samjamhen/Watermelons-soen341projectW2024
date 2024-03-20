@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/CheckinInfo.css';
 import ReservationCard from '../components/SystemAdministrator/ReservationCard';
+import { Link } from "react-router-dom";
 
 function CheckinInfo() {
   const [searchType, setSearchType] = useState('confirmationNumber');
@@ -49,7 +50,7 @@ function CheckinInfo() {
         <label htmlFor="search-type">Search by:</label>
         <select id="search-type" value={searchType} onChange={handleSearchTypeChange}>
           <option value="confirmationNumber">Confirmation Number</option>
-          <option value="licenseNumber">License Number</option>
+          <option value="driversLicenseNumber">License Number</option>
           <option value="creditCardNumber">Credit Card Number</option>
         </select>
         <br />
@@ -61,12 +62,16 @@ function CheckinInfo() {
           value={searchValue}
           onChange={handleSearchValueChange}
         />
-        <br />
+        <br/>
 
         <button type="submit">Search for Customer Reservation</button>
       </form>
       {fetchedReservation && <ReservationCard reservation={fetchedReservation} />}
       {error && <p style={{ color: 'red' }}>{error}</p>}
+    
+      <Link to="/CarInspectionCheckin" id="link">
+        Inspect Car
+          </Link>
     </div>
   );
 }
