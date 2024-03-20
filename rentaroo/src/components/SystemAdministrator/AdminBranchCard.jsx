@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import React, {useState} from 'react';
 import "../../styles/BranchCard.css"
 import { Link } from "react-router-dom";
 
@@ -69,7 +69,7 @@ return (
         <button className="delete-button" onClick={handleDelete}>Delete</button>
       </div>
 
-      </div> 
+   
 
       {isPopupOpen && (
         <div className="popup-overlay">
@@ -100,6 +100,7 @@ return (
         </div>
       )}
       </div> 
+      </div>
 
       
    

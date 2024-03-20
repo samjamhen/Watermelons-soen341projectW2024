@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Header from '../components/Header';
 import HeaderAdmin from "../components/HeaderAdmin";
 import HeaderCSR from "../components/HeaderCSR";
@@ -8,12 +8,19 @@ import BranchCard from '../components/BranchCard';
 import AdminBranchCard from '../components/SystemAdministrator/AdminBranchCard';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from "../hooks/useAuthContext";
+import Map from '../components/Map';
+import '../styles/Branch.css'
 
 
 
 const Branch = () => {
 
   const { user } = useAuthContext();
+  const [showMap, setShowMap] = useState(false);
+
+  const toggleMap = () => {
+    setShowMap(!showMap);
+  };
 
   const renderHeader = () => {
     if (!user || !user.user || !user.user.userType) {
@@ -51,15 +58,22 @@ const renderBranchCard = () => {
   return (
     <div>
        {renderHeader()}
-      <main>
-  <div>
-    <h2>Find a Branch</h2>
+       <div className="container">
+      <h2>Find a Branch</h2>
+      <button type="button" onClick={toggleMap}>
+        {showMap ? 'Hide Map' : 'Show Map'}
+      </button>
+      <div className="flex-container">
+      <div className="list-view">
+        {renderBranchCard()}
+      </div>
 
-    {renderBranchCard()}
-  
+      <div className='map-view'>
+      {showMap && <Map />} 
+      </div>
 
- </div>
-</main>
+      </div>
+    </div>
 
       <Footer />
     </div>
