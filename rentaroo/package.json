@@ -4,6 +4,7 @@
   "proxy": "http://localhost:8000",
   "private": true,
   "dependencies": {
+    "@react-google-maps/api": "^2.19.3",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
