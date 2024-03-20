@@ -62,7 +62,6 @@
   ],
   "jest": {
     "transform": {
-      "^.+\\.jsx?$": "babel-jest"
+      "^.+\\.(js|jsx)?$": "babel-jest"
     }
-  }
-}
+  }}  
