@@ -25,7 +25,8 @@ function CheckinInfo() {
 
     // Fetch the reservation by selected search type
     try {
-      let url = `/api/reservations/${searchType}/${searchValue}`;
+      console.log(searchType)
+      let url = `/api/reservations/${searchType.trim()}/${searchValue}`;
       const response = await fetch(url);
       const reservation = await response.json();
 
