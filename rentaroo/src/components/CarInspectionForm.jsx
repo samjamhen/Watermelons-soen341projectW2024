@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../styles/CarInspectionForm.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const CarInspectionForm = () => {
   const [showHomeButton, setShowHomeButton] = useState(false);
@@ -12,6 +12,10 @@ const CarInspectionForm = () => {
   });
   const [damagesDescription, setDamagesDescription] = useState('');
   const [error, setError] = useState('');
+  const location = useLocation();
+  const fetchedReservation = location.state;
+  const navigate = useNavigate(); // Create a navigate function
+
 
   const handleDamageChange = (part) => (e) => {
     setDamages({ ...damages, [part]: e.target.checked });
@@ -23,7 +27,7 @@ const CarInspectionForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const isAnyDamageChecked = Object.values(damages).some((isDamage) => isDamage);
 
     if (!isAnyDamageChecked) {
@@ -43,6 +47,10 @@ const CarInspectionForm = () => {
     
     
     setShowHomeButton(true); // Show the home button link
+
+  };
+  const handleSelectButtonClick = () => {
+    navigate("/RentalAgreement", { state: { fetchedReservation } });
 
   };
 
@@ -107,12 +115,11 @@ const CarInspectionForm = () => {
         </div>
         {error && <p className={styles.error}>{error}</p>}
         <button type="submit">Submit</button>
+        {showHomeButton && (
+          <button className={styles.rental} onClick={handleSelectButtonClick}>
+          Proceed to Rental Agreement</button>
+      )}
       </form>
-      {showHomeButton && (
-          <Link to="/">
-            <button>Proceed to Rental Agreement</button>
-          </Link>
-)}
     </div>
   );
 };

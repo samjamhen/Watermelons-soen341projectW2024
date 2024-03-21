@@ -29,6 +29,7 @@ import Branch from './pages/Branch';
 import BranchForm from './pages/SystemAdministrator/BranchForm';
 
 import { useAuthContext } from './hooks/useAuthContext';
+import RentalAgreementPage from './pages/RentalAgreementPage';
 
 function App() {
   const { user } = useAuthContext();
@@ -79,6 +80,7 @@ function App() {
 
           <Route path="/Checkin" element={<Checkin/>}/>
           <Route path="/CarInspectionCheckin" element={<CarInspectionCheckin/>}/>
+          <Route path="/RentalAgreement" element={<RentalAgreementPage/>}/>
 
           
 

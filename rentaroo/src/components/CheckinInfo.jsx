@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import '../styles/CheckinInfo.css';
 import ReservationCard from '../components/SystemAdministrator/ReservationCard';
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 function CheckinInfo() {
   const [searchType, setSearchType] = useState('confirmationNumber');
   const [searchValue, setSearchValue] = useState('');
   const [fetchedReservation, setFetchedReservation] = useState(null);
   const [error, setError] = useState(null);
+  const [showReservationButton, setShowReservationButton] = useState(false);
+  const navigate = useNavigate(); // Create a navigate function
 
   const handleSearchTypeChange = (e) => {
     setSearchType(e.target.value);
@@ -34,17 +36,29 @@ function CheckinInfo() {
         // Set the fetched reservation state
         setFetchedReservation(reservation);
         setError(null);
+        setShowReservationButton(true);
       } else {
         // Set the error state
         setError(reservation.message);
+        setShowReservationButton(false);
       }
     } catch (error) {
       // Set the error state
       setError('An error occurred while fetching the reservation.');
+      setShowReservationButton(false);
     }
   };
 
+  const handleReservationButtonClick = () => {
+    // Your logic to navigate to the Car Inspection Form page
+    // You can use the Link component or useHistory hook to navigate to the CarInspection component
+    // and pass the fetchedReservation as a prop.
+    navigate("/CarInspectionCheckin", { state: { fetchedReservation } });
+
+  };
+
   return (
+    <div className='container-1'>
     <div className="checkin-info-container">
       <h4>Search for Customer Reservation</h4>
       <form onSubmit={handleSubmit}>
@@ -67,13 +81,18 @@ function CheckinInfo() {
 
         <button type="submit">Search for Customer Reservation</button>
       </form>
+      
+    </div>
+    <div className='fetched-reservation'>
       {fetchedReservation && <ReservationCard reservation={fetchedReservation} />}
       {error && <p style={{ color: 'red' }}>{error}</p>}
     
-      <Link to="/CarInspectionCheckin" id="link">
-        Inspect Car
-          </Link>
-    </div>
+      {showReservationButton && (
+  <button id="inspectcar"onClick={handleReservationButtonClick}>
+    Inspect the reserved car
+  </button>
+)}
+    </div></div>
   );
 }
 
