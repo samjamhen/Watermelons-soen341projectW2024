@@ -142,15 +142,25 @@ const FilterForm = ({
             Location:
           </label>
           <div className="location-radios">
-            <label htmlFor="Montreal">
+            <label htmlFor="Montreal - YUL">
               <input
                 type="radio"
                 name="location"
-                value="Montreal"
+                value="Montreal - YUL"
                 //checked={selectedLocation === "Montreal"}
-                onChange={() => onLocationChange("Montreal")}
+                onChange={() => onLocationChange("Montreal - YUL")}
               />
-              Montreal
+              Montreal - YUL
+            </label>
+            <label htmlFor="Montreal - Downtown">
+              <input
+                type="radio"
+                name="location"
+                value="Montreal - Downtown"
+                //checked={selectedLocation === "Montreal"}
+                onChange={() => onLocationChange("Montreal - Downtown")}
+              />
+              Montreal - Downtown
             </label>
             <label htmlFor="Laval">
               <input

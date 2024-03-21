@@ -52,10 +52,7 @@ function StartReservationCatalog() {
       const isCategoryMatch = filterOptions.categories.includes(
         vehicle.category
       );
-      const isLocationMatch =
-        selectedLocation === "Montreal"
-          ? vehicle.location === "Montreal"
-          : vehicle.location === "Laval";
+      const isLocationMatch = vehicle.location === selectedLocation;
 
       return (
         isPriceInRange && isCategoryMatch && isCarTypeMatch && isLocationMatch

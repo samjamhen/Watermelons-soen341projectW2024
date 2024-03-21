@@ -13,7 +13,7 @@ const AddVehicleForm = () => {
   const [price, setPrice] = useState("");
   const [mileage, setMileage] = useState("");
   const [color, setColor] = useState("");
-  const [location, setLocation] = useState("Montreal");
+  const [location, setLocation] = useState("Montreal - YUL");
   const [transmissionType, setTransmissionType] = useState("automatic");
   const [seatingCapacity, setSeatingCapacity] = useState("");
   const [fuelType, setFuelType] = useState("gasoline");
@@ -72,7 +72,7 @@ const AddVehicleForm = () => {
         setSeatingCapacity("");
         setFeaturesAndAmenities("");
         setRentalTermsAndConditions("");
-        setLocation("Montreal");
+        setLocation("Montreal - YUL");
         setAvailabilityStatus("");
         setYearOfManufacture("");
         setMileage("");
@@ -187,9 +187,9 @@ const AddVehicleForm = () => {
       </label>
       <label>Location:</label>
       <select value={location} onChange={(e) => setLocation(e.target.value)}>
-          <option value="Montreal">Montreal - Downtown</option>
-          <option value="laval">Laval</option>
-          <option value="yul">Montreal - YUL</option>
+          <option value="Montreal - YUL">Montreal - YUL</option>
+          <option value="Laval">Laval</option>
+          <option value="Montreal - Downtown">Montreal - Downtown</option>
       </select>
       <label>
         Transmission Type:
