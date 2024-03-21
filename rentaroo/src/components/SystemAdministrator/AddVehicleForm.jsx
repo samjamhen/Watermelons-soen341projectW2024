@@ -13,7 +13,7 @@ const AddVehicleForm = () => {
   const [price, setPrice] = useState("");
   const [mileage, setMileage] = useState("");
   const [color, setColor] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState("Montreal");
   const [transmissionType, setTransmissionType] = useState("automatic");
   const [seatingCapacity, setSeatingCapacity] = useState("");
   const [fuelType, setFuelType] = useState("gasoline");
@@ -72,7 +72,7 @@ const AddVehicleForm = () => {
         setSeatingCapacity("");
         setFeaturesAndAmenities("");
         setRentalTermsAndConditions("");
-        setLocation("");
+        setLocation("Montreal");
         setAvailabilityStatus("");
         setYearOfManufacture("");
         setMileage("");
@@ -186,12 +186,11 @@ const AddVehicleForm = () => {
         />
       </label>
       <label>Location:</label>
-      <input
-        type="text"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-      />
-
+      <select value={location} onChange={(e) => setLocation(e.target.value)}>
+          <option value="Montreal">Montreal - Downtown</option>
+          <option value="laval">Laval</option>
+          <option value="yul">Montreal - YUL</option>
+      </select>
       <label>
         Transmission Type:
         <select
@@ -256,6 +255,7 @@ const AddVehicleForm = () => {
         onChange={(e) => setPhotos(e.target.value.split(","))}
 
       />
+
 
       <button type="submit">Add Vehicle</button>
       {error && <div className="alert alert-danger">{error}</div>}
