@@ -62,6 +62,22 @@ const getReservationByLicense = async (req, res) => {
     }
 }
 
+const getReservationByCard = async (req, res) => {
+    const { creditCard } = req.params
+
+    try{
+        const reservation = await Reservation.findOne({ creditCard: creditCard})
+        if (!reservation) {
+            return res.status(404).json({error: 'No such reservation'})
+        }
+        res.status(200).json(reservation)
+    }
+    catch (error){
+        console.error('Error finding reservation: ', error)
+        res.status(500).json({message: 'Server error'})
+    }
+}
+
 //get a single reservation by fullName
 const getReservationByName = async (req, res) => {
     const { fullName } = req.params
@@ -251,4 +267,4 @@ const deleteReservationByPhone = async (req, res) => {
 }
 
 
-module.exports = { bookReservation, getReservations, getReservationByID, getReservationByConfirmationNumber, getReservationByLicense, getReservationByName, getReservationByPhone, getReservationByUserID, getReservationByVehicleID, updateReservation, deleteReservationByID, deleteReservationByName, deleteReservationByPhone }
+module.exports = { bookReservation, getReservations, getReservationByID, getReservationByConfirmationNumber, getReservationByLicense, getReservationByCard, getReservationByName, getReservationByPhone, getReservationByUserID, getReservationByVehicleID, updateReservation, deleteReservationByID, deleteReservationByName, deleteReservationByPhone }
