@@ -25,6 +25,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
   const [validLicense, setValidLicense] = useState(true);
   const [unavailableDates, setUnavailableDates] = useState([]);
   const [reservationDates, setReservationDates] = useState([]);
+  const [creditCardFormatError, setCreditCardFormatError] = useState(false)
 
   useEffect(() => {
     // Construct an array containing all dates within the reservation range
@@ -96,7 +97,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
         return;
       }
 
-      if(!validLicense || phoneNumberFormatError || emailFormatError){
+      if(!validLicense || phoneNumberFormatError || emailFormatError || creditCardFormatError){
         return
       }
     try {
@@ -118,6 +119,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
       setValidDates(true);
       setPhoneNumberFormatError(false)
       setEmailFormatError(false)
+      setCreditCardFormatError(false)
       alert('Reservation updated successfully');
       console.log('Reservation updated successfully');
     } catch (error) {
@@ -140,11 +142,27 @@ const ReservationCard = ({ reservation, onDelete }) => {
     setValidDates(true);
     setPhoneNumberFormatError(false)
     setEmailFormatError(false)
+    setCreditCardFormatError(false)
   };
   
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setEditedData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCreditCardChange = (e) => {
+    const { name, value } = e.target;
+    // Regular expression to validate credit card numbers
+    const creditCardRegex = /^(?:3[47]\d{13}|(?:4\d|5[1-5]|65)\d{14}|6011\d{12}|(?:2131|1800)\d{11})$/;
+    if (creditCardRegex.test(value)) {
+      setCreditCardFormatError(false); 
+    } else {
+      setCreditCardFormatError(true);
+    }
     setEditedData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -257,6 +275,11 @@ const ReservationCard = ({ reservation, onDelete }) => {
               <input type="text" name="driversLicenseNumber" value={editedData.driversLicenseNumber} onChange={handleLicenseChange} />
             </p>
 
+            <p>
+              <strong>Credit Card Number:</strong>{(!creditCardFormatError) ? null : (<p style={{ color: 'red' }}>Enter a valid credit card number</p>)}
+              <input type="text" name="creditCard" value={editedData.creditCard} onChange={handleCreditCardChange}/>
+            </p>
+
           </>
         ) : (
           <>
@@ -286,6 +309,10 @@ const ReservationCard = ({ reservation, onDelete }) => {
 
             <p>
               <strong>Driver's License:</strong> {editedData.driversLicenseNumber}
+            </p>
+
+            <p>
+              <strong>Credit Card Number:</strong> {editedData.creditCard}
             </p>
 
           </>
