@@ -17,7 +17,8 @@ const BookingForm = ({onSuccessfulSubmission}) => {
     pickupDate: new Date(),
     returnDate: new Date(),
     driversLicenseNumber: '',
-    totalPrice: 0
+    totalPrice: 0,
+    creditCard: ''
   });
   const [emailFormatError, setEmailFormatError] = useState(false);
   const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
@@ -25,6 +26,7 @@ const BookingForm = ({onSuccessfulSubmission}) => {
   const [validLicense, setValidLicense] = useState(true)
   const [unavailableDates, setUnavailableDates] = useState([])
   const [reservations, setReservations] = useState([])
+  const [creditCardFormatError, setCreditCardFormatError] = useState(false);
   const { user } = useAuthContext();
 
   // Fetch reservations associated with the vehicle
@@ -84,7 +86,7 @@ const BookingForm = ({onSuccessfulSubmission}) => {
         totalPrice: 0
       }))
     }
-  }, [formData.pickupDate, formData.returnDate]);
+  }, [formData.pickupDate, formData.returnDate, formData.creditCard]);
   // Handle form input changes
   const handleChange = (e) => {
     const target = e.target;
@@ -98,6 +100,23 @@ const BookingForm = ({onSuccessfulSubmission}) => {
     setFormData({ ...formData, [name]: date });
     setValidDates(true)
   };
+
+  const handleCreditCardChange = (e) => {
+    const { name, value } = e.target;
+    // Regular expression to validate credit card numbers
+    const creditCardRegex = /^(?:3[47]\d{13}|(?:4\d|5[1-5]|65)\d{14}|6011\d{12}|(?:2131|1800)\d{11})$/;
+    if (creditCardRegex.test(value)) {
+      setCreditCardFormatError(false); // Set error state to false when the credit card number is valid
+    } else {
+      setCreditCardFormatError(true); // Set error state to true when the credit card number is invalid
+    }
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  
+  
 
   const handleEmailAddressChange = (e) => {
     const { name, value } = e.target;
@@ -147,7 +166,7 @@ const handleSubmit = async (e) => {
   const user = JSON.parse(storedUser);
   const userId = user?.user?._id; 
 
-  if(!validLicense || emailFormatError || phoneNumberFormatError){
+  if(!validLicense || emailFormatError || phoneNumberFormatError || creditCardFormatError){
     return
   }
   if (new Date(formData.returnDate) < new Date(formData.pickupDate)) {
@@ -169,7 +188,8 @@ const handleSubmit = async (e) => {
       pickupDate: formData.pickupDate,
       returnDate: formData.returnDate,
       driversLicenseNumber: formData.driversLicenseNumber,
-      totalPrice: formData.totalPrice
+      totalPrice: formData.totalPrice,
+      creditCard: formData.creditCard
     };
 
     const response = await fetch('/api/reservations', {
@@ -190,6 +210,7 @@ const handleSubmit = async (e) => {
     setValidDates(true)
     setPhoneNumberFormatError(false)
     setEmailFormatError(false)
+    setCreditCardFormatError(false)
     setFormData({
       fullName: '',
       email: '',
@@ -197,7 +218,8 @@ const handleSubmit = async (e) => {
       pickupDate: new Date(),
       returnDate: new Date(),
       driversLicenseNumber: '',
-      totalPrice: 0
+      totalPrice: 0,
+      creditCard: ''
     });
 
     console.log('Reservation submitted successfully');
@@ -281,6 +303,10 @@ const handleSubmit = async (e) => {
         <div>
           <label htmlFor="driversLicenseNumber">Driving License Number:</label>{validLicense ? null : (<p style={{ color: 'red' }}>A valid Driver's License is 8 Alphanumeric Characters</p>)}
           <input type="text" id="driversLicenseNumber" name="driversLicenseNumber" value={formData.driversLicenseNumber} onChange={handleLicenseChange} required />
+        </div>
+        <div>
+          <label htmlFor="creditCard">Credit Card Number:</label>{(!creditCardFormatError) ? null : (<p style={{ color: 'red' }}>Enter a valid credit card number</p>)}
+          <input type="text" id="creditCard" name="creditCard" value={formData.creditCard} onChange={handleCreditCardChange} required />
         </div>
         <div className="terms-checkbox">
           <input
