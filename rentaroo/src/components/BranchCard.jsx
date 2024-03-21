@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import "../styles/BranchCard.css";
 import { Link } from "react-router-dom";
 
@@ -16,6 +16,10 @@ const handleOpenPopup = () => {
     setIsPopupOpen(false);
   };
 
+  const handleStartReservation = () =>{
+
+  }
+
   const branchInfo = {
     city: ' City',
     address: '123 5th Avenue, Montreal, Qc, A1A 1A1',
@@ -31,16 +35,34 @@ const handleOpenPopup = () => {
     },
 
 };
+const [branches, setBranches] = useState([]);
 
+  useEffect(() => {
+    const fetchBranches = async () => {
+      try {
+        const response = await fetch('/api/branches'); 
+        if (!response.ok) {
+          throw new Error("Failed to fetch branches");
+        }
+        const json = await response.json();
+        setBranches(json);
+      } catch (error) {
+        console.error('Error fetching branches:', error);
+      }
+    };    
+    fetchBranches();
+  }, []);
 
 return (
     <div className='branch-card'>
-      
-      <p className='city'>City</p>
+    
+      <p className='city'>{branches.location}</p>
+    
       <p className='address'>Address</p>
       <a href="#" className="hoursServices" onClick={handleOpenPopup}>
           Opening Hours
         </a>
+        <button className='start-reservation-button' onClick={handleStartReservation}>Start a Reservation</button>
      
 
       

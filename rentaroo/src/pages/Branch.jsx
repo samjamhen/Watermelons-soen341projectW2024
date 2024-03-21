@@ -26,6 +26,8 @@ const Branch = () => {
     if (!user || !user.user || !user.user.userType) {
       return <Header />;
     }
+
+
     
     let userType = user.user.userType;
     switch (userType) {
@@ -40,6 +42,10 @@ const Branch = () => {
     }
 };
 
+const handleSubmit = () =>{
+
+}
+
 const renderBranchCard = () => {
   if (!user || !user.user || !user.user.userType) {
     return <BranchCard />;
@@ -47,12 +53,16 @@ const renderBranchCard = () => {
 
   const userType = user.user.userType;
 
+
+
   switch (userType) {
     case 'system_administrator':
       return <AdminBranchCard />;
     default:
       return <BranchCard />;
   }
+
+
 };
 
   return (
@@ -60,6 +70,19 @@ const renderBranchCard = () => {
        {renderHeader()}
        <div className="container">
       <h2>Find a Branch</h2>
+
+      <div className="search-bar">
+      <p>Provide a location</p>
+      <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Postal Code, City or Airport"
+      />
+      <button type="submit">Find Branch</button>
+      </form>
+      </div>
+
+
       <button type="button" onClick={toggleMap}>
         {showMap ? 'Hide Map' : 'Show Map'}
       </button>
