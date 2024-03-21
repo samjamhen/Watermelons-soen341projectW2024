@@ -25,6 +25,7 @@ const AdminBookingForm = () => {
   const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
   const [unavailableDates, setUnavailableDates] = useState([])
   const [reservations, setReservations] = useState([])
+  const [creditCardFormatError, setCreditCardFormatError] = useState([])
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -97,6 +98,21 @@ const AdminBookingForm = () => {
     }));
   };
 
+  const handleCreditCardChange = (e) => {
+    const { name, value } = e.target;
+    // Regular expression to validate credit card numbers
+    const creditCardRegex = /^(?:3[47]\d{13}|(?:4\d|5[1-5]|65)\d{14}|6011\d{12}|(?:2131|1800)\d{11})$/;
+    if (creditCardRegex.test(value)) {
+      setCreditCardFormatError(false); 
+    } else {
+      setCreditCardFormatError(true);
+    }
+    setEditedData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleLicenseChange = (e) => {
     const {name, value} = e.target;
     if(/^[A-Za-z0-9]{8}$/){
@@ -119,7 +135,7 @@ const handleSubmit = async (e) => {
     return;
   }
 
-  if(!validLicense || phoneNumberFormatError || emailFormatError){
+  if(!validLicense || phoneNumberFormatError || emailFormatError || creditCardFormatError){
     return
   }
   console.log("Booking Form Submitted...")
@@ -134,7 +150,8 @@ const handleSubmit = async (e) => {
       pickupAddress: formData.pickupAddress,
       pickupDate: formData.pickupDate,
       returnDate: formData.returnDate,
-      driversLicenseNumber: formData.driversLicenseNumber
+      driversLicenseNumber: formData.driversLicenseNumber,
+      creditCard: formData.creditCard
     };
 
     const response = await fetch('/api/reservations', {
@@ -152,6 +169,7 @@ const handleSubmit = async (e) => {
     setValidDates(true)
     setPhoneNumberFormatError(false)
     setEmailFormatError(false)
+    setCreditCardFormatError(false)
     // Reset form fields
     setFormData({
       userID: '',
@@ -163,6 +181,7 @@ const handleSubmit = async (e) => {
       pickupDate: new Date(),
       returnDate: new Date(),
       driversLicenseNumber: '',
+      creditCard: ''
     });
 
     console.log('Reservation submitted successfully');
@@ -248,6 +267,10 @@ const handleSubmit = async (e) => {
         <div>
           <label htmlFor="driversLicenseNumber">Driving License Number:</label>{validLicense ? null : (<p style={{ color: 'red' }}>A valid Driver's License is 8 Alphanumeric Characters</p>)}
           <input type="text" id="driversLicenseNumber" name="driversLicenseNumber" value={formData.driversLicenseNumber} onChange={handleLicenseChange} required />
+        </div>
+        <div>
+          <label htmlFor="creditCard">Credit Card Number:</label>{(!creditCardFormatError) ? null : (<p style={{ color: 'red' }}>Enter a valid credit card number</p>)}
+          <input type="text" id="creditCard" name="creditCard" value={formData.creditCard} onChange={handleCreditCardChange} required />
         </div>
       
         <button type="submit">Submit</button>
