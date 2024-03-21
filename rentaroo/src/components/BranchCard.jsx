@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 
 
-const BranchCard = () => {
+const BranchCard = ({branches}) => {
 
 const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -35,23 +35,6 @@ const handleOpenPopup = () => {
     },
 
 };
-const [branches, setBranches] = useState([]);
-
-  useEffect(() => {
-    const fetchBranches = async () => {
-      try {
-        const response = await fetch('/api/branches'); 
-        if (!response.ok) {
-          throw new Error("Failed to fetch branches");
-        }
-        const json = await response.json();
-        setBranches(json);
-      } catch (error) {
-        console.error('Error fetching branches:', error);
-      }
-    };    
-    fetchBranches();
-  }, []);
 
 return (
     <div className='branch-card'>
