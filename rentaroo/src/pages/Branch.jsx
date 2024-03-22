@@ -64,8 +64,8 @@ const Branch = () => {
 };
 
 const handleSubmit = (e) =>{
-  e.preventDefault(); // Prevent default form submission
-  setShowList(true); // Show the list when the form is submitted
+  e.preventDefault(); 
+  setShowList(true); 
 }
 
 const renderBranchCard = () => {
@@ -109,11 +109,11 @@ const renderBranchCard = () => {
       </div>
 
       <div className="branches">
+      <div className="flex-container">
+      <div className="list-view" style={{ display: showList ? 'block' : 'none' }}>
       <button type="button" onClick={toggleMap}>
         {showMap ? 'Hide Map' : 'Show Map'}
       </button>
-      <div className="flex-container">
-      <div className="list-view" style={{ display: showList ? 'block' : 'none' }}>
         <div>
           {branches.length > 0 ? (
             branches.map((branch) => (

@@ -16,9 +16,10 @@ const handleOpenPopup = () => {
     setIsPopupOpen(false);
   };
 
-  const handleStartReservation = () =>{
-
-  }
+  const handleStartReservation = () => {
+      localStorage.setItem('selectedBranchLocation', branches.location);
+      window.location.href = '/StartReservation'; 
+  };
 
   const branchInfo = {
     city: ' City',
@@ -41,7 +42,7 @@ return (
     
       <p className='city'>{branches.location}</p>
     
-      <p className='address'>Address</p>
+      <p className='address'>{branches.address}</p>
       <a href="#" className="hoursServices" onClick={handleOpenPopup}>
           Opening Hours
         </a>
