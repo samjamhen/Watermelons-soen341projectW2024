@@ -19,6 +19,9 @@ import VehicleForm from './pages/SystemAdministrator/Vehicules/VehicleForm';
 import ConfirmationPage from './components/Confirmation';
 
 import HomeCustomer from "./pages/Customer/CustomerHome";
+import Checkin from "./pages/Service_rep/Checkin";
+import CarInspectionCheckin from "./pages/Service_rep/CarInspectionCheckin";
+
 import HomeCSR from "./pages/Service_rep/ServiceHome";
 import HomeAdmin from "./pages/SystemAdministrator/AdminHome";
 
@@ -26,6 +29,8 @@ import Branch from './pages/Branch';
 import BranchForm from './pages/SystemAdministrator/BranchForm';
 
 import { useAuthContext } from './hooks/useAuthContext';
+import RentalAgreementPage from './pages/RentalAgreementPage';
+import Deposit from './pages/Deposit';
 
 function App() {
   const { user } = useAuthContext();
@@ -74,8 +79,12 @@ function App() {
           <Route path="/Branch" element={ <Branch/>}/>
           <Route path="/BranchForm" element={<BranchForm/>}/>
 
+          <Route path="/Checkin" element={<Checkin/>}/>
+          <Route path="/CarInspectionCheckin" element={<CarInspectionCheckin/>}/>
+          <Route path="/RentalAgreement" element={<RentalAgreementPage/>}/>
+          <Route path="/Deposit" element={<Deposit/>}/>
 
-
+          
 
 
 
