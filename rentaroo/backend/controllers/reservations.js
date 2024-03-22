@@ -1,5 +1,6 @@
 const Reservation = require('../models/reservations.js')
 const Vehicle = require('../models/vehicles.js')
+const { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation } = require('../middleware/emails.js')
 
 //get all reservations
 const getReservations = async (req, res) => {
@@ -171,6 +172,9 @@ const bookReservation = async (req, res) => {
         // Mark the vehicle as unavailable for the reservation dates
         await Vehicle.updateOne({ _id: vehicle }, { available: false });
 
+        console.log(reservation.email)
+        await sendConfirmationEmail(reservation);
+
         // Return status
         res.status(200).json(reservation);
     } catch (error) {
@@ -209,6 +213,8 @@ const updateReservation = async (req, res) => {
         // Update reservation
         const updated = await Reservation.findByIdAndUpdate(_id, updatedReservation, { new: true });
 
+        await sendUpdatedConfirmation(updated);
+
         res.status(200).json(updated);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -232,6 +238,8 @@ const deleteReservationByID = async (req, res) => {
 
         // Delete the reservation
         await Reservation.findByIdAndDelete(_id);
+
+        await sendDeleteConfirmation(reservation);
 
         // Return success message
         res.status(200).json({ message: 'Reservation canceled successfully' });
