@@ -5,23 +5,44 @@ const RentalAgreement = () => {
   const location = useLocation();
   const fetchedReservation = location.state;
   const [user, setUser] = useState(null);
+  const [vehicle, setVehicle] = useState(null);
 
   console.log(fetchedReservation);
   console.log("...");
   console.log(fetchedReservation.fetchedReservation.fetchedReservation._id);
   const reservation = fetchedReservation.fetchedReservation.fetchedReservation;
+  console.log(reservation.phone)
   
   useEffect(() => {
-    if (fetchedReservation && fetchedReservation.userID) {
-      fetch(`/api/users/${fetchedReservation.userID}`)
+    if (reservation && reservation.userID) {
+      fetch(`/api/users/${reservation.userID}`)
         .then(response => response.json())
         .then(data => setUser(data));
     }
   }, [fetchedReservation]);
 
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        console.log("hi")
+        const response = await fetch(`api/vehicles/${reservation.vehicle}`);
+        if (response.ok) {
+          const json = await response.json();
+          setVehicle(json);
+        } else {
+          throw new Error('Failed to fetch reservations');
+        }
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
+    };
+    fetchVehicles();
+  })
+
+
   console.log('user');
   console.log(user);
-  if (!fetchedReservation) {
+  if (!reservation) {
     return <div>Loading...</div>;
   }
   const handleSubmit = () =>{
@@ -29,7 +50,7 @@ const RentalAgreement = () => {
   }
   
   
-  if (!fetchedReservation) {
+  if (!reservation) {
     return <div>Loading...</div>;
   }
   
@@ -40,7 +61,7 @@ const RentalAgreement = () => {
         Rental Agreement Number: <span>{reservation._id}</span>
       </p>
       <p>
-        This Rental Agreement ("Agreement") is entered into between <span>{/* Insert car rental agency name here */}</span>, located at <span>{/* Insert car rental agency address here */}</span>, hereinafter referred to as the "Rental Company," and the individual or entity identified below, hereinafter referred to as the "Renter":
+        This Rental Agreement ("Agreement") is entered into between Rentaroo, located at <span>{vehicle.location}</span>, hereinafter referred to as the "Rental Company," and the individual or entity identified below, hereinafter referred to as the "Renter":
       </p>
       <h2>Renter's Information:</h2>
       <p>Name: <span>{reservation.fullName}</span></p>
@@ -49,20 +70,20 @@ const RentalAgreement = () => {
       <p>Email Address: <span>{reservation.email}</span></p>
       <p>Driver's License Number: <span>{reservation.driversLicenseNumber}</span></p>
       <h2>Vehicle Information:</h2>
-      <p>Make: <span>{/* Insert vehicle make here */}</span></p>
-      <p>Model: <span>{/* Insert vehicle model here */}</span></p>
-      <p>Year: <span>{/* Insert vehicle year here */}</span></p>
+      <p>Make: <span>{vehicle.make}</span></p>
+      <p>Model: <span>{vehicle.model}</span></p>
+      <p>Year: <span>{vehicle.yearOfManufacture}</span></p>
       <p>License Plate Number: <span>{/* Insert vehicle license plate number here */}</span></p>
-      <p>Vehicle Identification Number (VIN): <span>{/* Insert vehicle VIN here */}</span></p>
-      <p>Color: <span>{/* Insert vehicle color here */}</span></p>
+      <p>Vehicle Identification Number (VIN): <span>{vehicle._id}</span></p>
+      <p>Color: <span>{vehicle.color}</span></p>
       <h2>Rental Details:</h2>
       <p>Rental Start Date: <span>{reservation.pickupDate}</span></p>
       <p>Rental End Date: <span>{reservation.returnDate}</span></p>
       <p>Pick-up Location: <span>{reservation.pickupAddress}</span></p>
-      <p>Drop-off Location: <span>{/* Insert drop-off location here */}</span></p>
-      <p>Rental Period: <span>{/* Insert rental period here */}</span></p>
+      <p>Drop-off Location: <span>{reservation.pickupAddress}</span></p>
+      <p>Rental Period: <span>{Math.ceil((new Date(reservation.returnDate) - new Date(reservation.pickupDate)) / (1000 * 60 * 60 * 24) + 1)} Days</span></p>
       <p>Mileage Limit (if applicable): <span>{/* Insert mileage limit here */}</span></p>
-      <p>Rental Rate: <span>{/* Insert rental rate here */}</span></p>
+      <p>Rental Rate: <span>{vehicle.price}</span></p>
       <p>Additional Services (if any): <span>{/* Insert additional services here */}</span></p>
       <h2>Rental Terms and Conditions:</h2>
       <p>
@@ -96,7 +117,7 @@ const RentalAgreement = () => {
         <input type="text" id="rentalCompanySignature" />
         <br />
         <label htmlFor="renterSignature">Name:</label>
-        <input type="text" id="renterSignature"  />
+        <input type="text" id="renterSignature" defaultValue={reservation.fullName}/>
         <br />
         <label htmlFor="renterDate">Date:</label>
         <input type="date" id="renterDate"   />
@@ -107,10 +128,10 @@ const RentalAgreement = () => {
         <input type="text" id="rentalCompanySignature"  />
         <br />
         <label htmlFor="renterSignature">Name:</label>
-        <input type="text" id="renterSignature"/>
+        <input type="text" id="renterSignature" defaultValue={reservation.fullName}/>
         <br />
         <label htmlFor="renterDate">Date:</label>
-        <input type="date" id="renterDate" />
+        <input type="date" id="renterDate"/>
         <br />
         <button type="submit">Submit</button>
       </form>
