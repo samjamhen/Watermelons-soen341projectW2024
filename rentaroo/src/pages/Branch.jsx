@@ -8,9 +8,9 @@ import BranchCard from '../components/BranchCard';
 import AdminBranchCard from '../components/SystemAdministrator/AdminBranchCard';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from "../hooks/useAuthContext";
-import Map from '../components/Map';
+import BranchMap from '../components/BranchMap';
 import '../styles/Branch.css'
-
+import { Autocomplete } from '@react-google-maps/api'
 
 
 const Branch = () => {
@@ -20,6 +20,7 @@ const Branch = () => {
   const [showList, setShowList] = useState(false);
   const [branches, setBranches] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+  const [autocomplete, setAutocomplete] = useState(null);
 
   useEffect(() => {
     const fetchBranches = async () => {
@@ -48,8 +49,6 @@ const Branch = () => {
       return <Header />;
     }
 
-
-    
     let userType = user.user.userType;
     switch (userType) {
       case "client":
@@ -75,16 +74,25 @@ const renderBranchCard = () => {
 
   const userType = user.user.userType;
 
-
-
   switch (userType) {
     case 'system_administrator':
       return <AdminBranchCard />;
     default:
       return <BranchCard />;
   }
+};
 
+const onLoad = (autocomplete) => {
+  setAutocomplete(autocomplete);
+};
 
+const onPlaceChanged = () => {
+  if (autocomplete !== null) {
+    const place = autocomplete.getPlace();
+    setSearchInput(place.formatted_address);
+  } else {
+    console.log('Autocomplete is not loaded yet!');
+  }
 };
 
   return (
@@ -96,16 +104,30 @@ const renderBranchCard = () => {
       <p>Explore nearest locations from you</p>
 
       <div className="search-bar-branch">
-      <p>Provide a location</p>
-      <form onSubmit={handleSubmit}>
-      <input
+        <div className="search-container">
+        <p>Provide a location</p>
+        <form onSubmit={handleSubmit}>
+          <Autocomplete
+            onLoad={onLoad}
+            onPlaceChanged={onPlaceChanged}
+            options={{
+              types: ['geocode'],
+              strictBounds: true,
+              bounds: { south: 44.99991, west: -79.7668, north: 62.0057, east: -57.1185 },
+              fields: ['address_components', 'geometry'],
+            }}
+          >
+            <input
               type="text"
               placeholder="Postal Code, City or Airport"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
+              className = "input-location"
             />
-      <button type="submit">Find Branch</button>
-      </form>
+          </Autocomplete>
+          <button type="submit" className = "find-branch-button">Find Branch</button>
+        </form>
+        </div>
       </div>
 
       <div className="branches">
@@ -126,7 +148,7 @@ const renderBranchCard = () => {
       </div>
 
       <div className='map-view'>
-      {showMap && <Map />} 
+      {showMap && <BranchMap />} 
       </div>
 
       </div>

@@ -3,7 +3,6 @@ import "../styles/BranchCard.css";
 import { Link } from "react-router-dom";
 
 
-
 const BranchCard = ({branches}) => {
 
 const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -53,7 +52,7 @@ return (
 {isPopupOpen && (
     <div className="popup-overlay">
       <div className="popup-container">
-        <h2>{branchInfo.city}</h2>
+        <h2>{branches.location}</h2>
         <p>{branchInfo.address}</p>
         <p>{branchInfo.phone}</p>
         <table>

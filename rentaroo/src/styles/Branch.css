@@ -30,10 +30,7 @@
     display: flex;
     align-items: center;
     margin-top: 40px;
-    width: 1500px;
-    
-  
-    
+    width: 1500px;  
   }
   
   .search-bar-branch p {
@@ -47,19 +44,39 @@
   .search-bar-branch form {
     display: flex;
   }
+   
+  .search-bar-branchbutton:hover {
+    background-color: grey;
+  }
+
+  .search-bar-branch {
+    display: flex;
+    align-items: center;
+    margin-top: 40px;
+    width: 100%; /* Adjust the width as needed */
+  }
+  
+  .search-bar-branch p {
+    margin-right: 10px;
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
   
   .search-bar-branch input[type="text"] {
-    padding: 5px; 
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-right: 10px;
+    margin-top: 10px;
     font-size: 16px;
     width: 400px;
     opacity: 0.80;
   }
   
   .search-bar-branch button {
-    padding: 8px 16px; 
+    padding: 8px 16px;
     margin-top: 5px;
     background-color: #ffffff62;
     color: black;
@@ -71,8 +88,5 @@
     margin-bottom: 25px;
   }
   
-  .search-bar-branchbutton:hover {
-    background-color: grey;
-  }
 
   
