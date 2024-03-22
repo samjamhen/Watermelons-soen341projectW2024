@@ -8,7 +8,7 @@ import BranchCard from '../components/BranchCard';
 import AdminBranchCard from '../components/SystemAdministrator/AdminBranchCard';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from "../hooks/useAuthContext";
-import Map from '../components/Map';
+import BranchMap from '../components/BranchMap';
 import '../styles/Branch.css'
 
 
@@ -126,7 +126,7 @@ const renderBranchCard = () => {
       </div>
 
       <div className='map-view'>
-      {showMap && <Map />} 
+      {showMap && <BranchMap />} 
       </div>
 
       </div>
