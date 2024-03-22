@@ -89,7 +89,7 @@ const onLoad = (autocomplete) => {
 const onPlaceChanged = () => {
   if (autocomplete !== null) {
     const place = autocomplete.getPlace();
-    console.log(place);
+    setSearchInput(place.formatted_address);
   } else {
     console.log('Autocomplete is not loaded yet!');
   }
