@@ -51,9 +51,12 @@ const RentalAgreement = () => {
     return <div>Loading...</div>;
   }
   const handleSubmit = () =>{
-    console.log('submitted handleSubmit');
-    navigate("/");
-
+    alert("Rental agreement has been electronically filled!");
+    navigate("/Deposit", { state: { reservation } });
+  }
+  const handlePaperRental = () =>{
+    alert("Rental agreement has been filled on paper. Make sure you keep it in on file!");
+    navigate("/Deposit", { state: { reservation } });
   }
   
   
@@ -161,13 +164,13 @@ const RentalAgreement = () => {
             required
             onChange={() => setValidation({ ...validation, renterDate: true })}
             />        <br />        <br />
-        <button type="submit">Submit</button>
+        <button type="submit">Rental Agreement Has Been Filled and Signed Online</button>
+        
       </form>
      
       <div className="button-container">
         <button onClick={() => window.print()}>Print Rental Agreement</button>
-        <button onClick={() => alert('Rental agreement has been printed and signed on paper')}>Rental Agreement Has Been Printed and Signed on Paper</button>
-        <button onClick={() => alert('Rental Agreement Has Been Signed Online')}>Rental Agreement Has Been Filled and Signed Online</button>
+        <button onClick={handlePaperRental}>Rental Agreement Has Been Printed and Signed on Paper</button>
 </div>
     </div>
   );
