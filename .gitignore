@@ -1,1 +1,23 @@
+# Ignore node_modules directory
 node_modules
+
+# Ignore package lock file
+package-lock.json
+
+# Ignore package.json file (optional, depending on your workflow)
+package.json
+
+#ignore babel config file
+.babelrc
+
+#Ignore babel.config.js file
+babel.config.js
+
+#ignore jest config file
+jest.config.js
+
+#ignore package.json file
+package.json
+
+#ignore package-lock.json file
+package-lock.json
