@@ -6,12 +6,19 @@ const RentalAgreement = () => {
   const fetchedReservation = location.state;
   const [user, setUser] = useState(null);
   const [vehicle, setVehicle] = useState(null);
+  const navigate = useNavigate(); // Create a navigate function
 
-  console.log(fetchedReservation);
-  console.log("...");
-  console.log(fetchedReservation.fetchedReservation.fetchedReservation._id);
+
+  //console.log(fetchedReservation);
   const reservation = fetchedReservation.fetchedReservation.fetchedReservation;
-  console.log(reservation.phone)
+  //console.log(reservation);
+  //console.log(reservation.phone)
+  const [validation, setValidation] = useState({
+    rentalCompanySignature: false,
+    renterSignature: false,
+    renterDate: false,
+    companyDate:false,
+  });
   
   {/*}
   useEffect(() => {
@@ -40,13 +47,12 @@ const RentalAgreement = () => {
     fetchVehicles();
   }, [])
 
-
-  console.log('user');
-  console.log(user);
   if (!reservation) {
     return <div>Loading...</div>;
   }
   const handleSubmit = () =>{
+    console.log('submitted handleSubmit');
+    navigate("/");
 
   }
   
@@ -112,28 +118,49 @@ const RentalAgreement = () => {
         The parties hereto have executed this Agreement as of the date first written above.
       </p>
       <form onSubmit={handleSubmit}>
+ 
 
         <h4>Rental Company</h4>
-        <label htmlFor="rentalCompanySignature"> Signature:</label>
-        <input type="text" id="rentalCompanySignature" />
+        <label htmlFor="rentalCompanySignature"> Rental Company Signature:</label>
+        <input
+            type="text"
+            id="rentalCompanySignature"
+            required
+            onChange={() =>
+                setValidation({ ...validation, rentalCompanySignature: true })
+            }
+            />
         <br />
         <label htmlFor="renterSignature">Name:</label>
         <input type="text" id="renterSignature" defaultValue={reservation.fullName}/>
         <br />
         <label htmlFor="renterDate">Date:</label>
-        <input type="date" id="renterDate"   />
-        <br />
+        <input
+            type="date"
+            id="renterDate"
+            required
+            onChange={() => setValidation({ ...validation, companyDate: true })}
+            />        <br />
 
         <h4>Renter </h4>
-        <label htmlFor="rentalCompanySignature">Signature:</label>
-        <input type="text" id="rentalCompanySignature"  />
-        <br />
+        <label htmlFor="rentalCompanySignature">Renter Signature:</label>
+        <input
+            type="text"
+            id="renterSignature"
+            required
+            onChange={() => setValidation({ ...validation, renterSignature: true })}
+            />        
+            <br />
         <label htmlFor="renterSignature">Name:</label>
         <input type="text" id="renterSignature" defaultValue={reservation.fullName}/>
         <br />
-        <label htmlFor="renterDate">Date:</label>
-        <input type="date" id="renterDate"/>
-        <br />
+        <label htmlFor="companyDate">Date:</label>
+        <input
+            type="date"
+            id="renterDate"
+            required
+            onChange={() => setValidation({ ...validation, renterDate: true })}
+            />        <br />        <br />
         <button type="submit">Submit</button>
       </form>
      
