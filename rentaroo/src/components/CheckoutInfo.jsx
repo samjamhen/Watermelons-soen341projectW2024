@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "../styles/checkoutInfo.css";
 
 function CheckoutInfo() {
     const [searchType, setSearchType] = useState('confirmationNumber');
