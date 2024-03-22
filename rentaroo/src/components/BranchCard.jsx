@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import "../styles/BranchCard.css";
 import { Link } from "react-router-dom";
 
 
 
-const BranchCard = () => {
+const BranchCard = ({branches}) => {
 
 const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -14,6 +14,11 @@ const handleOpenPopup = () => {
 
   const handleClosePopup = () => {
     setIsPopupOpen(false);
+  };
+
+  const handleStartReservation = () => {
+      localStorage.setItem('selectedBranchLocation', branches.location);
+      window.location.href = '/StartReservation'; 
   };
 
   const branchInfo = {
@@ -32,15 +37,16 @@ const handleOpenPopup = () => {
 
 };
 
-
 return (
     <div className='branch-card'>
-      
-      <p className='city'>City</p>
-      <p className='address'>Address</p>
+    
+      <p className='city'>{branches.location}</p>
+    
+      <p className='address'>{branches.address}</p>
       <a href="#" className="hoursServices" onClick={handleOpenPopup}>
           Opening Hours
         </a>
+        <button className='start-reservation-button' onClick={handleStartReservation}>Start a Reservation</button>
      
 
       

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "../styles/FilterForm.css";
 
 const FilterForm = ({
@@ -15,8 +15,18 @@ const FilterForm = ({
 }) => {
   const carTypes = filterOptions ? filterOptions.carTypes : [];
   const categories = filterOptions ? filterOptions.categories : [];
+  
+  const [selectedBranchLocation, setSelectedBranchLocation] = useState('');
 
+  useEffect(() => {
+    const storedBranchLocation = localStorage.getItem('selectedBranchLocation');
+    if (storedBranchLocation) {
+      setSelectedBranchLocation(storedBranchLocation);
+    }
+  }, []);
   return (
+
+    
     <form>
       <div className="filter-form">
         <div className="filter-row">
@@ -142,23 +152,34 @@ const FilterForm = ({
             Location:
           </label>
           <div className="location-radios">
-            <label htmlFor="Montreal">
+            <label htmlFor="Montreal - YUL">
               <input
                 type="radio"
                 name="location"
-                value="Montreal"
-                //checked={selectedLocation === "Montreal"}
-                onChange={() => onLocationChange("Montreal")}
+                value="Montreal - YUL"
+                checked={selectedBranchLocation === 'Montreal - YUL'}
+                onChange={() => onLocationChange("Montreal - YUL")}
               />
-              Montreal
+              Montreal-YUL
+            </label>
+            <label htmlFor="Montreal - Downtown">
+              <input
+                type="radio"
+                name="location"
+                value="Montreal - Downtown"
+                checked={selectedBranchLocation === 'Montreal - Downtown'}
+                onChange={() => onLocationChange("Montreal - Downtown")}
+              />
+             Montreal - Downtown
             </label>
             <label htmlFor="Laval">
               <input
                 type="radio"
                 name="location"
                 value="Laval"
-                //checked={selectedLocation === "Laval"}
+                checked={selectedBranchLocation === 'Laval'}
                 onChange={() => onLocationChange("Laval")}
+                disabled={selectedBranchLocation !== 'Montreal - YUL'}
               />
               Laval
             </label>

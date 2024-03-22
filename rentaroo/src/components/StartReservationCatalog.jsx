@@ -16,10 +16,14 @@ function StartReservationCatalog() {
     maxPrice: 100,
     carType: ["car", "suv", "Van", "Truck"],
     categories: ["compact", "standard", "intermediate", "large"],
-    location: ["Montreal", "Laval"],
+    location: ["Montreal - YUL", "Montreal - Downtown", "Laval"],
   });
   const [selectedCarTypes, setSelectedCarTypes] = useState([]);
 
+
+
+
+  
   function handleFilterChange(event) {
     const { name, value, checked, type } = event.target;
 
@@ -53,9 +57,12 @@ function StartReservationCatalog() {
         vehicle.category
       );
       const isLocationMatch =
-        selectedLocation === "Montreal"
-          ? vehicle.location === "Montreal"
+        selectedLocation === "Montreal - YUL"
+          ? vehicle.location === "Montreal - YUL"
+          : selectedLocation === "Montreal - Downtown"
+          ? vehicle.location === "Montreal - Downtown"
           : vehicle.location === "Laval";
+
 
       return (
         isPriceInRange && isCategoryMatch && isCarTypeMatch && isLocationMatch

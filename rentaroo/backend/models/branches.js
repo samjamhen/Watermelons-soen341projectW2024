@@ -17,6 +17,7 @@ const branches = new mongoose.Schema({
         type: String,
         required: true
     }
+    
 }, {timestamps: true})
 
 const Branch = mongoose.model('Branches', branches)
