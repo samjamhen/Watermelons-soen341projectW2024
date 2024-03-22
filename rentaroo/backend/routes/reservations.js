@@ -6,11 +6,14 @@ const { bookReservation,
   updateReservation,
   getReservationByPhone,
   getReservationByID,
+  getReservationByConfirmationNumber,
   getReservationByUserID,
   getReservationByVehicleID,
   deleteReservationByID, 
   deleteReservationByName,
-  deleteReservationByPhone} = require("../controllers/reservations.js");
+  deleteReservationByPhone,
+  getReservationByLicense,
+  getReservationByCard} = require("../controllers/reservations.js");
 
 const router = express.Router();
 
@@ -19,6 +22,15 @@ router.get("/", getReservations);
 
 //GET a single reservation by id
 router.get('/:_id', getReservationByID);
+
+//Get a single reservation by confirmation number
+router.get('/ConfirmationNumber/:_id', getReservationByConfirmationNumber);
+
+//GET a single reservation by drivers lincense number
+router.get('/driversLicenseNumber/:driversLicenseNumber', getReservationByLicense);
+
+//GET a single reservation by credit card
+router.get('/creditCardNumber/:creditCard', getReservationByCard);
 
 //GET a single reservation by name
 router.get('/Name/:fullName', getReservationByName);

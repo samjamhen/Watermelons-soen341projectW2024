@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'; // Import useLocation
 import { isDateDisabled } from './utils/utils';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/bookingForm.css';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const BookingForm = ({onSuccessfulSubmission}) => {
 
@@ -13,11 +14,11 @@ const BookingForm = ({onSuccessfulSubmission}) => {
     fullName: '',
     email: '',
     phone: '',
-    pickupAddress: 'Montreal',
     pickupDate: new Date(),
     returnDate: new Date(),
     driversLicenseNumber: '',
-    totalPrice: 0
+    totalPrice: 0,
+    creditCard: ''
   });
   const [emailFormatError, setEmailFormatError] = useState(false);
   const [phoneNumberFormatError, setPhoneNumberFormatError] = useState(false);
@@ -25,6 +26,8 @@ const BookingForm = ({onSuccessfulSubmission}) => {
   const [validLicense, setValidLicense] = useState(true)
   const [unavailableDates, setUnavailableDates] = useState([])
   const [reservations, setReservations] = useState([])
+  const [creditCardFormatError, setCreditCardFormatError] = useState(false);
+  const { user } = useAuthContext();
 
   // Fetch reservations associated with the vehicle
   useEffect(() => {
@@ -62,10 +65,16 @@ const BookingForm = ({onSuccessfulSubmission}) => {
   }, [vehicle]);
   
   useEffect(() => {
-    // Update totalPrice whenever pickupDate or returnDate changes
+    // Calculate the difference in milliseconds between pickupDate and returnDate
+    const differenceInMilliseconds = formData.returnDate - formData.pickupDate;
+    // Convert the difference to days and round up using Math.ceil()
+    const differenceInDays = Math.ceil(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+    // Calculate the totalPrice
+    const totalPrice = vehicle.price * (differenceInDays + 1);
+    // Update the formData with the new totalPrice
     setFormData(prevData => ({
-      ...prevData,
-      totalPrice: vehicle.price * (Math.abs(formData.returnDate - formData.pickupDate) / (1000 * 60 * 60 * 24) + 1)
+    ...prevData,
+    totalPrice: totalPrice
     }));
 
     if (new Date(formData.returnDate) < new Date(formData.pickupDate)) {
@@ -77,7 +86,7 @@ const BookingForm = ({onSuccessfulSubmission}) => {
         totalPrice: 0
       }))
     }
-  }, [formData.pickupDate, formData.returnDate]);
+  }, [formData.pickupDate, formData.returnDate, formData.creditCard]);
   // Handle form input changes
   const handleChange = (e) => {
     const target = e.target;
@@ -91,6 +100,23 @@ const BookingForm = ({onSuccessfulSubmission}) => {
     setFormData({ ...formData, [name]: date });
     setValidDates(true)
   };
+
+  const handleCreditCardChange = (e) => {
+    const { name, value } = e.target;
+    // Regular expression to validate credit card numbers
+    const creditCardRegex = /^(?:3[47]\d{13}|(?:4\d|5[1-5]|65)\d{14}|6011\d{12}|(?:2131|1800)\d{11})$/;
+    if (creditCardRegex.test(value)) {
+      setCreditCardFormatError(false); // Set error state to false when the credit card number is valid
+    } else {
+      setCreditCardFormatError(true); // Set error state to true when the credit card number is invalid
+    }
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  
+  
 
   const handleEmailAddressChange = (e) => {
     const { name, value } = e.target;
@@ -140,7 +166,7 @@ const handleSubmit = async (e) => {
   const user = JSON.parse(storedUser);
   const userId = user?.user?._id; 
 
-  if(!validLicense || emailFormatError || phoneNumberFormatError){
+  if(!validLicense || emailFormatError || phoneNumberFormatError || creditCardFormatError){
     return
   }
   if (new Date(formData.returnDate) < new Date(formData.pickupDate)) {
@@ -158,11 +184,12 @@ const handleSubmit = async (e) => {
       vehicle: vehicle._id,
       email: formData.email,
       phone: formData.phone,
-      pickupAddress: formData.pickupAddress,
+      pickupAddress: vehicle.location,
       pickupDate: formData.pickupDate,
       returnDate: formData.returnDate,
       driversLicenseNumber: formData.driversLicenseNumber,
-      totalPrice: formData.totalPrice
+      totalPrice: formData.totalPrice,
+      creditCard: formData.creditCard
     };
 
     const response = await fetch('/api/reservations', {
@@ -183,15 +210,16 @@ const handleSubmit = async (e) => {
     setValidDates(true)
     setPhoneNumberFormatError(false)
     setEmailFormatError(false)
+    setCreditCardFormatError(false)
     setFormData({
       fullName: '',
       email: '',
       phone: '',
-      pickupAddress: 'Montreal',
       pickupDate: new Date(),
       returnDate: new Date(),
       driversLicenseNumber: '',
-      totalPrice: 0
+      totalPrice: 0,
+      creditCard: ''
     });
 
     console.log('Reservation submitted successfully');
@@ -233,6 +261,12 @@ const handleSubmit = async (e) => {
       )}
       <form onSubmit={handleSubmit} className="booking-form">
         <h2>Booking Form</h2>
+        {user.user.userType === 'system_administrator' ? 
+        <div>
+          <label htmlFor="userID">User ID:</label>
+          <input type="text" id="userID" name="userID" value={formData.userID} onChange={handleChange} required />
+        </div> : null
+        }
         <div>
           <label htmlFor="fullName">Full Name:</label>
           <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} required />
@@ -244,15 +278,6 @@ const handleSubmit = async (e) => {
         <div>
           <label htmlFor="phone">Phone Number:</label>{phoneNumberFormatError && <span style={{ color: 'red' }}>Please enter a phone number in the correct format.</span>}
           <input type="tel" id="phone" name="phone" placeholder="XXX-XXX-XXXX" value={formData.phone} onChange={handlePhoneNumberChange} required />
-        </div>
-        <div>
-          <label htmlFor="pickupAddress">Pickup Address:
-            <select id="pickupAddress" name="pickupAddress" value={formData.pickupAddress} onChange={handleChange} required>
-              <option value="Montreal">Montreal</option>
-              <option value="Toronto">Toronto</option>
-              <option value="Ottawa">Ottawa</option>
-            </select>
-          </label>
         </div>
         <div>
           <label>Pickup Date:</label>{!validDates && <span style={{ color: 'red' }}>Please enter valid dates.</span>}
@@ -279,18 +304,9 @@ const handleSubmit = async (e) => {
           <label htmlFor="driversLicenseNumber">Driving License Number:</label>{validLicense ? null : (<p style={{ color: 'red' }}>A valid Driver's License is 8 Alphanumeric Characters</p>)}
           <input type="text" id="driversLicenseNumber" name="driversLicenseNumber" value={formData.driversLicenseNumber} onChange={handleLicenseChange} required />
         </div>
-        <div className="terms-checkbox">
-          <input
-            type="checkbox"
-            id="agreedToTerms"
-            name="agreedToTerms"
-            checked={formData.agreedToTerms}
-            onChange={handleChange}
-            required // Makes checking this box obligatory
-          />
-          <label htmlFor="agreedToTerms">
-            I agree to the <a href="/TermsAndConditions">Terms and Conditions</a>
-          </label>
+        <div>
+          <label htmlFor="creditCard">Credit Card Number:</label>{(!creditCardFormatError) ? null : (<p style={{ color: 'red' }}>Enter a valid credit card number</p>)}
+          <input type="text" id="creditCard" name="creditCard" value={formData.creditCard} onChange={handleCreditCardChange} required />
         </div>
         <div className="terms-checkbox">
           <input
@@ -305,7 +321,6 @@ const handleSubmit = async (e) => {
             I agree to the <a href="/TermsAndConditions">Terms and Conditions</a>
           </label>
         </div>
-      
         <button type="submit">Submit</button>
       </form>
     </div>

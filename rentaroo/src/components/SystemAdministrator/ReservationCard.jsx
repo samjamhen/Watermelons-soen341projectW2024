@@ -14,11 +14,19 @@ const ReservationCard = ({ reservation, onDelete }) => {
     ...reservation,
     pickupDate: new Date(reservation.pickupDate),
     returnDate: new Date(reservation.returnDate),
+    totalPrice: reservation.totalPrice
   });
-  const [validDates, setValidDates] = useState(true);
+  const [validDates, setValidDates] = useState(true)
+  const pricePerDay = (reservation.totalPrice) / (
+    (reservation.pickupDate && reservation.returnDate) ? 
+    Math.ceil(((new Date(reservation.returnDate)) - (new Date(reservation.pickupDate))) / (1000 * 60 * 60 * 24) + 1) :
+    1
+  );
+  
   const [validLicense, setValidLicense] = useState(true);
   const [unavailableDates, setUnavailableDates] = useState([]);
   const [reservationDates, setReservationDates] = useState([]);
+  const [creditCardFormatError, setCreditCardFormatError] = useState(false)
   const [checkoutSessionId, setCheckoutSessionId] = useState("");
 
   useEffect(() => {
@@ -41,12 +49,8 @@ const ReservationCard = ({ reservation, onDelete }) => {
     setEditedData({ ...editedData, [name]: date || new Date() });
   };
 
-  const formattedReturnDate = `${editedData.returnDate.getFullYear()}/${
-    editedData.returnDate.getMonth() + 1
-  }/${editedData.returnDate.getDate()}`;
-  const formattedPickupDate = `${editedData.pickupDate.getFullYear()}/${
-    editedData.pickupDate.getMonth() + 1
-  }/${editedData.pickupDate.getDate()}`;
+  const formattedReturnDate = `${editedData.returnDate.getFullYear()}/${editedData.returnDate.getMonth() + 1}/${editedData.returnDate.getDate()}`;
+  const formattedPickupDate = `${editedData.pickupDate.getFullYear()}/${editedData.pickupDate.getMonth() + 1}/${editedData.pickupDate.getDate()}`;
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -70,6 +74,24 @@ const ReservationCard = ({ reservation, onDelete }) => {
     };
     fetchReservations();
   }, [editedData]);
+
+  useEffect(() => {
+    if (editedData.pickupDate && editedData.returnDate) {
+
+      const differenceInMilliseconds = editedData.returnDate - editedData.pickupDate;
+      // Convert the difference to days and round up using Math.ceil()
+      const differenceInDays = Math.ceil(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+      // Calculate the totalPrice
+      const totalPrice = pricePerDay * (differenceInDays + 1);
+      // Update the formData with the new totalPrice
+      setEditedData(prevData => ({
+      ...prevData,
+      totalPrice: totalPrice
+      }));
+    }
+  }, [editedData.pickupDate, editedData.returnDate]);
+  
+  
   // Handler for creating a checkout session
   const handleCheckout = async () => {
     try {
@@ -104,9 +126,9 @@ const ReservationCard = ({ reservation, onDelete }) => {
       return;
     }
 
-    if (!validLicense || phoneNumberFormatError || emailFormatError) {
-      return;
-    }
+      if(!validLicense || phoneNumberFormatError || emailFormatError || creditCardFormatError){
+        return
+      }
     try {
       // POST request to update reservation
       const response = await fetch(`/api/reservations/${editedData._id}`, {
@@ -120,13 +142,15 @@ const ReservationCard = ({ reservation, onDelete }) => {
       if (!response.ok) {
         throw new Error("Failed to update reservation");
       }
-
+      
       setValidLicense(true);
       setIsEditing(false);
       setValidDates(true);
-      setPhoneNumberFormatError(false);
-      setEmailFormatError(false);
-      console.log("Reservation updated successfully");
+      setPhoneNumberFormatError(false)
+      setEmailFormatError(false)
+      setCreditCardFormatError(false)
+      alert('Reservation updated successfully');
+      console.log('Reservation updated successfully');
     } catch (error) {
       console.error("Error updating reservation:", error.message);
     }
@@ -145,12 +169,28 @@ const ReservationCard = ({ reservation, onDelete }) => {
     setEditedData(resetData);
     setIsEditing(false);
     setValidDates(true);
-    setPhoneNumberFormatError(false);
-    setEmailFormatError(false);
+    setPhoneNumberFormatError(false)
+    setEmailFormatError(false)
+    setCreditCardFormatError(false)
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setEditedData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCreditCardChange = (e) => {
+    const { name, value } = e.target;
+    // Regular expression to validate credit card numbers
+    const creditCardRegex = /^(?:3[47]\d{13}|(?:4\d|5[1-5]|65)\d{14}|6011\d{12}|(?:2131|1800)\d{11})$/;
+    if (creditCardRegex.test(value)) {
+      setCreditCardFormatError(false); 
+    } else {
+      setCreditCardFormatError(true);
+    }
     setEditedData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -254,16 +294,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
             )}
 
             <p>
-              <strong>Pickup Address:</strong>{" "}
-              <select
-                name="pickupAddress"
-                value={editedData.pickupAddress}
-                onChange={handleChange}
-              >
-                <option value="Montreal">Montreal</option>
-                <option value="Toronto">Toronto</option>
-                <option value="Ottawa">Ottawa</option>
-              </select>
+              <strong>Pickup Address:</strong>{reservation.pickupAddress}
             </p>
 
             <p>
@@ -313,6 +344,12 @@ const ReservationCard = ({ reservation, onDelete }) => {
                 onChange={handleLicenseChange}
               />
             </p>
+
+            <p>
+              <strong>Credit Card Number:</strong>{(!creditCardFormatError) ? null : (<p style={{ color: 'red' }}>Enter a valid credit card number</p>)}
+              <input type="text" name="creditCard" value={editedData.creditCard} onChange={handleCreditCardChange}/>
+            </p>
+
           </>
         ) : (
           <>
@@ -344,8 +381,16 @@ const ReservationCard = ({ reservation, onDelete }) => {
               <strong>Driver's License:</strong>{" "}
               {editedData.driversLicenseNumber}
             </p>
+
+            <p>
+              <strong>Credit Card Number:</strong> {editedData.creditCard}
+            </p>
+
           </>
         )}
+        <p>
+          <strong>Total Price:</strong> {editedData.totalPrice}
+        </p>
       </div>
       <div className="client-actions">
         {isEditing ? (
@@ -365,7 +410,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
         <button className="delete-button" onClick={handleDeleteClick}>
           Delete Reservation
         </button>
-        <button onClick={handleCheckout}>Checkout</button>
+        <button onClick={handleCheckout}>Process Payment</button>
       </div>
     </div>
   );

@@ -28,6 +28,56 @@ const getReservationByID = async (req, res) => {
     }
 }
 
+//get a single reservation by its id
+const getReservationByConfirmationNumber = async (req, res) => {
+    const { _id } = req.params
+
+    try{
+        const reservation = await Reservation.findOne({ _id: _id})
+        if (!reservation) {
+            return res.status(404).json({error: 'No such reservation'})
+        }
+        res.status(200).json(reservation)
+    }
+    catch (error){
+        console.error('Error finding reservation: ', error)
+        res.status(500).json({message: 'Server error'})
+    }
+}
+
+//get a single reservation by drivers license number
+const getReservationByLicense = async (req, res) => {
+    const { driversLicenseNumber } = req.params
+
+    try{
+        const reservation = await Reservation.findOne({ driversLicenseNumber: driversLicenseNumber})
+        if (!reservation) {
+            return res.status(404).json({error: 'No such reservation'})
+        }
+        res.status(200).json(reservation)
+    }
+    catch (error){
+        console.error('Error finding reservation: ', error)
+        res.status(500).json({message: 'Server error'})
+    }
+}
+
+const getReservationByCard = async (req, res) => {
+    const { creditCard } = req.params
+
+    try{
+        const reservation = await Reservation.findOne({ creditCard: creditCard})
+        if (!reservation) {
+            return res.status(404).json({error: 'No such reservation'})
+        }
+        res.status(200).json(reservation)
+    }
+    catch (error){
+        console.error('Error finding reservation: ', error)
+        res.status(500).json({message: 'Server error'})
+    }
+}
+
 //get a single reservation by fullName
 const getReservationByName = async (req, res) => {
     const { fullName } = req.params
@@ -79,6 +129,7 @@ const getReservationByUserID = async (req, res) => {
     }
 }
 
+
 //get a single reservation by vehicle
 const getReservationByVehicleID = async (req, res) => {
     const { vehicle } = req.params
@@ -98,7 +149,7 @@ const getReservationByVehicleID = async (req, res) => {
 
 //create a reservation
 const bookReservation = async (req, res) => {
-    const { userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice } = req.body;
+    const { userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice, creditCard } = req.body;
     try {
         // Check if the vehicle is available for the selected pickup and return dates
         const overlappingReservations = await Reservation.find({
@@ -115,7 +166,7 @@ const bookReservation = async (req, res) => {
         }
 
         // Create reservation
-        const reservation = await Reservation.create({ userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice });
+        const reservation = await Reservation.create({ userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice, creditCard });
 
         // Mark the vehicle as unavailable for the reservation dates
         await Vehicle.updateOne({ _id: vehicle }, { available: false });
@@ -216,4 +267,4 @@ const deleteReservationByPhone = async (req, res) => {
 }
 
 
-module.exports = { bookReservation, getReservations, getReservationByID, getReservationByName, getReservationByPhone, getReservationByUserID, getReservationByVehicleID, updateReservation, deleteReservationByID, deleteReservationByName, deleteReservationByPhone }
+module.exports = { bookReservation, getReservations, getReservationByID, getReservationByConfirmationNumber, getReservationByLicense, getReservationByCard, getReservationByName, getReservationByPhone, getReservationByUserID, getReservationByVehicleID, updateReservation, deleteReservationByID, deleteReservationByName, deleteReservationByPhone }

@@ -75,4 +75,20 @@ We strive to follow the established rules and guidelines we've collectively devi
 - Review completed reservations, modify or cancel as needed, and provide feedback on rented vehicles.
 
 ### Feedback and Support:
-If you encounter any issues or have suggestions for improvement,reach out to any of the team members mentioned above. Feel free to explore the project! I
+If you encounter any issues or have suggestions for improvement,reach out to any of the team members mentioned above. Feel free to explore the project!
+
+
+## Note for Evaluators:
+In order to properly test the functionality of the webpage, we have created access codes for the System Administrator and Customer Service Representative portals.
+Use these accounts to log in. Note that for security reasons, as the login page is visible to all users including customers, there is no way to register as a CSR or Admin and access these functionalities if the passcodes for accounts have not been previously provided to you. 
+
+- Customer Service Representative
+EMAIL : ben514733@gmail.com 
+PASSWORD: Password123! 
+
+- System Administrator
+EMAIL : benjaminho@gmail.ca 
+PASSWORD : Qazwsxedc1!
+
+## FULL DEMO SHOWCASING ALL FEATURES
+Tap link [here](https://www.loom.com/share/6d2af05264cb4b38a1cadd11e0b09a14) to get access to our full demo where we showcase the core features.

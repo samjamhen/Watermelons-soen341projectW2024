@@ -9,7 +9,7 @@ export const isDateDisabled = (date, unavailableDates) => {
     });
   };
   
-  export const isDateDisabledModify = (date, unavailableDates, currentReservationDates) => {
+export const isDateDisabledModify = (date, unavailableDates, currentReservationDates) => {
     // Check if the date is in the unavailableDates array
     return !unavailableDates.some(unavailableDate => {
       const startDateTimestamp = new Date(unavailableDate.startDate).setHours(0, 0, 0, 0);

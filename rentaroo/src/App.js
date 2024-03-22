@@ -19,10 +19,19 @@ import VehicleForm from './pages/SystemAdministrator/Vehicules/VehicleForm';
 import ConfirmationPage from './components/Confirmation';
 
 import HomeCustomer from "./pages/Customer/CustomerHome";
+import Checkin from "./pages/Service_rep/Checkin";
+import CarInspectionCheckin from "./pages/Service_rep/CarInspectionCheckin";
+
 import HomeCSR from "./pages/Service_rep/ServiceHome";
 import HomeAdmin from "./pages/SystemAdministrator/AdminHome";
+import CheckoutPage from './pages/Service_rep/CheckOut';
+
+import Branch from './pages/Branch';
+import BranchForm from './pages/SystemAdministrator/BranchForm';
 
 import { useAuthContext } from './hooks/useAuthContext';
+import RentalAgreementPage from './pages/RentalAgreementPage';
+import Deposit from './pages/Deposit';
 
 function App() {
   const { user } = useAuthContext();
@@ -51,17 +60,51 @@ function App() {
             user.user.userType === 'customer_representative' ? <HomeCSR /> :
             <Navigate to="/" /> ) : <Navigate to="/Home" />} 
           />
+          <Route path="/CheckOut" element= { user ? (
+            user.user.userType === 'customer_representative' ? <CheckoutPage />:
+           <Navigate to="/" /> ) : <Navigate to="/CheckOut" />} 
+           />
           <Route path="/HomeAdmin" element={ user ? (
             user.user.userType === 'system_administrator' ? <HomeAdmin /> :
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
           />
 
-
           <Route path="/ReservationPage" element={user ? <ReservationPage/> : <Navigate to="/Login"/>} />
+
+
+
+
+
           <Route path="/Admin" element={ user ? (
             user.user.userType === 'system_administrator' ? <Admin /> :
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
           />
+
+
+          <Route path="/Branch" element={ <Branch/>}/>
+          <Route path="/BranchForm" element={<BranchForm/>}/>
+
+          <Route path="/Checkin" element={<Checkin/>}/>
+          <Route path="/CarInspectionCheckin" element={<CarInspectionCheckin/>}/>
+          <Route path="/RentalAgreement" element={<RentalAgreementPage/>}/>
+          <Route path="/Deposit" element={<Deposit/>}/>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <Route path="/ViewReservationPage" element={ user ? (
             user.user.userType === 'client' ? <ViewReservationPage /> :
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
@@ -95,6 +138,7 @@ function App() {
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
           />
           <Route  path="/StartReservation" element={user ? <StartReservation/> : <Navigate to="/Login"/>} />
+
 
         </Routes>
 

@@ -47,6 +47,7 @@ describe('User Model', () => {
       password: 'Password123!',
       userType: 'client',
       phoneNumber: '123-456-7890',
+      totalPrice: 0
     };
 
     //Save the user to the database

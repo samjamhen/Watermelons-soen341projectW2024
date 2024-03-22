@@ -15,6 +15,7 @@
   color: #ffffff;
   text-align: center;
   margin-bottom: 1rem;
+  margin-top: 50px;
 }
 
 .home-description {
@@ -40,3 +41,52 @@
 .home-button:hover {
   background-color: #000000;
 }
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-top: 70px;
+
+  
+}
+
+.search-bar p {
+  margin-right: 10px;
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.search-bar form {
+  display: flex;
+  align-items: center;
+}
+
+.search-bar input[type="text"] {
+  padding: 10px; 
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-size: 16px;
+  width: 400px;
+  opacity: 0.80;
+}
+
+.search-bar button {
+  padding: 8px 16px; 
+  margin-top: 5px;
+  background-color: #ffffff62;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.3s;
+  margin-bottom: 25px;
+}
+
+.search-bar button:hover {
+  background-color: #000000;
+}
+

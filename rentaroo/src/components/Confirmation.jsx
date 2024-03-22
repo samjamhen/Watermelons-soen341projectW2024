@@ -15,6 +15,7 @@ const Confirmation = ({reservationDetails}) => {
         <li>Car: {reservationDetails.vehicle}</li>
         <li>Pick-up Date: {new Date(reservationDetails.pickupDate).toLocaleDateString()}</li>
         <li>Return Date: {new Date(reservationDetails.returnDate).toLocaleDateString()}</li>
+        <li>Total Price: {reservationDetails.totalPrice}</li>
       </ul>
       <p>You can view all your reservations in the "My Reservations" tab in your account.</p>
     </div>

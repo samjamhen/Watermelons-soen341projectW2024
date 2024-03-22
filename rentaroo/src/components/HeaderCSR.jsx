@@ -35,6 +35,11 @@ const Header = () => {
               </Link>
             </li>
             <li>
+             <Link to="/CheckOut" id ="link">
+              CheckOut 
+              </Link> 
+            </li>
+            <li>
               <Link to="/ReservationsManagement" id="link">
                 Manage Reservations
               </Link>
@@ -45,10 +50,15 @@ const Header = () => {
               </Link> */}
             </li>
             <li>
-              {/* <Link to="/ViewReservationPage" id="link">
-                My Reservation
-              </Link> */}
+            <Link to="/Branch" id="link">
+               Find a Branch
+              </Link>
             </li>
+          </ul>
+          <ul id="checkinNavBar">
+            <li><Link to="/Checkin" id="link">
+               Check-In a Customer
+              </Link></li>
           </ul>
         </div>
         {!user && (
@@ -60,7 +70,7 @@ const Header = () => {
         )}
         {user && (
           <div className = "logged-in">
-            <span>Welcome, {user.user.name}</span>
+            <span>Welcome, {user.user.name} (CSR)</span>
             <button onClick={handleLogout} className="logout-button">Logout</button>
           </div>
         )}
