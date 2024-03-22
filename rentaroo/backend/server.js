@@ -36,4 +36,4 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/branches", branchRoutes);
-app.use("api/creditCards", creditCardRoutes);
+app.use("/api/creditCards", creditCardRoutes);
