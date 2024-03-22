@@ -95,7 +95,7 @@ const renderBranchCard = () => {
 
       <p>Explore nearest locations from you</p>
 
-      <div className="search-bar">
+      <div className="search-bar-branch">
       <p>Provide a location</p>
       <form onSubmit={handleSubmit}>
       <input

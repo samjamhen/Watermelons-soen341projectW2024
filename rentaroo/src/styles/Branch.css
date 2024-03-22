@@ -26,7 +26,7 @@
     margin-bottom: 10px;
   }
 
-  .search-bar {
+  .search-bar-branch {
     display: flex;
     align-items: center;
     margin-top: 40px;
@@ -36,7 +36,7 @@
     
   }
   
-  .search-bar p {
+  .search-bar-branch p {
     margin-right: 10px;
     font-size: 18px;
     color: black;
@@ -44,11 +44,11 @@
     margin-bottom: 20px;
   }
   
-  .search-bar form {
+  .search-bar-branch form {
     display: flex;
   }
   
-  .search-bar input[type="text"] {
+  .search-bar-branch input[type="text"] {
     padding: 5px; 
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -58,7 +58,7 @@
     opacity: 0.80;
   }
   
-  .search-bar button {
+  .search-bar-branch button {
     padding: 8px 16px; 
     margin-top: 5px;
     background-color: #ffffff62;
@@ -71,7 +71,7 @@
     margin-bottom: 25px;
   }
   
-  .search-bar button:hover {
+  .search-bar-branchbutton:hover {
     background-color: grey;
   }
 
