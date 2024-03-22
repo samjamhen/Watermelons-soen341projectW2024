@@ -26,13 +26,13 @@ const handleOpenPopup = () => {
     address: '123 5th Avenue, Montreal, Qc, A1A 1A1',
     phone: '123-456-7890',
     openingHours: {
-      Monday: { open: '09:00 AM', close: '05:00 PM' },
-      Tuesday: { open: '09:00 AM', close: '05:00 PM' },
-      Wednesday: { open: '09:00 AM', close: '05:00 PM' },
-      Thursday: { open: '09:00 AM', close: '05:00 PM' },
-      Friday:{ open: '09:00 AM', close: '05:00 PM' },
+      Monday: { open: '09:00 AM', close: '07:00 PM' },
+      Tuesday: { open: '09:00 AM', close: '07:00 PM' },
+      Wednesday: { open: '09:00 AM', close: '08:00 PM' },
+      Thursday: { open: '09:00 AM', close: '08:00 PM' },
+      Friday:{ open: '09:00 AM', close: '08:00 PM' },
       Saturday:{ open: '09:00 AM', close: '05:00 PM' },
-      Sunday:{ open: '09:00 AM', close: '05:00 PM' },
+      Sunday:{ open: 'closed', close: 'closed' },
     },
 
 };
@@ -54,8 +54,8 @@ return (
     <div className="popup-overlay">
       <div className="popup-container">
         <h2>{branches.location}</h2>
-        <p>{branchInfo.address}</p>
-        <p>{branchInfo.phone}</p>
+        <p>{branches.address}</p>
+        <p>{branches.phoneNumber}</p>
         <table>
           <thead>
             <tr>
