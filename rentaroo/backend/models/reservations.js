@@ -40,6 +40,9 @@ const reservations = new mongoose.Schema({
     totalPrice:{
         type: Number,
         required: true
+    }, 
+    creditCard:{
+        type: String,
     }
 }, {timestamps: true});
 
