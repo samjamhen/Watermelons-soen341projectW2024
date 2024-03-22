@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Header from "../components/Header";
+import Header from "../components/HeaderCustomer";
 import Footer from "../components/Footer";
 import ReservationCard from '../components/SystemAdministrator/ReservationCard';
 
 function ViewReservationPage() {
     const [reservations, setReservations] = useState([]);
+    const storedUser = localStorage.getItem('user');
+    const user = JSON.parse(storedUser);
+    const userId = user?.user?._id; 
 
     useEffect(() => {
       fetchAllReservations();
@@ -26,6 +29,15 @@ function ViewReservationPage() {
 
 
   const handleDeleteReservation = async (reservationId) => {
+    // Display a confirmation dialog
+    const isConfirmed = window.confirm("Are you sure you want to delete this reservation?");
+
+    if (!isConfirmed) {
+        // If the user clicks "Cancel", exit the function
+        return;
+    }
+
+    // Proceed with deletion if the user confirmed
     const storedData = localStorage.getItem('user');
     const user = storedData ? JSON.parse(storedData) : null;
 
@@ -34,6 +46,7 @@ function ViewReservationPage() {
             await axios.delete(`/api/reservations/${reservationId}`, {
                 headers: { Authorization: `Bearer ${user.token}` },
             });
+            // Update the state to reflect the deleted reservation
             setReservations(current => current.filter(res => res._id !== reservationId));
             alert('Reservation successfully deleted');
         } catch (error) {
@@ -43,19 +56,28 @@ function ViewReservationPage() {
     } else {
         console.error("User token not found.");
     }
-  };
+};
 
+const filteredReservations = reservations.filter(reservation => reservation.userID === userId);
 
-    return (
-        <div>
-            <Header />
-            <h1>My Reservations</h1>
-            {reservations.map(reservation => (
-              <ReservationCard reservation={reservation} onDelete={() => handleDeleteReservation(reservation._id)} />
-            ))}
-            <Footer />
-        </div>
-    );
+return (
+    <div>
+        <Header />
+        <h1>My Reservations</h1>
+        {filteredReservations.length > 0 ? (
+            filteredReservations.map(reservation => (
+                <ReservationCard 
+                    key={reservation._id}
+                    reservation={reservation} 
+                    onDelete={() => handleDeleteReservation(reservation._id)} 
+                />
+            ))
+        ) : (
+            <h3>You have no reservations.</h3> // Display this message if there are no reservations
+        )}
+        <Footer />
+    </div>
+);
 }
 
 export default ViewReservationPage;

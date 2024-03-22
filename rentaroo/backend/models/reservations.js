@@ -4,7 +4,7 @@ const reservations = new mongoose.Schema({
 
     userID:{
         type: String,
-        default: '65e4edb5ec1fef666ac7a8c9'
+        required: true
     },
     fullName:{
         type: String,
@@ -36,6 +36,13 @@ const reservations = new mongoose.Schema({
     driversLicenseNumber:{
         type: String,
         required: true
+    },
+    totalPrice:{
+        type: Number,
+        required: true
+    }, 
+    creditCard:{
+        type: String,
     }
 }, {timestamps: true});
 

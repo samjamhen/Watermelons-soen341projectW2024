@@ -7,12 +7,13 @@ const AddVehicleForm = () => {
 
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
+  const [category, setcategory] = useState("");
   const [availabilityStatus, setAvailabilityStatus] = useState("available");
   const [yearOfManufacture, setYearOfManufacture] = useState("");
   const [price, setPrice] = useState("");
   const [mileage, setMileage] = useState("");
   const [color, setColor] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState("Montreal - YUL");
   const [transmissionType, setTransmissionType] = useState("automatic");
   const [seatingCapacity, setSeatingCapacity] = useState("");
   const [fuelType, setFuelType] = useState("gasoline");
@@ -22,7 +23,7 @@ const AddVehicleForm = () => {
   const [photos, setPhotos] = useState([""]);
   const [error, setError] = useState(null);
   const [imageError, setImageError] = useState(false);
-  const [vehicleImage, setVehicleImage] = useState(null);
+  // const [vehicleImage, setVehicleImage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(""); // New state for success message
 
   const handleSubmit = async (e) => {
@@ -33,6 +34,7 @@ const AddVehicleForm = () => {
         make,
         model,
         color,
+        category,
         carType,
         transmissionType,
         fuelType,
@@ -62,6 +64,7 @@ const AddVehicleForm = () => {
       } else {
         setMake("");
         setModel("");
+        setcategory("");
         setColor("");
         setCarType("");
         setTransmissionType("");
@@ -69,7 +72,7 @@ const AddVehicleForm = () => {
         setSeatingCapacity("");
         setFeaturesAndAmenities("");
         setRentalTermsAndConditions("");
-        setLocation("");
+        setLocation("Montreal - YUL");
         setAvailabilityStatus("");
         setYearOfManufacture("");
         setMileage("");
@@ -89,10 +92,10 @@ const AddVehicleForm = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
-      setVehicleImage(file);
+      // setVehicleImage(file);
       setImageError(false);
     } else {
-      setVehicleImage("");
+      // setVehicleImage("");
       setImageError(true);
       <span style={{ color: "red" }}>Please upload a JPEG or PNG image.</span>;
     }
@@ -119,6 +122,15 @@ const AddVehicleForm = () => {
           type="text"
           value={model}
           onChange={(e) => setModel(e.target.value)}
+          required
+        />
+      </label>
+      <label>
+        Category:
+        <input
+          type="text"
+          value={category}
+          onChange={(e) => setcategory(e.target.value)}
           required
         />
       </label>
@@ -174,12 +186,11 @@ const AddVehicleForm = () => {
         />
       </label>
       <label>Location:</label>
-      <input
-        type="text"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-      />
-
+      <select value={location} onChange={(e) => setLocation(e.target.value)}>
+          <option value="Montreal - YUL">Montreal - YUL</option>
+          <option value="Laval">Laval</option>
+          <option value="Montreal - Downtown">Montreal - Downtown</option>
+      </select>
       <label>
         Transmission Type:
         <select
@@ -237,26 +248,14 @@ const AddVehicleForm = () => {
           required
         />
       </label>
-      <label>Photos:</label>
+      <label>Photos (add a link):</label>
       <input
         type="text"
         value={photos.join(",")}
         onChange={(e) => setPhotos(e.target.value.split(","))}
+
       />
-      <label>
-        Vehicle Image (JPEG or PNG):
-        <input type="file" onChange={handleImageChange} />
-        {imageError && (
-          <span style={{ color: "red" }}>
-            Please upload a JPEG or PNG image.
-          </span>
-        )}
-        {imageError && (
-          <span style={{ color: "red" }}>
-            Please upload a JPEG or PNG image.
-          </span>
-        )}
-      </label>
+
 
       <button type="submit">Add Vehicle</button>
       {error && <div className="alert alert-danger">{error}</div>}

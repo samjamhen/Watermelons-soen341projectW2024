@@ -23,30 +23,6 @@ const ClientCard = ({ id, name, email, password, phoneNumber, userType, onDelete
     setIsEditing(true);
   };
 
-  {/*}
-  const handleSaveClick = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`api/users/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(editedData),
-      });
-
-      if (response.ok) {
-        setIsEditing(false);
-      }
-      else {
-        console.error('Failed to update user data');
-      }
-    }
-    catch(error) {
-      console.error('Error updating user data:', error)
-    }
-  };
-{*/}
 
 const handleSaveClick = async (e) => {
   e.preventDefault();

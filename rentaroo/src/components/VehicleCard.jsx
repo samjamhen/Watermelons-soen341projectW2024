@@ -38,15 +38,7 @@ function VehicleCard({ vehicle, onSelectButtonClick }) {
         </h2>
         <p className="vehicle-year">{vehicle.yearOfManufacture}</p>
         <p className="vehicle-price">Only {vehicle.price}$ per day</p>
-        <p
-          className={`availability-status ${
-            vehicle.availabilityStatus === "available"
-              ? "available"
-              : "unavailable"
-          }`}
-        >
-          {vehicle.availabilityStatus}
-        </p>
+        
         <p className="vehicle-mileage">Mileage: {vehicle.mileage}Km</p>
         <p className="vehicle-color">Color: {vehicle.color}</p>
         <p className="vehicle-transmission">

@@ -5,6 +5,10 @@ import '../../styles/Home.css'
 import { Link } from 'react-router-dom';
 
 const Home = () => {
+
+  const handleSubmit = () =>{
+
+  }
   return (
     <div>
      <Header/>
@@ -14,6 +18,16 @@ const Home = () => {
       <p className="home-description">
         Discover the joy of driving with our carefully selected fleet of vehicles. From compact cars to spacious SUVs, we have the perfect vehicle for your next adventure.
       </p>
+      <div className="search-bar">
+      <p>Provide a location</p>
+      <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Postal Code, City or Airport"
+      />
+      <button type="submit">Browse Vehicles</button>
+    </form>
+      </div>
       <Link to="/Catalog" className="home-button">
         View Our Vehicle Selection
       </Link>

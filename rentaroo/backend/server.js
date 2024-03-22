@@ -10,6 +10,8 @@ const PORT = process.env.PORT || 8000;
 const reservationRoutes = require("./routes/reservations");
 const usersRoutes = require("./routes/users");
 const vehicleRoutes = require("./routes/vehicles");
+const branchRoutes = require("./routes/branches");
+const creditCardRoutes = require("./routes/creditCards");
 
 //Middleware
 app.use(express.json());
@@ -33,3 +35,5 @@ mongoose
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/vehicles", vehicleRoutes);
+app.use("/api/branches", branchRoutes);
+app.use("/api/creditCards", creditCardRoutes);

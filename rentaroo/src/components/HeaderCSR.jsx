@@ -3,8 +3,17 @@ import "../styles/Header.css";
 import { Link } from "react-router-dom";
 // import logo from './logo.png'
 import "../styles/Header.css";
+import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Header = () => {
+  const {logout} = useLogout();
+  const {user} = useAuthContext();
+
+  const handleLogout = () => {
+    logout();
+  }
+
   return (
     <div className="navBar">
       <nav className="sticky">
@@ -26,22 +35,45 @@ const Header = () => {
               </Link>
             </li>
             <li>
+             <Link to="/CheckOut" id ="link">
+              CheckOut 
+              </Link> 
+            </li>
+            <li>
+              <Link to="/ReservationsManagement" id="link">
+                Manage Reservations
+              </Link>
+            </li>
+            <li>
               {/* <Link to="/Admin" id="link">
                 System Administrator
               </Link> */}
             </li>
             <li>
-              {/* <Link to="/ViewReservationPage" id="link">
-                My Reservation
-              </Link> */}
-            </li>
-            <li>
-              <Link to="/Login" id="link">
-                Log in
+            <Link to="/Branch" id="link">
+               Find a Branch
               </Link>
             </li>
           </ul>
+          <ul id="checkinNavBar">
+            <li><Link to="/Checkin" id="link">
+               Check-In a Customer
+              </Link></li>
+          </ul>
         </div>
+        {!user && (
+        <div id = "navbar">
+          <Link to="/Login" id="link">
+            Log in
+          </Link>
+        </div>
+        )}
+        {user && (
+          <div className = "logged-in">
+            <span>Welcome, {user.user.name} (CSR)</span>
+            <button onClick={handleLogout} className="logout-button">Logout</button>
+          </div>
+        )}
       </nav>
     </div>
   );

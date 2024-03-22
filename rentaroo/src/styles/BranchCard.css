@@ -1,0 +1,33 @@
+.branch-card {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 2rem;
+    height: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width:600px;
+  }
+
+  .city {
+    font-weight: 'bold';
+    font-size: '18px',
+  }
+
+  .admin-actions button {
+    margin-right: 10px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .start-reservation-button{
+    margin-left: 300px;
+  }
+  
+

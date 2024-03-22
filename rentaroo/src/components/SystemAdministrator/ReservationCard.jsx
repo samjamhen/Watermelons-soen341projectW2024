@@ -1,8 +1,9 @@
 // ReservationCard.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; // Import CSS
 import '../../styles/SystemAdministrator/ClientManagement.css';
+import { isDateDisabledModify } from '../utils/utils';
 
 const ReservationCard = ({ reservation, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -11,10 +12,31 @@ const ReservationCard = ({ reservation, onDelete }) => {
   const [editedData, setEditedData] = useState({
     ...reservation,
     pickupDate: new Date(reservation.pickupDate),
-    returnDate: new Date(reservation.returnDate)
+    returnDate: new Date(reservation.returnDate),
+    totalPrice: reservation.totalPrice
   });
   const [validDates, setValidDates] = useState(true)
+  const pricePerDay = (reservation.totalPrice) / (
+    (reservation.pickupDate && reservation.returnDate) ? 
+    Math.ceil(((new Date(reservation.returnDate)) - (new Date(reservation.pickupDate))) / (1000 * 60 * 60 * 24) + 1) :
+    1
+  );
+  
+  const [validLicense, setValidLicense] = useState(true);
+  const [unavailableDates, setUnavailableDates] = useState([]);
+  const [reservationDates, setReservationDates] = useState([]);
+  const [creditCardFormatError, setCreditCardFormatError] = useState(false)
 
+  useEffect(() => {
+    // Construct an array containing all dates within the reservation range
+    const dates = [];
+    let currentDate = new Date(editedData.pickupDate);
+    while (currentDate <= editedData.returnDate) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    setReservationDates(dates);
+  }, [editedData]);
 
   const handleDeleteClick = () => {
     onDelete(editedData._id);
@@ -28,16 +50,56 @@ const ReservationCard = ({ reservation, onDelete }) => {
   const formattedReturnDate = `${editedData.returnDate.getFullYear()}/${editedData.returnDate.getMonth() + 1}/${editedData.returnDate.getDate()}`;
   const formattedPickupDate = `${editedData.pickupDate.getFullYear()}/${editedData.pickupDate.getMonth() + 1}/${editedData.pickupDate.getDate()}`;
 
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch(`/api/reservations/vehicle/${reservation.vehicle}`);
+        if (response.ok) {
+          const reservations = await response.json();
+          const dates = reservations.map(reservation => ({
+            startDate: new Date(reservation.pickupDate),
+            endDate: new Date(reservation.returnDate)
+          }));
+          setUnavailableDates(dates);
+        } else {
+          console.error('Failed to fetch reservations');
+        }
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
+    };
+    fetchReservations();
+  }, [editedData]);
 
+  useEffect(() => {
+    if (editedData.pickupDate && editedData.returnDate) {
+
+      const differenceInMilliseconds = editedData.returnDate - editedData.pickupDate;
+      // Convert the difference to days and round up using Math.ceil()
+      const differenceInDays = Math.ceil(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+      // Calculate the totalPrice
+      const totalPrice = pricePerDay * (differenceInDays + 1);
+      // Update the formData with the new totalPrice
+      setEditedData(prevData => ({
+      ...prevData,
+      totalPrice: totalPrice
+      }));
+    }
+  }, [editedData.pickupDate, editedData.returnDate]);
+  
+  
 
   const handleSaveClick = async (e) => {
     e.preventDefault();
 
-    if (editedData.returnDate <= editedData.pickupDate) {
+    if (editedData.returnDate < editedData.pickupDate) {
         setValidDates(false)
         return;
       }
 
+      if(!validLicense || phoneNumberFormatError || emailFormatError || creditCardFormatError){
+        return
+      }
     try {
       // POST request to update reservation
       const response = await fetch(`/api/reservations/${editedData._id}`, {
@@ -51,9 +113,14 @@ const ReservationCard = ({ reservation, onDelete }) => {
       if (!response.ok) {
         throw new Error('Failed to update reservation');
       }
-
+      
+      setValidLicense(true)
       setIsEditing(false);
       setValidDates(true);
+      setPhoneNumberFormatError(false)
+      setEmailFormatError(false)
+      setCreditCardFormatError(false)
+      alert('Reservation updated successfully');
       console.log('Reservation updated successfully');
     } catch (error) {
       console.error('Error updating reservation:', error.message);
@@ -69,14 +136,33 @@ const ReservationCard = ({ reservation, onDelete }) => {
     };
     
     // Reset editedData to original values
+    setValidLicense(true)
     setEditedData(resetData);
     setIsEditing(false);
     setValidDates(true);
+    setPhoneNumberFormatError(false)
+    setEmailFormatError(false)
+    setCreditCardFormatError(false)
   };
   
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setEditedData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleCreditCardChange = (e) => {
+    const { name, value } = e.target;
+    // Regular expression to validate credit card numbers
+    const creditCardRegex = /^(?:3[47]\d{13}|(?:4\d|5[1-5]|65)\d{14}|6011\d{12}|(?:2131|1800)\d{11})$/;
+    if (creditCardRegex.test(value)) {
+      setCreditCardFormatError(false); 
+    } else {
+      setCreditCardFormatError(true);
+    }
     setEditedData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -108,6 +194,20 @@ const ReservationCard = ({ reservation, onDelete }) => {
     setEditedData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleLicenseChange = (e) => {
+    const { name, value } = e.target;
+    if(/^[A-Za-z0-9]{8}$/.test(value)){
+        setValidLicense(true);
+    } else{
+        setValidLicense(false);
+    }
+
+    setEditedData((prevData) => ({
+        ...prevData,
+        [name]: value,
     }));
   };
 
@@ -143,12 +243,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
             {phoneNumberFormatError && <span style={{ color: 'red' }}>Please enter a phone number in the correct format.</span>}
 
             <p>
-              <strong>Pickup Address:</strong>{' '}
-              <select name="pickupAddress" value={editedData.pickupAddress} onChange={handleChange}>
-                <option value="Montreal">Montreal</option>
-                <option value="Toronto">Toronto</option>
-                <option value="Ottawa">Ottawa</option>
-              </select>
+              <strong>Pickup Address:</strong>{reservation.pickupAddress}
             </p>
 
             <p>
@@ -157,6 +252,7 @@ const ReservationCard = ({ reservation, onDelete }) => {
                 selected={new Date(editedData.pickupDate)}
                 onChange={(date) => handleDateChange(date, 'pickupDate')}
                 minDate={new Date()}
+                filterDate={date => isDateDisabledModify(date, unavailableDates, reservationDates)}
                 dateFormat="YYYY-MM-dd"
                 required
               />
@@ -168,15 +264,22 @@ const ReservationCard = ({ reservation, onDelete }) => {
                 selected={new Date(editedData.returnDate)}
                 onChange={(date) => handleDateChange(date, 'returnDate')}
                 minDate={new Date()}
+                filterDate={date => isDateDisabledModify(date, unavailableDates, reservationDates)}
                 dateFormat="YYYY-MM-dd"
                 required
               />
             </p>
 
             <p>
-              <strong>Driver's License:</strong>
-              <input type="text" name="driversLicense" value={editedData.driversLicenseNumber} onChange={handleChange} />
+              <strong>Driver's License:</strong>{validLicense ? null : (<p style={{ color: 'red' }}>A valid Driver's License is 8 Alphanumeric Characters</p>)}
+              <input type="text" name="driversLicenseNumber" value={editedData.driversLicenseNumber} onChange={handleLicenseChange} />
             </p>
+
+            <p>
+              <strong>Credit Card Number:</strong>{(!creditCardFormatError) ? null : (<p style={{ color: 'red' }}>Enter a valid credit card number</p>)}
+              <input type="text" name="creditCard" value={editedData.creditCard} onChange={handleCreditCardChange}/>
+            </p>
+
           </>
         ) : (
           <>
@@ -207,8 +310,16 @@ const ReservationCard = ({ reservation, onDelete }) => {
             <p>
               <strong>Driver's License:</strong> {editedData.driversLicenseNumber}
             </p>
+
+            <p>
+              <strong>Credit Card Number:</strong> {editedData.creditCard}
+            </p>
+
           </>
         )}
+        <p>
+          <strong>Total Price:</strong> {editedData.totalPrice}
+        </p>
       </div>
       <div className="client-actions">
         {isEditing ? (

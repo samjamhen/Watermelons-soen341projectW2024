@@ -1,29 +1,35 @@
 // ReservationsManagement.js
 import React, { useEffect, useState } from 'react';
-import Header from '../../../components/Header';
+import Header from '../../../components/HeaderAdmin';
+import HeaderCSR from '../../../components/HeaderCSR';
+import HeaderAdmin from '../../../components/HeaderAdmin';
+import HeaderCustomer from '../../../components/HeaderCustomer';
 import Footer from '../../../components/Footer';
 import ReservationCard from '../../../components/SystemAdministrator/ReservationCard';
+import { useAuthContext } from '../../../hooks/useAuthContext';
 
 const ReservationsManagement = () => {
   const [reservations, setReservations] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchOption, setSearchOption] = useState('referenceNumber');
+  const { user } = useAuthContext();
+
+
+  const fetchReservations = async () => {
+    try {
+      const response = await fetch('/api/reservations/');
+      if (response.ok) {
+        const json = await response.json();
+        setReservations(json);
+      } else {
+        throw new Error('Failed to fetch reservations');
+      }
+    } catch (error) {
+      console.error('Error fetching reservations:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        const response = await fetch('/api/reservations/');
-        if (response.ok) {
-          const json = await response.json();
-          setReservations(json);
-        } else {
-          throw new Error('Failed to fetch reservations');
-        }
-      } catch (error) {
-        console.error('Error fetching reservations:', error);
-      }
-    };
-
     fetchReservations();
   }, []);
 
@@ -43,23 +49,58 @@ const ReservationsManagement = () => {
     }
   };
 
-  {/*}
+  
+
   const handleSearch = async () => {
+   
     try {
-      const response = await fetch(`/api/reservations/${searchOption}/${searchTerm}`);
-      if (!response.ok) {
+      let url;
+      if (searchTerm) {
+        let encodedSearchTerm = encodeURIComponent(searchTerm);
+        url = `/api/reservations/${searchOption}/${encodedSearchTerm}`;
+
+      } 
+      
+      else {
+        // Otherwise, fetch all reservations
+        fetchReservations();
+        return;
+      }
+      
+      const response = await fetch(url);
+      console.log(url)
+      if (response.ok) {
+        const json = await response.json();
+        setReservations(json);
+      } else {
         throw new Error('Failed to search reservations');
       }
-      const json = await response.json();
-      setReservations(json);
     } catch (error) {
       console.error('Error searching reservations:', error.message);
     }
-  };*/}
+  };
+
+  const renderHeader = () => {
+    if (!user || !user.user || !user.user.userType) {
+      return <Header />;
+    }
+    
+    let userType = user.user.userType;
+    switch (userType) {
+      case "client":
+        return <HeaderCustomer />;
+      case "customer_representative":
+        return <HeaderCSR />;
+      case "system_administrator":
+        return <HeaderAdmin />;
+      default:
+        return <Header />;
+    }
+  };
 
   return (
     <div>
-      <Header />
+      {renderHeader()}
       <main>
         <select value={searchOption} onChange={(e) => setSearchOption(e.target.value)}>
           <option value="referenceNumber">Reference Number</option>
@@ -72,7 +113,7 @@ const ReservationsManagement = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Enter reservation search term"
         />
-        <button>Search</button>
+        <button onClick={handleSearch}>Search</button>
         <button onClick = {() => window.location.href = 'http://localhost:3000/StartReservation'}>Add</button>
         <div>
           {reservations.length > 0 ? (
