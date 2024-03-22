@@ -35,6 +35,11 @@ const Header = () => {
               </Link>
             </li>
             <li>
+             <Link to="/CheckOut" id ="link">
+              CheckOut 
+              </Link> 
+            </li>
+            <li>
               <Link to="/ReservationsManagement" id="link">
                 Manage Reservations
               </Link>

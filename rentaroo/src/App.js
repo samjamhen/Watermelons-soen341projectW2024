@@ -24,6 +24,7 @@ import CarInspectionCheckin from "./pages/Service_rep/CarInspectionCheckin";
 
 import HomeCSR from "./pages/Service_rep/ServiceHome";
 import HomeAdmin from "./pages/SystemAdministrator/AdminHome";
+import CheckoutPage from './pages/Service_rep/CheckOut';
 
 import Branch from './pages/Branch';
 import BranchForm from './pages/SystemAdministrator/BranchForm';
@@ -59,6 +60,10 @@ function App() {
             user.user.userType === 'customer_representative' ? <HomeCSR /> :
             <Navigate to="/" /> ) : <Navigate to="/Home" />} 
           />
+          <Route path="/CheckOut" element= { user ? (
+            user.user.userType === 'customer_representative' ? <CheckoutPage />:
+           <Navigate to="/" /> ) : <Navigate to="/CheckOut" />} 
+           />
           <Route path="/HomeAdmin" element={ user ? (
             user.user.userType === 'system_administrator' ? <HomeAdmin /> :
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
