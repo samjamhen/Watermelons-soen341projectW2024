@@ -13,13 +13,14 @@ const RentalAgreement = () => {
   const reservation = fetchedReservation.fetchedReservation.fetchedReservation;
   console.log(reservation.phone)
   
+  {/*}
   useEffect(() => {
     if (reservation && reservation.userID) {
       fetch(`/api/users/${reservation.userID}`)
         .then(response => response.json())
         .then(data => setUser(data));
     }
-  }, [fetchedReservation]);
+  }, [fetchedReservation]);*/}
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -37,7 +38,7 @@ const RentalAgreement = () => {
       }
     };
     fetchVehicles();
-  })
+  }, [])
 
 
   console.log('user');
@@ -61,7 +62,7 @@ const RentalAgreement = () => {
         Rental Agreement Number: <span>{reservation._id}</span>
       </p>
       <p>
-        This Rental Agreement ("Agreement") is entered into between Rentaroo, located at <span>{vehicle.location}</span>, hereinafter referred to as the "Rental Company," and the individual or entity identified below, hereinafter referred to as the "Renter":
+        This Rental Agreement ("Agreement") is entered into between Rentaroo, located at {vehicle && <span>{vehicle.location}</span>}, hereinafter referred to as the "Rental Company," and the individual or entity identified below, hereinafter referred to as the "Renter":
       </p>
       <h2>Renter's Information:</h2>
       <p>Name: <span>{reservation.fullName}</span></p>
@@ -70,12 +71,12 @@ const RentalAgreement = () => {
       <p>Email Address: <span>{reservation.email}</span></p>
       <p>Driver's License Number: <span>{reservation.driversLicenseNumber}</span></p>
       <h2>Vehicle Information:</h2>
-      <p>Make: <span>{vehicle.make}</span></p>
-      <p>Model: <span>{vehicle.model}</span></p>
-      <p>Year: <span>{vehicle.yearOfManufacture}</span></p>
-      <p>License Plate Number: <span>{/* Insert vehicle license plate number here */}</span></p>
-      <p>Vehicle Identification Number (VIN): <span>{vehicle._id}</span></p>
-      <p>Color: <span>{vehicle.color}</span></p>
+      <p>Make: {vehicle && <span>{vehicle.make}</span>}</p>
+      <p>Model: {vehicle && <span>{vehicle.model}</span>}</p>
+      <p>Year: {vehicle && <span>{vehicle.yearOfManufacture}</span>}</p>
+      <p>License Plate Number: {vehicle && <span>{/* Insert vehicle license plate number here */}</span>}</p>
+      <p>Vehicle Identification Number (VIN): {vehicle && <span>{vehicle._id}</span>}</p>
+      <p>Color: {vehicle && <span>{vehicle.color}</span>}</p>
       <h2>Rental Details:</h2>
       <p>Rental Start Date: <span>{reservation.pickupDate}</span></p>
       <p>Rental End Date: <span>{reservation.returnDate}</span></p>
@@ -83,7 +84,7 @@ const RentalAgreement = () => {
       <p>Drop-off Location: <span>{reservation.pickupAddress}</span></p>
       <p>Rental Period: <span>{Math.ceil((new Date(reservation.returnDate) - new Date(reservation.pickupDate)) / (1000 * 60 * 60 * 24) + 1)} Days</span></p>
       <p>Mileage Limit (if applicable): <span>{/* Insert mileage limit here */}</span></p>
-      <p>Rental Rate: <span>{vehicle.price}</span></p>
+      <p>Rental Rate: {vehicle && <span>{vehicle.price}</span>}</p>
       <p>Additional Services (if any): <span>{/* Insert additional services here */}</span></p>
       <h2>Rental Terms and Conditions:</h2>
       <p>
