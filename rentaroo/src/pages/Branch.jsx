@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Header from '../components/Header';
 import HeaderAdmin from "../components/HeaderAdmin";
 import HeaderCSR from "../components/HeaderCSR";
@@ -17,6 +17,27 @@ const Branch = () => {
 
   const { user } = useAuthContext();
   const [showMap, setShowMap] = useState(false);
+  const [showList, setShowList] = useState(false);
+  const [branches, setBranches] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
+
+  useEffect(() => {
+    const fetchBranches = async () => {
+      try {
+        console.log("Fetching...");
+        const response = await fetch('/api/branches'); 
+        if (!response.ok) {
+          throw new Error("Failed to fetch branches");
+        }
+        const json = await response.json();
+        setBranches(json);
+      } catch (error) {
+        console.error('Error fetching branches:', error);
+      }
+    }; 
+    console.log("Finish fetching...");   
+    fetchBranches();
+  }, []);
 
   const toggleMap = () => {
     setShowMap(!showMap);
@@ -26,6 +47,8 @@ const Branch = () => {
     if (!user || !user.user || !user.user.userType) {
       return <Header />;
     }
+
+
     
     let userType = user.user.userType;
     switch (userType) {
@@ -40,6 +63,11 @@ const Branch = () => {
     }
 };
 
+const handleSubmit = (e) =>{
+  e.preventDefault(); 
+  setShowList(true); 
+}
+
 const renderBranchCard = () => {
   if (!user || !user.user || !user.user.userType) {
     return <BranchCard />;
@@ -47,12 +75,16 @@ const renderBranchCard = () => {
 
   const userType = user.user.userType;
 
+
+
   switch (userType) {
     case 'system_administrator':
       return <AdminBranchCard />;
     default:
       return <BranchCard />;
   }
+
+
 };
 
   return (
@@ -60,18 +92,44 @@ const renderBranchCard = () => {
        {renderHeader()}
        <div className="container">
       <h2>Find a Branch</h2>
+
+      <p>Explore nearest locations from you</p>
+
+      <div className="search-bar-branch">
+      <p>Provide a location</p>
+      <form onSubmit={handleSubmit}>
+      <input
+              type="text"
+              placeholder="Postal Code, City or Airport"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+      <button type="submit">Find Branch</button>
+      </form>
+      </div>
+
+      <div className="branches">
+      <div className="flex-container">
+      <div className="list-view" style={{ display: showList ? 'block' : 'none' }}>
       <button type="button" onClick={toggleMap}>
         {showMap ? 'Hide Map' : 'Show Map'}
       </button>
-      <div className="flex-container">
-      <div className="list-view">
-        {renderBranchCard()}
+        <div>
+          {branches.length > 0 ? (
+            branches.map((branch) => (
+              <BranchCard key={branch._id} branches={branch} />
+            ))
+          ) : (
+            <p>No reservations found.</p>
+          )}
+        </div>
       </div>
 
       <div className='map-view'>
       {showMap && <Map />} 
       </div>
 
+      </div>
       </div>
     </div>
 

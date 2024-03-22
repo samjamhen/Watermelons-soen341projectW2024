@@ -46,6 +46,8 @@
   display: flex;
   align-items: center;
   margin-top: 70px;
+
+  
 }
 
 .search-bar p {
@@ -68,6 +70,7 @@
   margin-right: 10px;
   font-size: 16px;
   width: 400px;
+  opacity: 0.80;
 }
 
 .search-bar button {
