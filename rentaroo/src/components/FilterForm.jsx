@@ -16,14 +16,22 @@ const FilterForm = ({
   const carTypes = filterOptions ? filterOptions.carTypes : [];
   const categories = filterOptions ? filterOptions.categories : [];
   
-  const [selectedBranchLocation, setSelectedBranchLocation] = useState('');
+  const [selectedBranchLocation, setSelectedBranchLocation] = useState(' ');
 
   useEffect(() => {
     const storedBranchLocation = localStorage.getItem('selectedBranchLocation');
     if (storedBranchLocation) {
       setSelectedBranchLocation(storedBranchLocation);
     }
-  }, []);
+    console.log("test");
+
+    return () => {
+      localStorage.removeItem('selectedBranchLocation'); 
+    };
+  }, []); 
+
+
+
   return (
 
     
@@ -157,8 +165,9 @@ const FilterForm = ({
                 type="radio"
                 name="location"
                 value="Montreal - YUL"
-                checked={selectedBranchLocation === 'Montreal - YUL'}
+                checked={selectedBranchLocation === 'Montreal - YUL' ||selectedBranchLocation === '' }
                 onChange={() => onLocationChange("Montreal - YUL")}
+                onClick={() => setSelectedBranchLocation("Montreal - YUL")}
               />
               Montreal-YUL
             </label>
@@ -169,6 +178,8 @@ const FilterForm = ({
                 value="Montreal - Downtown"
                 checked={selectedBranchLocation === 'Montreal - Downtown'}
                 onChange={() => onLocationChange("Montreal - Downtown")}
+                onClick={() => setSelectedBranchLocation("Montreal - Downtown")}
+                
               />
              Montreal - Downtown
             </label>
@@ -179,7 +190,7 @@ const FilterForm = ({
                 value="Laval"
                 checked={selectedBranchLocation === 'Laval'}
                 onChange={() => onLocationChange("Laval")}
-                disabled={selectedBranchLocation !== 'Montreal - YUL'}
+                onClick={() => setSelectedBranchLocation("Laval")}
               />
               Laval
             </label>

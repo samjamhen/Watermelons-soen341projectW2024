@@ -20,6 +20,12 @@ const locations = [
     lat: 45.49327,
     lng: -73.57379,
   },
+  {
+    id: 3,
+    address: "1555 Bd Curé-Labelle, Laval, QC",
+    lat: 45.549950,
+    lng: -73.757580
+  }
 ];
 
 const BranchMap = () => {
@@ -46,6 +52,8 @@ const BranchMap = () => {
           defaultZoom={11}
           defaultCenter={{ lat: 45.50, lng: -73.56 }}
           mapId={process.env.REACT_APP_MAP_ID}
+          streetViewControl = {false}
+          mapTypeControl = {false}
         >
           {locations.map((location, index) => (
             <React.Fragment key={location.id}>
@@ -54,9 +62,9 @@ const BranchMap = () => {
                 onClick={() => handleMarkerClick(index)}
               >
                 <Pin
-                  background={"white"}
-                  borderColor={"blue"}
-                  glyphColor={"blue"}
+                  background={"blue"}
+                  borderColor={"white"}
+                  glyphColor={"white"}
                 />
               </AdvancedMarker>
               {openInfoWindow[index] && (
