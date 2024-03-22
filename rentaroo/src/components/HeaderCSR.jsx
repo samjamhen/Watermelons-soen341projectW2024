@@ -55,6 +55,11 @@ const Header = () => {
               </Link>
             </li>
           </ul>
+          <ul id="checkinNavBar">
+            <li><Link to="/Checkin" id="link">
+               Check-In a Customer
+              </Link></li>
+          </ul>
         </div>
         {!user && (
         <div id = "navbar">
@@ -65,7 +70,7 @@ const Header = () => {
         )}
         {user && (
           <div className = "logged-in">
-            <span>Welcome, {user.user.name} (Customer Representative)</span>
+            <span>Welcome, {user.user.name} (CSR)</span>
             <button onClick={handleLogout} className="logout-button">Logout</button>
           </div>
         )}

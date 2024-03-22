@@ -66,7 +66,7 @@ const vehicleSchema = new mongoose.Schema(
     availabilityStatus: {
       type: String,
       required: true,
-    },
+    }
   },
   { Timestamp: true }
 );
