@@ -211,9 +211,11 @@ const updateReservation = async (req, res) => {
         }
 
         // Update reservation
+        const old = await Reservation.findById(_id);
+
         const updated = await Reservation.findByIdAndUpdate(_id, updatedReservation, { new: true });
 
-        if (updated.depositStatus == "payed"){
+        if (updated.depositStatus == "payed" && old.depositStatus == "notPayed"){
             await sendDepositConfirmation(updated)
         }else{
             await sendUpdatedConfirmation(updated);
