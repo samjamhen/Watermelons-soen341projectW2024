@@ -1,5 +1,6 @@
 const Reservation = require('../models/reservations.js')
 const Vehicle = require('../models/vehicles.js')
+const { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, send, sendDepositConfirmation } = require('../middleware/emails.js')
 
 //get all reservations
 const getReservations = async (req, res) => {
@@ -149,7 +150,7 @@ const getReservationByVehicleID = async (req, res) => {
 
 //create a reservation
 const bookReservation = async (req, res) => {
-    const { userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice, creditCard } = req.body;
+    const { userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice, creditCard, status, depositStatus } = req.body;
     try {
         // Check if the vehicle is available for the selected pickup and return dates
         const overlappingReservations = await Reservation.find({
@@ -166,10 +167,13 @@ const bookReservation = async (req, res) => {
         }
 
         // Create reservation
-        const reservation = await Reservation.create({ userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice, creditCard });
+        const reservation = await Reservation.create({ userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice, creditCard, status, depositStatus });
 
         // Mark the vehicle as unavailable for the reservation dates
         await Vehicle.updateOne({ _id: vehicle }, { available: false });
+
+        console.log(reservation.email)
+        await sendConfirmationEmail(reservation);
 
         // Return status
         res.status(200).json(reservation);
@@ -207,7 +211,15 @@ const updateReservation = async (req, res) => {
         }
 
         // Update reservation
+        const old = await Reservation.findById(_id);
+
         const updated = await Reservation.findByIdAndUpdate(_id, updatedReservation, { new: true });
+
+        if (updated.depositStatus == "payed" && old.depositStatus == "notPayed"){
+            await sendDepositConfirmation(updated)
+        }else{
+            await sendUpdatedConfirmation(updated);
+        }
 
         res.status(200).json(updated);
     } catch (error) {
@@ -232,6 +244,8 @@ const deleteReservationByID = async (req, res) => {
 
         // Delete the reservation
         await Reservation.findByIdAndDelete(_id);
+
+        await sendDeleteConfirmation(reservation);
 
         // Return success message
         res.status(200).json({ message: 'Reservation canceled successfully' });

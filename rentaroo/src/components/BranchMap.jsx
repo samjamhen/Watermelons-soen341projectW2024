@@ -51,7 +51,7 @@ const BranchMap = () => {
         <Map
           defaultZoom={11}
           defaultCenter={{ lat: 45.50, lng: -73.56 }}
-          mapId={process.env.REACT_APP_MAP_ID}
+          mapId={'514ee2444a491840'}
           streetViewControl = {false}
           mapTypeControl = {false}
         >

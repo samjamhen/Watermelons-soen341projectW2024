@@ -18,14 +18,81 @@ const Deposit = () => {
   console.log("reservation: ");
   console.log(reservation);
 
+  const fetchCard = async () => {
+    try {
+      console.log(deposit.creditCard)
+      const response = await fetch(`/api/creditCards/cardNumber/${deposit.creditCard}`);
+      console.log(response)
+      if (response.ok) {
+        const json = await response.json();
+        setDeposit(prevDeposit => ({ ...prevDeposit, creditCard: json }));
+
+      } else {
+        throw new Error('Failed to fetch creditCards');
+      }
+    } catch (error) {
+      console.error('Error fetching CC:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchCard();
+  }, [])
+
   const handleDepositChange = (event) => {
     const { name, value } = event.target;
     setDeposit((prevDeposit) => ({ ...prevDeposit, [name]: value }));
     setFormValid(event.target.checkValidity());
   };
 
-  const handleDepositSubmit = (event) => {
+  const handleDepositSubmit = async (event) => {
     event.preventDefault();
+    
+    try {
+      // POST request to update card
+      const updatedBalance = (deposit.creditCard.balance - 500);
+      console.log(deposit.creditCard.balance)
+      console.log(updatedBalance)
+      if(updatedBalance < 0){
+        alert("Card Declined: Sufficient Funds Unavailable")
+        return;
+      }
+      const response = await fetch(`/api/creditCards/${deposit.creditCard._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({balance : updatedBalance}),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update balance');
+      }
+      
+      console.log('Balance updated successfully');
+    } catch (error) {
+      console.error('Error updating Balance:', error.message);
+    }
+    try{
+      // POST request to update reservation status
+      const response = await fetch(`/api/reservations/${reservation._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({status : "checked-in", depositStatus: "payed"}),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update reservation status');
+      }
+      
+      console.log('Reservation updated successfully');
+    } catch (error){
+      console.log("hi")
+      console.log(process.env.SENDGRID_API_KEY)
+      console.error('Error updating reservation status')
+    }
     // Handle deposit submission logic here
     alert("Processing Deposit...");
     //do something depending on if deposit is accepted or rejected: 
@@ -53,7 +120,7 @@ const Deposit = () => {
       </h5>
       <form onSubmit={handleDepositSubmit}>
         <br/>
-        <p>Card Number: {deposit.creditCard}</p>
+        <p>Card Number: {deposit.creditCard ? deposit.creditCard.number : ''}</p>
         <br/>
         <p>Full Name: {deposit.fullName}</p>
         <br/>

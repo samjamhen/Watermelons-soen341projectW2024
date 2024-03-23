@@ -1,6 +1,6 @@
 const express = require('express')
 const CreditCard = require("../models/creditCards.js")
-const { createCreditCard, getCreditCards, getCreditCard, updateCreditCard, deleteCreditCard } = require("../controllers/creditCards.js")
+const { createCreditCard, getCreditCards, getCreditCard, getCreditCardByNumber, updateCreditCard, deleteCreditCard } = require("../controllers/creditCards.js")
 
 const router = express.Router()
 
@@ -9,6 +9,9 @@ router.get("/", getCreditCards);
 
 //get a credit card
 router.get("/:_id", getCreditCard);
+
+//get a credit card by number
+router.get("/cardNumber/:number", getCreditCardByNumber);
 
 //create a credit card
 router.post("/", createCreditCard);

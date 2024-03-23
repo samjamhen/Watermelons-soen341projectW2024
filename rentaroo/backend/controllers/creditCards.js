@@ -40,6 +40,19 @@ const getCreditCard = async (req, res) => {
     }
 }
 
+//get a single credit card
+const getCreditCardByNumber = async (req, res) => {
+    try{
+        const creditCard = await CreditCard.findOne({number : req.params.number})
+        if(!creditCard){
+            return res.status(404).json({error: "Credit Card Not Found"})
+        }
+        res.status(200).json(creditCard)
+    } catch (error){
+        res.status(500).json({error: error.message})
+    }
+}
+
 //update a credit card
 const updateCreditCard = async (req, res) => {
     const {number, CVV, balance, expiry} = req.body
@@ -69,4 +82,4 @@ const deleteCreditCard = async (req, res) => {
     }
 }
 
-module.exports = {createCreditCard, getCreditCards, getCreditCard, updateCreditCard, deleteCreditCard}
+module.exports = {createCreditCard, getCreditCards, getCreditCard, getCreditCardByNumber, updateCreditCard, deleteCreditCard}

@@ -5,6 +5,8 @@
     "@iconify-icons/mdi": "^1.2.48",
     "@iconify/icons-mdi": "^1.2.48",
     "@react-google-maps/api": "^2.19.3",
+    "@sendgrid/mail": "^8.1.1",
+    "@vis.gl/react-google-maps": "^0.8.0",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
