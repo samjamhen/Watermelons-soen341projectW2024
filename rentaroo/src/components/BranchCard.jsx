@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import "../styles/BranchCard.css";
 import { Link } from "react-router-dom";
+import {haversineDistance} from "../pages/Branch"
 
 
-const BranchCard = ({branches}) => {
+const BranchCard = ({branches, latitude, longitude}) => {
 
 const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -19,7 +20,7 @@ const handleOpenPopup = () => {
       localStorage.setItem('selectedBranchLocation', branches.location);
       window.location.href = '/StartReservation'; 
   };
-
+  
   const branchInfo = {
     city: ' City',
     address: '123 5th Avenue, Montreal, Qc, A1A 1A1',
@@ -34,18 +35,46 @@ const handleOpenPopup = () => {
       Sunday:{ open: 'closed', close: 'closed' },
     },
 
+  
 };
 
+function toRadians(degrees) {
+  return degrees * (Math.PI / 180);
+}
+
+function haversineDistance(lat1, lon1, lat2, lon2){
+  const R = 6371; // Earth's radius in kilometers
+  const lat1Rad = toRadians(lat1);
+  const lat2Rad = toRadians(lat2);
+  const latDelta = toRadians(lat2 - lat1);
+  const lonDelta = toRadians(lon2 - lon1);
+
+  const a = Math.sin(latDelta / 2) * Math.sin(latDelta / 2) +
+            Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+            Math.sin(lonDelta / 2) * Math.sin(lonDelta / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  const distance = R * c; // Distance in kilometers
+  return distance.toFixed(1);
+}
 return (
     <div className='branch-card'>
-    
+    <p>{haversineDistance(latitude, longitude, branches.latitude, branches.longitude)} km away</p>
+
+
+
       <p className='city'>{branches.location}</p>
     
       <p className='address'>{branches.address}</p>
       <a href="#" className="hoursServices" onClick={handleOpenPopup}>
           Opening Hours
         </a>
+        
+        <p>{haversineDistance(latitude, longitude, branches.latitude, branches.longitude)}</p>
+    
         <button className='start-reservation-button' onClick={handleStartReservation}>Start a Reservation</button>
+
+
      
 
       
