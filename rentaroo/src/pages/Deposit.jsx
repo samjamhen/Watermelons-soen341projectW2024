@@ -89,6 +89,8 @@ const Deposit = () => {
       
       console.log('Reservation updated successfully');
     } catch (error){
+      console.log("hi")
+      console.log(process.env.SENDGRID_API_KEY)
       console.error('Error updating reservation status')
     }
     // Handle deposit submission logic here
