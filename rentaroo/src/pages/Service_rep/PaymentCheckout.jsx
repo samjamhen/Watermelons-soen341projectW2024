@@ -19,7 +19,7 @@ const PaymentCheckout = () => {
             </div>
             <div className="checkout-container">
                 <h1>Payment Checkout Page</h1>
-                {/* <PaymentSettlement /> */}
+                <PaymentSettlement fetchedReservation={fetchedReservation} />
             </div>
             <Footer />
         </div>

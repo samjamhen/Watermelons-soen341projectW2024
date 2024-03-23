@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../styles/CarReturnForm.css';
+import '../styles/CarReturnForm.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const CarReturnForm = () => {
@@ -66,27 +66,26 @@ const CarReturnForm = () => {
 
     // Navigate back to the checkout page
     navigate("/PaymentCheckout", { state: { fetchedReservation } });
-    };
- 
-    const sendEmail = () => {
+  };
+
+  const sendEmail = () => {
     // Placeholder function to send email
     console.log("Sending email...");
-    };
+  };
 
- 
   return (
-    <div className={styles.container}>
-      <form className={styles.form} onSubmit={handleSubmit}>
+    <div className="container">
+      <form className="form" onSubmit={handleSubmit}>
         <h3>Inspection of a Customer's Rental Car Upon Return</h3>
         <div>
-        <h3>Reservation Details:</h3>
-        <p><strong>Full Name:</strong> {fetchedReservation.fullName}</p>
-        <p><strong>Email:</strong> {fetchedReservation.email}</p>
-        <p><strong>Return Date:</strong> {fetchedReservation.returnDate}</p>
-      </div>
-        <div className={styles.box}>
+          <h3>Reservation Details:</h3>
+          <p><strong>Full Name:</strong> {fetchedReservation.fullName}</p>
+          <p><strong>Email:</strong> {fetchedReservation.email}</p>
+          <p><strong>Return Date:</strong> {fetchedReservation.returnDate}</p>
+        </div>
+        <div className="label-checkbox">
           <label htmlFor="left">Left side of the vehicle:</label>
-          <input className={styles.checkbox}
+          <input
             type="checkbox"
             id="left"
             checked={damages.left}
@@ -95,47 +94,47 @@ const CarReturnForm = () => {
           />
           <label className="acknowledge" htmlFor="left">I acknowledge inspecting this part of the car</label>
         </div>
-        <div className={styles.box}>
+        <div className="label-checkbox">
           <label htmlFor="right">Right side of the vehicle:</label>
-          <input className={styles.checkbox}
+          <input
             type="checkbox"
             id="right"
             checked={damages.right}
             onChange={handleDamageChange('right')}
             required
           />
-          <label className = "acknowledge" htmlFor="right">I acknowledge inspecting this part of the car</label>
+          <label className="acknowledge" htmlFor="right">I acknowledge inspecting this part of the car</label>
         </div>
-        <div className={styles.box}>
+        <div className="label-checkbox">
           <label htmlFor="front">Front side of the vehicle:</label>
-          <input className={styles.checkbox}
+          <input
             type="checkbox"
             id="front"
             checked={damages.front}
             onChange={handleDamageChange('front')}
             required
           />
-          <label  className = "acknowledge" htmlFor="front">I acknowledge inspecting this part of the car</label>
+          <label className="acknowledge" htmlFor="front">I acknowledge inspecting this part of the car</label>
         </div>
-        <div className={styles.box}>
+        <div className="label-checkbox">
           <label htmlFor="back">Back side of the vehicle:</label>
-          <input className={styles.checkbox}
+          <input
             type="checkbox"
             id="back"
             checked={damages.back}
             onChange={handleDamageChange('back')}
             required
           />
-          <label  className = "acknowledge" htmlFor="back">I acknowledge inspecting this part of the car</label>
+          <label className="acknowledge" htmlFor="back">I acknowledge inspecting this part of the car</label>
         </div>
         {previousDamages ? (
-            <div className={styles.previousDamages}>
-                <h4>Previous Damages:</h4>
-                <p>{previousDamages}</p>
-            </div>
-            ) : (
-            <p>Previous Damages: None</p>
-            )}
+          <div className="previous-damages">
+            <h4>Previous Damages:</h4>
+            <p>{previousDamages}</p>
+          </div>
+        ) : (
+          <p>Previous Damages: None</p>
+        )}
         <div>
           <label htmlFor="damages-description">Damages Description: (write none if the car is in a perfect state)</label>
           <textarea
@@ -145,12 +144,12 @@ const CarReturnForm = () => {
             required
           />
         </div>
-        {error && <p className={styles.error}>{error}</p>}
+        {error && <p className="error">{error}</p>}
         <button type="submit">Submit</button>
-        
       </form>
     </div>
   );
 };
 
 export default CarReturnForm;
+
