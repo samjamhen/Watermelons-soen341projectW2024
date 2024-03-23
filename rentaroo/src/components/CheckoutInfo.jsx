@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../styles/checkoutInfo.css";
 
@@ -9,6 +9,13 @@ function CheckoutInfo() {
     const [error, setError] = useState(null);
     const [showCheckoutSteps, setShowCheckoutSteps] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Check if fetchedReservation is already passed
+        if (fetchedReservation) {
+            setShowCheckoutSteps(true);
+        }
+    }, [fetchedReservation]);
 
     const handleSearchTypeChange = (e) => {
         setSearchType(e.target.value);
@@ -44,57 +51,49 @@ function CheckoutInfo() {
     };
 
     const handleCheckoutConfirmReturn = () => {
-        navigate('/confirm-return');
+        navigate('/ConfirmReturn', { state: { fetchedReservation } });
     };
 
-    const handleCheckoutCompletePayment = () => {
-        navigate('/complete-payment');
-    };
+   
 
     return (
         <div className='container-1'>
-            <div className='checkout-info-container'>
-                <h4>Search for Customer Reservation</h4>
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor='search-type'>Search by:</label>
-                    <select id='search-type' value={searchType} onChange={handleSearchTypeChange}>
-                        <option value='confirmationNumber'>Confirmation Number</option>
-                        <option value='driversLicenseNumber'>License Number</option>
-                        <option value='creditCardNumber'>Credit Card Number</option>
-                    </select>
-                    <br />
-
-                    <label htmlFor='search-value'>Search Value:</label>
-                    <input
-                        type='text'
-                        id='search-value'
-                        value={searchValue}
-                        onChange={handleSearchValueChange}
-                    />
-                    <br />
-
-                    <button type='submit'>Search for Customer Reservation</button>
-                </form>
-            </div>
-
-            <div className='fetched-reservation'>
-                {fetchedReservation && (
-                    <div>
-                        <h4>Reservation Details</h4>
-                        <p>Reservation Number: {fetchedReservation.reservationNumber}</p>
-                        <p>Customer Name: {fetchedReservation.customerName}</p>
-                    </div>
-                )}
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-
-                {showCheckoutSteps && (
+            {fetchedReservation ? (
+                <div className='fetched-reservation'>
+                    <h4>Reservation Details</h4>
+                    <p>Return Date: {fetchedReservation.returnDate}</p>
+                    <p>Customer Name: {fetchedReservation.fullName}</p>
                     <div>
                         <h4>Checkout Steps</h4>
                         <button onClick={handleCheckoutConfirmReturn}>Confirm Return of Car</button>
-                        <button onClick={handleCheckoutCompletePayment}>Complete Payment Settlement</button>
                     </div>
-                )}
-            </div>
+                </div>
+            ) : (
+                <div className='checkout-info-container'>
+                    <h4>Search for Customer Reservation</h4>
+                    <form onSubmit={handleSubmit}>
+                        <label htmlFor='search-type'>Search by:</label>
+                        <select id='search-type' value={searchType} onChange={handleSearchTypeChange}>
+                            <option value='confirmationNumber'>Confirmation Number</option>
+                            <option value='driversLicenseNumber'>License Number</option>
+                            <option value='creditCardNumber'>Credit Card Number</option>
+                        </select>
+                        <br />
+    
+                        <label htmlFor='search-value'>Search Value:</label>
+                        <input
+                            type='text'
+                            id='search-value'
+                            value={searchValue}
+                            onChange={handleSearchValueChange}
+                        />
+                        <br />
+    
+                        <button type='submit'>Search for Customer Reservation</button>
+                    </form>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                </div>
+            )}
         </div>
     );
 }

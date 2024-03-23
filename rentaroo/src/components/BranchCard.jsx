@@ -3,7 +3,6 @@ import "../styles/BranchCard.css";
 import { Link } from "react-router-dom";
 
 
-
 const BranchCard = ({branches}) => {
 
 const [isPopupOpen, setIsPopupOpen] = useState(false);

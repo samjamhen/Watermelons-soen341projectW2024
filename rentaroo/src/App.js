@@ -21,10 +21,12 @@ import ConfirmationPage from './components/Confirmation';
 import HomeCustomer from "./pages/Customer/CustomerHome";
 import Checkin from "./pages/Service_rep/Checkin";
 import CarInspectionCheckin from "./pages/Service_rep/CarInspectionCheckin";
+import ConfirmReturn from "./pages/Service_rep/ConfirmReturn"
 
 import HomeCSR from "./pages/Service_rep/ServiceHome";
 import HomeAdmin from "./pages/SystemAdministrator/AdminHome";
 import CheckoutPage from './pages/Service_rep/CheckOut';
+import PaymentCheckout from './pages/Service_rep/PaymentCheckout';
 
 import Branch from './pages/Branch';
 import BranchForm from './pages/SystemAdministrator/BranchForm';
@@ -86,6 +88,8 @@ function App() {
 
           <Route path="/Checkin" element={<Checkin/>}/>
           <Route path="/CarInspectionCheckin" element={<CarInspectionCheckin/>}/>
+          <Route path='/ConfirmReturn' element={<ConfirmReturn />} />
+          <Route path='/PaymentCheckout' element={<PaymentCheckout />} />
           <Route path="/RentalAgreement" element={<RentalAgreementPage/>}/>
           <Route path="/Deposit" element={<Deposit/>}/>
 
