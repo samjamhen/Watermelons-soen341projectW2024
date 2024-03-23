@@ -53,7 +53,7 @@ return (
 {isPopupOpen && (
     <div className="popup-overlay">
       <div className="popup-container">
-        <h2>{branchInfo.city}</h2>
+        <h2>{branches.location}</h2>
         <p>{branchInfo.address}</p>
         <p>{branchInfo.phone}</p>
         <table>
