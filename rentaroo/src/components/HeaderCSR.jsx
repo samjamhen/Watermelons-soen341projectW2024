@@ -35,11 +35,6 @@ const Header = () => {
               </Link>
             </li>
             <li>
-             <Link to="/CheckOut" id ="link">
-              CheckOut 
-              </Link> 
-            </li>
-            <li>
               <Link to="/ReservationsManagement" id="link">
                 Manage Reservations
               </Link>
@@ -59,6 +54,13 @@ const Header = () => {
             <li><Link to="/Checkin" id="link">
                Check-In a Customer
               </Link></li>
+          </ul>
+          <ul id="checkoutNavBar">
+          <li>
+             <Link to="/CheckOut" id ="link">
+              Check-Out a Customer
+              </Link> 
+            </li>
           </ul>
         </div>
         {!user && (

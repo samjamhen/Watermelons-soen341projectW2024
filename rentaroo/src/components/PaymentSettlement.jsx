@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/paymentSettlement.css';
 
-const PaymentSettlement = ({ fetchedReservation }) => {
+const PaymentSettlement = ({ fetchedReservation, onSubmit }) => {
   const [damagesPrice, setDamagesPrice] = useState('');
   const [totalPrice, setTotalPrice] = useState(fetchedReservation.totalPrice);
   const [cardNumber, setCardNumber] = useState('');
@@ -33,7 +33,10 @@ const PaymentSettlement = ({ fetchedReservation }) => {
 
   const handleSubmitPayment = () => {
     // Placeholder function for handling payment
+    // Placeholder for email confirmation
+    // add updated price to backend
     console.log('Payment submitted. Deposit will be refunded.');
+    onSubmit();
   };
 
   return (
