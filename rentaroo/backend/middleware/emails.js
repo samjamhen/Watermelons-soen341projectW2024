@@ -1,15 +1,12 @@
 const sgMail = require('@sendgrid/mail');
 require('dotenv').config();
 
-const API_KEY = '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';
-
-
-
+const API_KEY = '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';
 
 // Middleware to send confirmation email
 sendConfirmationEmail = async (reservation) => {
     try {
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        sgMail.setApiKey(API_KEY);
     
         const message = {
             to: `${reservation.email}`,
@@ -38,7 +35,7 @@ sendConfirmationEmail = async (reservation) => {
 
 sendDeleteConfirmation = async (reservation) => {
     try {
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        sgMail.setApiKey(API_KEY);
     
         const message = {
             to: `${reservation.email}`,
@@ -67,7 +64,7 @@ sendDeleteConfirmation = async (reservation) => {
 
 sendUpdatedConfirmation = async (reservation) => {
     try {
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        sgMail.setApiKey(API_KEY);
     
         const message = {
             to: `${reservation.email}`,
