@@ -135,7 +135,7 @@ const RentalAgreement = () => {
             />
         <br />
         <label htmlFor="renterSignature">Name:</label>
-        <input type="text" id="renterSignature" defaultValue={reservation.fullName}/>
+        <input type="text" id="renterSignature"/>
         <br />
         <label htmlFor="renterDate">Date:</label>
         <input

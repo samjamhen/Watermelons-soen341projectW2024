@@ -90,4 +90,32 @@ sendUpdatedConfirmation = async (reservation) => {
       }
 };
 
-module.exports = { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation };
+sendDepositConfirmation = async (reservation) => {
+    try {
+        sgMail.setApiKey(API_KEY);
+    
+        const message = {
+            to: `${reservation.email}`,
+            from: 'rentaroo.hq@gmail.com',
+            subject: 'Deposit Taken',
+            html: `<div className="confirmation-container">
+            <h1>Deposit Received!</h1>
+            <p>Thank you, <b>${reservation.fullName}</b>, your deposit was succesfully taken.</p>
+            <p>Your reservation details:</p>
+            <ul>
+              <li>Car: ${reservation.vehicle}</li>
+              <li>Pick-up Date: ${new Date(reservation.pickupDate).toLocaleDateString()}</li>
+              <li>Return Date: ${new Date(reservation.returnDate).toLocaleDateString()}</li>
+              <li>Total Price: ${reservation.totalPrice}</li>
+            </ul>
+            <p>You can view all your reservations in the "My Reservations" tab in your account.</p>
+          </div>`
+        }
+    
+        await sgMail.send(message);
+      } catch (error) {
+        console.error('Error sending confirmation email:', error);
+        throw new Error('Error sending confirmation email');
+      }
+};
+module.exports = { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation };

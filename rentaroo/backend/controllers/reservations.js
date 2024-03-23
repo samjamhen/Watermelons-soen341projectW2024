@@ -1,6 +1,6 @@
 const Reservation = require('../models/reservations.js')
 const Vehicle = require('../models/vehicles.js')
-const { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation } = require('../middleware/emails.js')
+const { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, send, sendDepositConfirmation } = require('../middleware/emails.js')
 
 //get all reservations
 const getReservations = async (req, res) => {
@@ -150,7 +150,7 @@ const getReservationByVehicleID = async (req, res) => {
 
 //create a reservation
 const bookReservation = async (req, res) => {
-    const { userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice, creditCard } = req.body;
+    const { userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice, creditCard, status, depositStatus } = req.body;
     try {
         // Check if the vehicle is available for the selected pickup and return dates
         const overlappingReservations = await Reservation.find({
@@ -167,7 +167,7 @@ const bookReservation = async (req, res) => {
         }
 
         // Create reservation
-        const reservation = await Reservation.create({ userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice, creditCard });
+        const reservation = await Reservation.create({ userID, fullName, vehicle, email, phone, pickupAddress, pickupDate, returnDate, driversLicenseNumber, totalPrice, creditCard, status, depositStatus });
 
         // Mark the vehicle as unavailable for the reservation dates
         await Vehicle.updateOne({ _id: vehicle }, { available: false });
@@ -213,7 +213,11 @@ const updateReservation = async (req, res) => {
         // Update reservation
         const updated = await Reservation.findByIdAndUpdate(_id, updatedReservation, { new: true });
 
-        await sendUpdatedConfirmation(updated);
+        if (updated.depositStatus == "payed"){
+            await sendDepositConfirmation(updated)
+        }else{
+            await sendUpdatedConfirmation(updated);
+        }
 
         res.status(200).json(updated);
     } catch (error) {

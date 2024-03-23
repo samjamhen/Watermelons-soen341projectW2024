@@ -47,6 +47,10 @@ const reservations = new mongoose.Schema({
     status:{
         type: String,
         default: "booked"
+    },
+    depositStatus:{
+        type: String, 
+        default: "notPayed"
     }
 }, {timestamps: true});
 
