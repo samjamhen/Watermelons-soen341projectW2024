@@ -55,63 +55,78 @@ const PaymentSettlement = ({ fetchedReservation, onSubmit }) => {
   }, [])
 
   const handleSubmitPayment = async () => {
-    // Placeholder function for handling payment
-    // Placeholder for email confirmation
-    // add updated price to backend
-    if(reservation.depositStatus == "returned"){
-      alert("Deposit has already been returned");
-      return;
-    }
-    if(reservation.depositStatus == "notPayed"){
-      alert("Deposit was never payed");
-    }
     try {
-      // POST request to update card
-      const updatedBalance = (creditCard.balance + 500);
-      console.log(creditCard.balance)
-      console.log(updatedBalance)
-      if(!creditCard){
-        alert("Card Error: Cannot Return Funds")
+      // Calculate the new final price
+      const newFinalPrice = fetchedReservation.totalPrice + parseFloat(damagesPrice);
+      
+      // POST request to update the reservation's final price
+      const response = await fetch(`/api/reservations/${fetchedReservation._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ finalPrice: newFinalPrice }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to update reservation final price');
+      }
+  
+      console.log('Reservation final price updated successfully');
+  
+      if (reservation.depositStatus === "returned") {
+        alert("Deposit has already been returned");
         return;
       }
-      const response = await fetch(`/api/creditCards/${creditCard._id}`, {
+      if (reservation.depositStatus === "notPayed") {
+        alert("Deposit was never paid");
+        return; // If deposit not paid, stop further processing
+      }
+  
+      // POST request to update card
+      const updatedBalance = creditCard.balance + 500;
+      if (!creditCard) {
+        alert("Card Error: Cannot Return Funds");
+        return;
+      }
+  
+      const cardUpdateResponse = await fetch(`/api/creditCards/${creditCard._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({balance : updatedBalance}),
+        body: JSON.stringify({ balance: updatedBalance }),
       });
-
-      if (!response.ok) {
+  
+      if (!cardUpdateResponse.ok) {
         throw new Error('Failed to update balance');
       }
-      
+  
       console.log('Balance updated successfully');
-    } catch (error) {
-      console.error('Error updating Balance:', error.message);
-    }
-    try{
+  
       // POST request to update reservation status
-      const response = await fetch(`/api/reservations/${reservation._id}`, {
+      const reservationUpdateResponse = await fetch(`/api/reservations/${reservation._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({status : "checked-out", depositStatus: "returned"}),
+        body: JSON.stringify({ status: "checked-out", depositStatus: "returned" }),
       });
-
-      if (!response.ok) {
+  
+      if (!reservationUpdateResponse.ok) {
         throw new Error('Failed to update reservation status');
       }
-      
+  
       console.log('Reservation updated successfully');
-    } catch (error){
-      console.log("hi")
-      console.error('Error updating reservation status')
+  
+      // If all processing was successful, call onSubmit
+      console.log('Payment submitted. Deposit will be refunded.');
+      onSubmit();
+    } catch (error) {
+      console.error('Error processing payment:', error.message);
     }
-    console.log('Payment submitted. Deposit will be refunded.');
-    onSubmit();
   };
+  
 
   return (
     <div className="payment-settlement-container">
