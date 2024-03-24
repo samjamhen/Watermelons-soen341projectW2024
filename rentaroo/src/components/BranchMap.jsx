@@ -29,13 +29,6 @@ const locations = [
 ];
 
 
-
-
-
-
-
-
-
 const BranchMap = () => {
   const [openInfoWindow, setOpenInfoWindow] = React.useState(
     locations.map(() => false)

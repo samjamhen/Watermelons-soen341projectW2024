@@ -20,12 +20,13 @@ const Branch = () => {
   const [showList, setShowList] = useState(false);
   const [branches, setBranches] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+  const [inputDisabled, setInputDisabled] = useState(false);
   const [autocomplete, setAutocomplete] = useState(null);
   const [isAutocompleteSelected, setIsAutoCompleteSelected] = useState(false);
   const [lat, setLat]= useState();
   const [lon, setLon] = useState();
   const [formSubmitted, setFormSubmitted] = useState(false);
-  
+
   useEffect(() => {
     const fetchBranches = async () => {
       try {
@@ -42,6 +43,14 @@ const Branch = () => {
     }; 
     console.log("Finish fetching...");   
     fetchBranches();
+  }, []);
+
+  useEffect(() => {
+    const storedSearchInput = localStorage.getItem('searchInput');
+    if (storedSearchInput) {
+      setSearchInput(storedSearchInput);
+      window.localStorage.removeItem('searchInput');
+    }
   }, []);
 
   const toggleMap = () => {
@@ -72,6 +81,7 @@ const handleSubmit = (e) =>{
   if (isAutocompleteSelected) {
     setShowList(true); 
     setFormSubmitted(true);
+    setInputDisabled(true);
   }
 };
 
@@ -112,11 +122,8 @@ const onPlaceChanged = () => {
 const handleAutocompleteInputChange = (e) => {
   setSearchInput(e.target.value);
   setIsAutoCompleteSelected(false);
-  if (e.target.value === '') {
-    setAutocomplete(null);
-  }
+  setInputDisabled(false);
 };
-
 
   return (
     <div>
@@ -146,7 +153,7 @@ const handleAutocompleteInputChange = (e) => {
               placeholder="Postal Code, City or Airport"
               value={searchInput}
               onChange={handleAutocompleteInputChange}
-              disabled={isAutocompleteSelected}
+              disabled={inputDisabled}
               className = "input-location"
             />
           </Autocomplete>
