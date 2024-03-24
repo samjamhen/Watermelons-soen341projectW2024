@@ -34,6 +34,7 @@ import BranchForm from './pages/SystemAdministrator/BranchForm';
 import { useAuthContext } from './hooks/useAuthContext';
 import RentalAgreementPage from './pages/RentalAgreementPage';
 import Deposit from './pages/Deposit';
+import DepositConfirmation from './components/DepositConfirmation';
 
 function App() {
   const { user } = useAuthContext();
@@ -92,6 +93,7 @@ function App() {
           <Route path='/PaymentCheckout' element={<PaymentCheckout />} />
           <Route path="/RentalAgreement" element={<RentalAgreementPage/>}/>
           <Route path="/Deposit" element={<Deposit/>}/>
+          <Route path="/DepositConfirmation" element={<DepositConfirmation/>}/>
 
           
 
