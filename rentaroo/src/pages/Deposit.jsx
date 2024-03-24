@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Deposit = () => {
+  const navigate = useNavigate(); // Create a navigate function
+
   const location = useLocation();
   const reservation = location.state.reservation;
   const [deposit, setDeposit] = useState({
@@ -93,8 +95,9 @@ const Deposit = () => {
       console.log(process.env.SENDGRID_API_KEY)
       console.error('Error updating reservation status')
     }
-    // Handle deposit submission logic here
     alert("Processing Deposit...");
+    navigate("/DepositConfirmation", { state: { reservation } });
+
     //do something depending on if deposit is accepted or rejected: 
     //confirmation page or denied message (allow to use another 
     //credit card? Or maybe request to change the amount..)
@@ -124,16 +127,8 @@ const Deposit = () => {
         <br/>
         <p>Full Name: {deposit.fullName}</p>
         <br/>
-        <label htmlFor="amount">Deposit Amount:</label>
-        <h6>Do not modify the deposit amount except in special circumstances, with permission only.</h6>
-        <h6>Make sure to inform the client and take his concent before changing this amount.</h6>
-        <input
-          type="number"
-          name="amount"
-          value={deposit.amount}
-          onChange={handleDepositChange}
-          required
-        />
+        <label htmlFor="amount">Deposit Amount: $500</label>
+<h6>The deposit amount is set to $500 and cannot be modified.</h6>
         <br />
         <label htmlFor="cvv">CVV:</label>
         <input
