@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/paymentSettlement.css';
 
 const PaymentSettlement = ({ fetchedReservation, onSubmit }) => {
@@ -7,6 +7,8 @@ const PaymentSettlement = ({ fetchedReservation, onSubmit }) => {
   const [cardNumber, setCardNumber] = useState('');
   const [cvv, setCVV] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
+  const [creditCard, setCreditCard] = useState(null)
+  const [reservation, setReservation] = useState(fetchedReservation)
 
   const handleDamagesPriceChange = (e) => {
     const value = e.target.value;
@@ -31,10 +33,82 @@ const PaymentSettlement = ({ fetchedReservation, onSubmit }) => {
     setExpirationDate(e.target.value);
   };
 
-  const handleSubmitPayment = () => {
+  const fetchCard = async () => {
+    try {
+      console.log(reservation.creditCard)
+      const response = await fetch(`/api/creditCards/cardNumber/${reservation.creditCard}`);
+      console.log(response)
+      if (response.ok) {
+        const json = await response.json();
+        setCreditCard(json);
+
+      } else {
+        throw new Error('Failed to fetch creditCards');
+      }
+    } catch (error) {
+      console.error('Error fetching CC:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchCard();
+  }, [])
+
+  const handleSubmitPayment = async () => {
     // Placeholder function for handling payment
     // Placeholder for email confirmation
     // add updated price to backend
+    if(reservation.depositStatus == "returned"){
+      alert("Deposit has already been returned");
+      return;
+    }
+    if(reservation.depositStatus == "notPayed"){
+      alert("Deposit was never payed");
+    }
+    try {
+      // POST request to update card
+      const updatedBalance = (creditCard.balance + 500);
+      console.log(creditCard.balance)
+      console.log(updatedBalance)
+      if(!creditCard){
+        alert("Card Error: Cannot Return Funds")
+        return;
+      }
+      const response = await fetch(`/api/creditCards/${creditCard._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({balance : updatedBalance}),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update balance');
+      }
+      
+      console.log('Balance updated successfully');
+    } catch (error) {
+      console.error('Error updating Balance:', error.message);
+    }
+    try{
+      // POST request to update reservation status
+      const response = await fetch(`/api/reservations/${reservation._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({status : "checked-out", depositStatus: "returned"}),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update reservation status');
+      }
+      
+      console.log('Reservation updated successfully');
+    } catch (error){
+      console.log("hi")
+      console.error('Error updating reservation status')
+    }
     console.log('Payment submitted. Deposit will be refunded.');
     onSubmit();
   };
@@ -61,7 +135,7 @@ const PaymentSettlement = ({ fetchedReservation, onSubmit }) => {
           id="card-number"
           value={cardNumber}
           onChange={handleCardNumberChange}
-          maxLength={12}
+          maxLength={16}
         />
         <label htmlFor="cvv">CVV:</label>
         <input

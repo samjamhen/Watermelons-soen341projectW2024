@@ -48,6 +48,10 @@ const Deposit = () => {
   const handleDepositSubmit = async (event) => {
     event.preventDefault();
     
+    if(reservation.depositStatus == "payed"){
+      alert("Deposit already payed")
+      return
+    }
     try {
       // POST request to update card
       const updatedBalance = (deposit.creditCard.balance - 500);
@@ -90,11 +94,10 @@ const Deposit = () => {
       console.log('Reservation updated successfully');
     } catch (error){
       console.log("hi")
-      console.log(process.env.SENDGRID_API_KEY)
       console.error('Error updating reservation status')
     }
     // Handle deposit submission logic here
-    alert("Processing Deposit...");
+    alert("Deposit Taken");
     //do something depending on if deposit is accepted or rejected: 
     //confirmation page or denied message (allow to use another 
     //credit card? Or maybe request to change the amount..)
