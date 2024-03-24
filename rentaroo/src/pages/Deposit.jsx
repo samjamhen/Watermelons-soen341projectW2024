@@ -104,8 +104,14 @@ const Deposit = () => {
   };
 
   return (
-    <div>
-      <HeaderCSR />
+    <div className="deposit-page">
+
+    <div className="deposit-container">
+        <div className="header-csr">
+          <HeaderCSR />
+        </div>
+        <div className="deposit-content">
+
       <h3>Taking the deposit for a customer</h3>
       <h5>
         A refundable security deposit of ${deposit.amount} is required before taking
@@ -148,8 +154,14 @@ const Deposit = () => {
           Proceed with Deposit
         </button>
       </form>
+      </div>
+      <div className="footer">
+
       <Footer />
+      </div>
     </div>
+    </div>
+
   );
 };
 
