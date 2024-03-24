@@ -13,7 +13,9 @@ const Home = () => {
 
   const { user } = useAuthContext();
   const [autocomplete, setAutocomplete] = useState(null);
+  const [isAutocompleteSelected, setIsAutoCompleteSelected] = useState(false);
   const [searchInput, setSearchInput] = useState('');
+  
 
 
   const renderHeader = () => {
@@ -34,20 +36,30 @@ const Home = () => {
     }
   }
 
-  const handleSubmit = () =>{
-
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    const place = autocomplete.getPlace();
+    localStorage.setItem('searchInput', place.formatted_address);
+    window.location.href = '/Branch'; 
   }
+
+  const handleAutocompleteInputChange = (e) => {
+    setSearchInput(e.target.value);
+    setIsAutoCompleteSelected(false);
+  };
 
   const onLoad = (autocomplete) => {
     setAutocomplete(autocomplete);
   };
   
   const onPlaceChanged = () => {
-    if (autocomplete !== null) {
+    if (autocomplete !== null && searchInput.trim() !== '') {
       const place = autocomplete.getPlace();
       setSearchInput(place.formatted_address);
+      setIsAutoCompleteSelected(true);
     } else {
       console.log('Autocomplete is not loaded yet!');
+      setIsAutoCompleteSelected(false);
     }
   };
 
@@ -77,10 +89,10 @@ const Home = () => {
               type="text"
               placeholder="Postal Code, City or Airport"
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+              onChange={handleAutocompleteInputChange}
             />
           </Autocomplete>
-          <button type="submit">Browse Vehicles</button>
+          <button type="submit" disabled={!isAutocompleteSelected}>Browse Vehicles</button>
         </form>
       </div>
       <Link to="/Catalog" className="home-button">

@@ -59,26 +59,20 @@ function haversineDistance(lat1, lon1, lat2, lon2){
 }
 return (
     <div className='branch-card'>
-    <p>{haversineDistance(latitude, longitude, branches.latitude, branches.longitude)} km away</p>
-
-
 
       <p className='city'>{branches.location}</p>
     
       <p className='address'>{branches.address}</p>
       <a href="#" className="hoursServices" onClick={handleOpenPopup}>
           Opening Hours
-        </a>
+      </a>
         
-        <p>{haversineDistance(latitude, longitude, branches.latitude, branches.longitude)}</p>
+        <p style = {{marginTop: '10px'}}>{haversineDistance(latitude, longitude, branches.latitude, branches.longitude)} km away</p>
     
         <button className='start-reservation-button' onClick={handleStartReservation}>Start a Reservation</button>
 
 
-     
-
-      
-{isPopupOpen && (
+  {isPopupOpen && (
     <div className="popup-overlay">
       <div className="popup-container">
         <h2>{branches.location}</h2>
