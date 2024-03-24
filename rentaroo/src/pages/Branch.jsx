@@ -21,13 +21,11 @@ const Branch = () => {
   const [branches, setBranches] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [autocomplete, setAutocomplete] = useState(null);
-
-
-
-
-
+  const [isAutocompleteSelected, setIsAutoCompleteSelected] = useState(false);
+  const [lat, setLat]= useState();
+  const [lon, setLon] = useState();
+  const [formSubmitted, setFormSubmitted] = useState(false);
   
-
   useEffect(() => {
     const fetchBranches = async () => {
       try {
@@ -71,8 +69,11 @@ const Branch = () => {
 const handleSubmit = (e) =>{
   e.preventDefault();
   console.log(searchInput);
-  setShowList(true); 
-}
+  if (isAutocompleteSelected) {
+    setShowList(true); 
+    setFormSubmitted(true);
+  }
+};
 
 const renderBranchCard = () => {
   if (!user || !user.user || !user.user.userType) {
@@ -94,25 +95,27 @@ const onLoad = (autocomplete) => {
   setAutocomplete(autocomplete);
 };
 
-const [lat, setLat]= useState();
-const [lon, setLon] = useState();
-const onPlaceChanged = () => {
-  
-  if (autocomplete !== null) {
 
+const onPlaceChanged = () => {
+  if (autocomplete !== null && searchInput.trim() !== '') {
     const place = autocomplete.getPlace();
     setSearchInput(place.formatted_address);
     setLat(place.geometry.location.lat());
     setLon(place.geometry.location.lng());
-    
-  
+    setIsAutoCompleteSelected(true);
   } else {
     console.log('Autocomplete is not loaded yet!');
+    setIsAutoCompleteSelected(false);
   }
-  
 };
 
-
+const handleAutocompleteInputChange = (e) => {
+  setSearchInput(e.target.value);
+  setIsAutoCompleteSelected(false);
+  if (e.target.value === '') {
+    setAutocomplete(null);
+  }
+};
 
 
   return (
@@ -142,18 +145,19 @@ const onPlaceChanged = () => {
               type="text"
               placeholder="Postal Code, City or Airport"
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+              onChange={handleAutocompleteInputChange}
+              disabled={isAutocompleteSelected}
               className = "input-location"
             />
           </Autocomplete>
-          <button type="submit" className = "find-branch-button">Find Branch</button>
+          <button type="submit" className = "find-branch-button" disabled = {!isAutocompleteSelected || formSubmitted}>Find Branch</button>
         </form>
         </div>
       </div>
 
       <div className="branches">
       <div className="flex-container">
-      <div className="list-view" style={{ display: showList ? 'block' : 'none' }}>
+      <div className="list-view" style={{ display: showList && isAutocompleteSelected ? 'block' : 'none' }}>
       <button type="button" onClick={toggleMap}>
         {showMap ? 'Hide Map' : 'Show Map'}
       </button>
@@ -164,8 +168,6 @@ const onPlaceChanged = () => {
               
             ))
           ) 
-        
-          
           : (
             <p>No branches found.</p>
           )}
