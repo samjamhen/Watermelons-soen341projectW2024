@@ -70,7 +70,7 @@ sendUpdatedConfirmation = async (reservation) => {
             from: 'rentaroo.hq@gmail.com',
             subject: 'Booking Updated',
             html: `<div className="confirmation-container">
-            <h1>Reservation Deleted!</h1>
+            <h1>Reservation Updated!</h1>
             <p>Thank you, <b>${reservation.fullName}</b>, your reservation was succesfully updated.</p>
             <p>Your new updated reservation details:</p>
             <ul>
@@ -118,4 +118,33 @@ sendDepositConfirmation = async (reservation) => {
         throw new Error('Error sending confirmation email');
       }
 };
-module.exports = { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation };
+
+sendDepositReturnConfirmation = async (reservation) => {
+    try {
+        sgMail.setApiKey(API_KEY);
+    
+        const message = {
+            to: `${reservation.email}`,
+            from: 'rentaroo.hq@gmail.com',
+            subject: 'Deposit Returned',
+            html: `<div className="confirmation-container">
+            <h1>Deposit Returned!</h1>
+            <p>Thank you, <b>${reservation.fullName}</b>, your deposit was succesfully returned.</p>
+            <p>Your reservation details:</p>
+            <ul>
+              <li>Car: ${reservation.vehicle}</li>
+              <li>Pick-up Date: ${new Date(reservation.pickupDate).toLocaleDateString()}</li>
+              <li>Return Date: ${new Date(reservation.returnDate).toLocaleDateString()}</li>
+              <li>Total Price: ${reservation.totalPrice}</li>
+            </ul>
+            <p>You can view all your reservations in the "My Reservations" tab in your account.</p>
+          </div>`
+        }
+    
+        await sgMail.send(message);
+      } catch (error) {
+        console.error('Error sending confirmation email:', error);
+        throw new Error('Error sending confirmation email');
+      }
+};
+module.exports = { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendDepositReturnConfirmation };
