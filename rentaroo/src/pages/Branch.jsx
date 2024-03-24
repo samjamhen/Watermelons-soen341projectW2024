@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Header from '../components/Header';
 import HeaderAdmin from "../components/HeaderAdmin";
 import HeaderCSR from "../components/HeaderCSR";
@@ -21,6 +21,12 @@ const Branch = () => {
   const [branches, setBranches] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [autocomplete, setAutocomplete] = useState(null);
+
+
+
+
+
+  
 
   useEffect(() => {
     const fetchBranches = async () => {
@@ -63,7 +69,8 @@ const Branch = () => {
 };
 
 const handleSubmit = (e) =>{
-  e.preventDefault(); 
+  e.preventDefault();
+  console.log(searchInput);
   setShowList(true); 
 }
 
@@ -83,17 +90,30 @@ const renderBranchCard = () => {
 };
 
 const onLoad = (autocomplete) => {
+  console.log("onLoad...");
   setAutocomplete(autocomplete);
 };
 
+const [lat, setLat]= useState();
+const [lon, setLon] = useState();
 const onPlaceChanged = () => {
+  
   if (autocomplete !== null) {
+
     const place = autocomplete.getPlace();
     setSearchInput(place.formatted_address);
+    setLat(place.geometry.location.lat());
+    setLon(place.geometry.location.lng());
+    
+  
   } else {
     console.log('Autocomplete is not loaded yet!');
   }
+  
 };
+
+
+
 
   return (
     <div>
@@ -110,6 +130,7 @@ const onPlaceChanged = () => {
           <Autocomplete
             onLoad={onLoad}
             onPlaceChanged={onPlaceChanged}
+
             options={{
               types: ['geocode'],
               strictBounds: true,
@@ -139,10 +160,14 @@ const onPlaceChanged = () => {
         <div>
           {branches.length > 0 ? (
             branches.map((branch) => (
-              <BranchCard key={branch._id} branches={branch} />
+              <BranchCard key={branch._id} branches={branch} latitude={lat} longitude={lon}/>
+              
             ))
-          ) : (
-            <p>No reservations found.</p>
+          ) 
+        
+          
+          : (
+            <p>No branches found.</p>
           )}
         </div>
       </div>

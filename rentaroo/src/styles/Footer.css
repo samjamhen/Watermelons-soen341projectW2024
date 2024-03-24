@@ -2,7 +2,7 @@
     background-color: #b4b4b4;
     color: #fff;
     padding: 20px;
-    text-align: center
+    text-align: center;
   }
   
   .footer a {
@@ -12,3 +12,5 @@
   .footer a:hover {
     text-decoration: underline;
   }
+
+  
