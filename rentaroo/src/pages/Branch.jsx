@@ -88,20 +88,20 @@ const handleSubmit = (e) =>{
   }
 };
 
-const renderBranchCard = () => {
-  if (!user || !user.user || !user.user.userType) {
-    return <BranchCard />;
-  }
+// const renderBranchCard = () => {
+//   if (!user || !user.user || !user.user.userType) {
+//     return <BranchCard />;
+//   }
 
-  const userType = user.user.userType;
+//   const userType = user.user.userType;
 
-  switch (userType) {
-    case 'system_administrator':
-      return <AdminBranchCard />;
-    default:
-      return <BranchCard />;
-  }
-};
+//   switch (userType) {
+//     case 'system_administrator':
+//       return <AdminBranchCard />;
+//     default:
+//       return <BranchCard />;
+//   }
+// };
 
 const onLoad = (autocomplete) => {
   console.log("onLoad...");
