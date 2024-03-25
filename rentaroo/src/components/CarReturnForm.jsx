@@ -16,12 +16,16 @@ const CarReturnForm = () => {
   const location = useLocation();
   const fetchedReservation = location.state.fetchedReservation; // Access fetchedReservation from location.state
   const navigate = useNavigate(); // Create a navigate function
+  const [reservation, setReservation] = useState(null)
+
 
   useEffect(() => {
-    // Fetch previous damages from backend
-    fetchPreviousDamages();
-  }, []);
+    setReservation(fetchedReservation);
+    setPreviousDamages(fetchedReservation.previousDamages);
+  }, [fetchedReservation]);
+  
 
+{/*
   const fetchPreviousDamages = async () => {
     try {
       // Perform fetch request to fetch previous damages
@@ -36,7 +40,7 @@ const CarReturnForm = () => {
       console.error(error);
       // Handle error
     }
-  };
+  };*/}
 
   const handleDamageChange = (part) => (e) => {
     setDamages({ ...damages, [part]: e.target.checked });
@@ -46,7 +50,7 @@ const CarReturnForm = () => {
     setDamagesDescription(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const isAnyDamageChecked = Object.values(damages).some((isDamage) => isDamage);
@@ -57,13 +61,29 @@ const CarReturnForm = () => {
     }
 
     setError('');
+    try {
+      
+      const response = await fetch(`/api/reservations/${fetchedReservation._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({newDamages : damagesDescription, status: "checked-out"}),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update reservation');
+      }
+      
+      console.log('reservation updated successfully');
+    } catch (error) {
+      console.error('Error updating reservation:', error.message);
+    }
     // Submit the form data here
     // You can include logic to send the damages and description to the backend
     // and handle the return process
 
     // Placeholder function call to send email
-    sendEmail();
-
     // Navigate back to the checkout page
     navigate("/PaymentCheckout", { state: { fetchedReservation } });
   };

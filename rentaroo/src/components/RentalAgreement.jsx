@@ -46,7 +46,7 @@ const RentalAgreement = () => {
       }
     };
     fetchVehicles();
-  }, [])
+  }, [])  
 
   if (!reservation) {
     return <div>Loading...</div>;

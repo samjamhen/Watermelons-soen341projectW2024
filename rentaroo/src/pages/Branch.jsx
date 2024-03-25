@@ -13,6 +13,8 @@ import '../styles/Branch.css'
 import { Autocomplete } from '@react-google-maps/api'
 
 
+
+
 const Branch = () => {
 
   const { user } = useAuthContext();
@@ -49,6 +51,7 @@ const Branch = () => {
     const storedSearchInput = localStorage.getItem('searchInput');
     if (storedSearchInput) {
       setSearchInput(storedSearchInput);
+      console.log(storedSearchInput);
       window.localStorage.removeItem('searchInput');
     }
   }, []);
@@ -85,20 +88,20 @@ const handleSubmit = (e) =>{
   }
 };
 
-const renderBranchCard = () => {
-  if (!user || !user.user || !user.user.userType) {
-    return <BranchCard />;
-  }
+// const renderBranchCard = () => {
+//   if (!user || !user.user || !user.user.userType) {
+//     return <BranchCard />;
+//   }
 
-  const userType = user.user.userType;
+//   const userType = user.user.userType;
 
-  switch (userType) {
-    case 'system_administrator':
-      return <AdminBranchCard />;
-    default:
-      return <BranchCard />;
-  }
-};
+//   switch (userType) {
+//     case 'system_administrator':
+//       return <AdminBranchCard />;
+//     default:
+//       return <BranchCard />;
+//   }
+// };
 
 const onLoad = (autocomplete) => {
   console.log("onLoad...");
@@ -109,6 +112,7 @@ const onLoad = (autocomplete) => {
 const onPlaceChanged = () => {
   if (autocomplete !== null && searchInput.trim() !== '') {
     const place = autocomplete.getPlace();
+    console.log(place);
     setSearchInput(place.formatted_address);
     setLat(place.geometry.location.lat());
     setLon(place.geometry.location.lng());
@@ -153,11 +157,10 @@ const handleAutocompleteInputChange = (e) => {
               placeholder="Postal Code, City or Airport"
               value={searchInput}
               onChange={handleAutocompleteInputChange}
-              disabled={inputDisabled}
               className = "input-location"
             />
           </Autocomplete>
-          <button type="submit" className = "find-branch-button" disabled = {!isAutocompleteSelected || formSubmitted}>Find Branch</button>
+          <button type="submit" className = "find-branch-button" >Find Branch</button>
         </form>
         </div>
       </div>
@@ -168,10 +171,12 @@ const handleAutocompleteInputChange = (e) => {
       <button type="button" onClick={toggleMap}>
         {showMap ? 'Hide Map' : 'Show Map'}
       </button>
+        
+        
         <div>
-          {branches.length > 0 ? (
-            branches.map((branch) => (
-              <BranchCard key={branch._id} branches={branch} latitude={lat} longitude={lon}/>
+        {branches.length > 0 ? (
+         branches.map((branch) => (
+              <BranchCard key={branch._id} branches={branch} latitude={lat} longitude={lon} />
               
             ))
           ) 

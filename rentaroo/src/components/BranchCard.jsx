@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {haversineDistance} from "../pages/Branch"
 
 
+
 const BranchCard = ({branches, latitude, longitude}) => {
 
 const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -57,8 +58,15 @@ function haversineDistance(lat1, lon1, lat2, lon2){
   const distance = R * c; // Distance in kilometers
   return distance.toFixed(1);
 }
+const distance = haversineDistance(latitude, longitude, branches.latitude, branches.longitude);
+
+
+
 return (
     <div className='branch-card'>
+    <p>{distance} km away</p>
+
+
 
       <p className='city'>{branches.location}</p>
     
@@ -67,7 +75,6 @@ return (
           Opening Hours
       </a>
         
-        <p style = {{marginTop: '10px'}}>{haversineDistance(latitude, longitude, branches.latitude, branches.longitude)} km away</p>
     
         <button className='start-reservation-button' onClick={handleStartReservation}>Start a Reservation</button>
 
