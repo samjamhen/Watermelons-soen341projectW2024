@@ -51,6 +51,7 @@ const Branch = () => {
     const storedSearchInput = localStorage.getItem('searchInput');
     if (storedSearchInput) {
       setSearchInput(storedSearchInput);
+      console.log(storedSearchInput);
       window.localStorage.removeItem('searchInput');
     }
   }, []);
@@ -111,6 +112,7 @@ const onLoad = (autocomplete) => {
 const onPlaceChanged = () => {
   if (autocomplete !== null && searchInput.trim() !== '') {
     const place = autocomplete.getPlace();
+    console.log(place);
     setSearchInput(place.formatted_address);
     setLat(place.geometry.location.lat());
     setLon(place.geometry.location.lng());
@@ -155,11 +157,10 @@ const handleAutocompleteInputChange = (e) => {
               placeholder="Postal Code, City or Airport"
               value={searchInput}
               onChange={handleAutocompleteInputChange}
-              disabled={inputDisabled}
               className = "input-location"
             />
           </Autocomplete>
-          <button type="submit" className = "find-branch-button" disabled = {!isAutocompleteSelected || formSubmitted}>Find Branch</button>
+          <button type="submit" className = "find-branch-button" >Find Branch</button>
         </form>
         </div>
       </div>
@@ -173,8 +174,8 @@ const handleAutocompleteInputChange = (e) => {
         
         
         <div>
-        {sortedBranches.length > 0 ? (
-        sortedBranches.map((branch) => (
+        {branches.length > 0 ? (
+         branches.map((branch) => (
               <BranchCard key={branch._id} branches={branch} latitude={lat} longitude={lon} />
               
             ))
