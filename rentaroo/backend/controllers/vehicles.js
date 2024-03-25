@@ -60,10 +60,18 @@ const createVehicle = async (req, res) => {
 //READ
 //Get all Vehicles
 const getAllVehicles = async (req, res) => {
-  const vehicles = await Vehicle.find({}).sort({ Timestamp: -1 });
-
-  res.status(200).json(vehicles);
+  try {
+    const vehicles = await Vehicle.find({});
+    if (!vehicles || vehicles.length === 0) {
+      res.status(404).json({ error: 'Vehicles not found' });
+    } else {
+      res.status(200).json(vehicles);
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
+
 //Get a specific Vehicle
 const getVehicle = async (req, res) => {
   const { id } = req.params;
