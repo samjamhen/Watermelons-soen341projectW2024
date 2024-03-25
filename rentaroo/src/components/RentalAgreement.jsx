@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import '../styles/RentalAgreement.css';
 
 const RentalAgreement = () => {
   const location = useLocation();
@@ -135,7 +136,7 @@ const RentalAgreement = () => {
             />
         <br />
         <label htmlFor="renterSignature">Name:</label>
-        <input type="text" id="renterSignature" defaultValue={reservation.fullName}/>
+        <input type="text" id="renterSignature"/>
         <br />
         <label htmlFor="renterDate">Date:</label>
         <input

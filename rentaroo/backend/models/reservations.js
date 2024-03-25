@@ -43,6 +43,14 @@ const reservations = new mongoose.Schema({
     }, 
     creditCard:{
         type: String,
+    },
+    status:{
+        type: String,
+        default: "booked"
+    },
+    depositStatus:{
+        type: String, 
+        default: "notPayed"
     }
 }, {timestamps: true});
 

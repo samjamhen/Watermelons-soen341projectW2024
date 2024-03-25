@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Header from '../components/Header';
 import HeaderAdmin from "../components/HeaderAdmin";
 import HeaderCSR from "../components/HeaderCSR";
@@ -20,7 +20,12 @@ const Branch = () => {
   const [showList, setShowList] = useState(false);
   const [branches, setBranches] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+  const [inputDisabled, setInputDisabled] = useState(false);
   const [autocomplete, setAutocomplete] = useState(null);
+  const [isAutocompleteSelected, setIsAutoCompleteSelected] = useState(false);
+  const [lat, setLat]= useState();
+  const [lon, setLon] = useState();
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   useEffect(() => {
     const fetchBranches = async () => {
@@ -38,6 +43,14 @@ const Branch = () => {
     }; 
     console.log("Finish fetching...");   
     fetchBranches();
+  }, []);
+
+  useEffect(() => {
+    const storedSearchInput = localStorage.getItem('searchInput');
+    if (storedSearchInput) {
+      setSearchInput(storedSearchInput);
+      window.localStorage.removeItem('searchInput');
+    }
   }, []);
 
   const toggleMap = () => {
@@ -63,9 +76,14 @@ const Branch = () => {
 };
 
 const handleSubmit = (e) =>{
-  e.preventDefault(); 
-  setShowList(true); 
-}
+  e.preventDefault();
+  console.log(searchInput);
+  if (isAutocompleteSelected) {
+    setShowList(true); 
+    setFormSubmitted(true);
+    setInputDisabled(true);
+  }
+};
 
 const renderBranchCard = () => {
   if (!user || !user.user || !user.user.userType) {
@@ -83,16 +101,28 @@ const renderBranchCard = () => {
 };
 
 const onLoad = (autocomplete) => {
+  console.log("onLoad...");
   setAutocomplete(autocomplete);
 };
 
+
 const onPlaceChanged = () => {
-  if (autocomplete !== null) {
+  if (autocomplete !== null && searchInput.trim() !== '') {
     const place = autocomplete.getPlace();
     setSearchInput(place.formatted_address);
+    setLat(place.geometry.location.lat());
+    setLon(place.geometry.location.lng());
+    setIsAutoCompleteSelected(true);
   } else {
     console.log('Autocomplete is not loaded yet!');
+    setIsAutoCompleteSelected(false);
   }
+};
+
+const handleAutocompleteInputChange = (e) => {
+  setSearchInput(e.target.value);
+  setIsAutoCompleteSelected(false);
+  setInputDisabled(false);
 };
 
   return (
@@ -110,6 +140,7 @@ const onPlaceChanged = () => {
           <Autocomplete
             onLoad={onLoad}
             onPlaceChanged={onPlaceChanged}
+
             options={{
               types: ['geocode'],
               strictBounds: true,
@@ -121,28 +152,31 @@ const onPlaceChanged = () => {
               type="text"
               placeholder="Postal Code, City or Airport"
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+              onChange={handleAutocompleteInputChange}
+              disabled={inputDisabled}
               className = "input-location"
             />
           </Autocomplete>
-          <button type="submit" className = "find-branch-button">Find Branch</button>
+          <button type="submit" className = "find-branch-button" disabled = {!isAutocompleteSelected || formSubmitted}>Find Branch</button>
         </form>
         </div>
       </div>
 
       <div className="branches">
       <div className="flex-container">
-      <div className="list-view" style={{ display: showList ? 'block' : 'none' }}>
+      <div className="list-view" style={{ display: showList && isAutocompleteSelected ? 'block' : 'none' }}>
       <button type="button" onClick={toggleMap}>
         {showMap ? 'Hide Map' : 'Show Map'}
       </button>
         <div>
           {branches.length > 0 ? (
             branches.map((branch) => (
-              <BranchCard key={branch._id} branches={branch} />
+              <BranchCard key={branch._id} branches={branch} latitude={lat} longitude={lon}/>
+              
             ))
-          ) : (
-            <p>No reservations found.</p>
+          ) 
+          : (
+            <p>No branches found.</p>
           )}
         </div>
       </div>
