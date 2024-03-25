@@ -10,30 +10,23 @@ import {
 const locations = [
   {
     id: 1,
-    address: "Bd Roméro Vachon Nord, Dorval, QC",
+    address: "Bd Roméro Vachon Nord, Dorval, QC H4Y 1H1",
     lat: 45.4549,
     lng: -73.75135,
   },
   {
     id: 2,
-    address: "1005 Guy St, Montreal, QC",
+    address: "1005 Guy St, Montreal, QC H3G 2H1",
     lat: 45.49327,
     lng: -73.57379,
   },
   {
     id: 3,
-    address: "1555 Bd Curé-Labelle, Laval, QC",
+    address: "1555 Bd Curé-Labelle, Laval, QC H7V 2W5",
     lat: 45.549950,
     lng: -73.757580
   }
 ];
-
-
-
-
-
-
-
 
 
 const BranchMap = () => {
