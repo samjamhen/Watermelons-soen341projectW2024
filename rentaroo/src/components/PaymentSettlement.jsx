@@ -9,6 +9,7 @@ const PaymentSettlement = ({ fetchedReservation, onSubmit }) => {
   const [expirationDate, setExpirationDate] = useState('');
   const [creditCard, setCreditCard] = useState(null)
   const [reservation, setReservation] = useState(fetchedReservation)
+  const [creditCardPaying, setCreditCardPaying] = useState(null);
 
   const handleDamagesPriceChange = (e) => {
     const value = e.target.value;
@@ -22,7 +23,7 @@ const PaymentSettlement = ({ fetchedReservation, onSubmit }) => {
   };
 
   const handleCardNumberChange = (e) => {
-    setCardNumber(e.target.value.slice(0, 12));
+    setCardNumber(e.target.value.slice(0, 16));
   };
 
   const handleCVVChange = (e) => {
@@ -50,9 +51,27 @@ const PaymentSettlement = ({ fetchedReservation, onSubmit }) => {
     }
   }
 
+  const fetchPayingCard = async () => {
+    try {
+      console.log(reservation.creditCard)
+      const response = await fetch(`/api/creditCards/cardNumber/${cardNumber}`);
+      console.log(response)
+      if (response.ok) {
+        const json = await response.json();
+        setCreditCardPaying(json);
+
+      } else {
+        throw new Error('Failed to fetch creditCards');
+      }
+    } catch (error) {
+      console.error('Error fetching CC:', error);
+    }
+  }
+
   useEffect(() => {
     fetchCard();
-  }, [])
+    fetchPayingCard();
+  }, [cardNumber])
 
   const handleSubmitPayment = async () => {
     // Placeholder function for handling payment
@@ -64,7 +83,17 @@ const PaymentSettlement = ({ fetchedReservation, onSubmit }) => {
     }
     if(reservation.depositStatus == "notPayed"){
       alert("Deposit was never payed");
+      return;
     }
+    if(creditCardPaying.CVV!==cvv || creditCardPaying.expiry!==expirationDate){
+      alert("Credit Card Details Invalid. Please try again.")
+      return
+    }
+    if((totalPrice)>creditCardPaying.balance){
+      alert("Card Declined: Insufficient Funds");
+      return;
+    }
+    
     try {
       // POST request to update card
       const updatedBalance = (creditCard.balance + 500);
@@ -90,6 +119,31 @@ const PaymentSettlement = ({ fetchedReservation, onSubmit }) => {
     } catch (error) {
       console.error('Error updating Balance:', error.message);
     }
+    try {
+      // POST request to update card
+      const updatedBalance = (creditCardPaying.balance - totalPrice);
+      console.log(creditCardPaying.balance)
+      console.log(updatedBalance)
+      if(!creditCardPaying){
+        alert("Card Error: Cannot Process Payment")
+        return;
+      }
+      const response = await fetch(`/api/creditCards/${creditCardPaying._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({balance : updatedBalance}),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update balance');
+      }
+      
+      console.log('Balance updated successfully');
+    } catch (error) {
+      console.error('Error updating Balance:', error.message);
+    }
     try{
       // POST request to update reservation status
       const response = await fetch(`/api/reservations/${reservation._id}`, {
@@ -97,7 +151,7 @@ const PaymentSettlement = ({ fetchedReservation, onSubmit }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({status : "checked-out", depositStatus: "returned"}),
+        body: JSON.stringify({status : "checked-out", depositStatus: "returned", finalPrice: totalPrice}),
       });
 
       if (!response.ok) {
