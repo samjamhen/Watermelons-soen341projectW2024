@@ -22,13 +22,12 @@ const Branch = () => {
   const [showList, setShowList] = useState(false);
   const [branches, setBranches] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+  const [inputDisabled, setInputDisabled] = useState(false);
   const [autocomplete, setAutocomplete] = useState(null);
-
-
-
-
-
-  
+  const [isAutocompleteSelected, setIsAutoCompleteSelected] = useState(false);
+  const [lat, setLat]= useState();
+  const [lon, setLon] = useState();
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   useEffect(() => {
     const fetchBranches = async () => {
@@ -46,6 +45,14 @@ const Branch = () => {
     }; 
     console.log("Finish fetching...");   
     fetchBranches();
+  }, []);
+
+  useEffect(() => {
+    const storedSearchInput = localStorage.getItem('searchInput');
+    if (storedSearchInput) {
+      setSearchInput(storedSearchInput);
+      window.localStorage.removeItem('searchInput');
+    }
   }, []);
 
   const toggleMap = () => {
@@ -73,8 +80,12 @@ const Branch = () => {
 const handleSubmit = (e) =>{
   e.preventDefault();
   console.log(searchInput);
-  setShowList(true); 
-}
+  if (isAutocompleteSelected) {
+    setShowList(true); 
+    setFormSubmitted(true);
+    setInputDisabled(true);
+  }
+};
 
 const renderBranchCard = () => {
   if (!user || !user.user || !user.user.userType) {
@@ -96,38 +107,25 @@ const onLoad = (autocomplete) => {
   setAutocomplete(autocomplete);
 };
 
-const [lat, setLat]= useState();
-const [lon, setLon] = useState();
-const onPlaceChanged = () => {
-  
-  if (autocomplete !== null) {
 
+const onPlaceChanged = () => {
+  if (autocomplete !== null && searchInput.trim() !== '') {
     const place = autocomplete.getPlace();
     setSearchInput(place.formatted_address);
     setLat(place.geometry.location.lat());
     setLon(place.geometry.location.lng());
-    
-  
+    setIsAutoCompleteSelected(true);
   } else {
     console.log('Autocomplete is not loaded yet!');
+    setIsAutoCompleteSelected(false);
   }
-  
 };
 
-
-  const [sortedBranches, setSortedBranches] = useState([]);
-
-  useEffect(() => {
-    if (branches.length > 0) {
-      console.log('Original Branches:', branches);
-      console.log(branches.distance);
-      
-      const sorted = branches.sort((a, b) => a.distance - b.distance);
-      console.log('Sorted Branches:', sorted);
-      setSortedBranches(sorted);
-    }
-  }, [branches]);
-
+const handleAutocompleteInputChange = (e) => {
+  setSearchInput(e.target.value);
+  setIsAutoCompleteSelected(false);
+  setInputDisabled(false);
+};
 
   return (
     <div>
@@ -156,18 +154,19 @@ const onPlaceChanged = () => {
               type="text"
               placeholder="Postal Code, City or Airport"
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+              onChange={handleAutocompleteInputChange}
+              disabled={inputDisabled}
               className = "input-location"
             />
           </Autocomplete>
-          <button type="submit" className = "find-branch-button">Find Branch</button>
+          <button type="submit" className = "find-branch-button" disabled = {!isAutocompleteSelected || formSubmitted}>Find Branch</button>
         </form>
         </div>
       </div>
 
       <div className="branches">
       <div className="flex-container">
-      <div className="list-view" style={{ display: showList ? 'block' : 'none' }}>
+      <div className="list-view" style={{ display: showList && isAutocompleteSelected ? 'block' : 'none' }}>
       <button type="button" onClick={toggleMap}>
         {showMap ? 'Hide Map' : 'Show Map'}
       </button>
@@ -180,8 +179,6 @@ const onPlaceChanged = () => {
               
             ))
           ) 
-        
-          
           : (
             <p>No branches found.</p>
           )}

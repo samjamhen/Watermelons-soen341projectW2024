@@ -73,16 +73,13 @@ return (
       <p className='address'>{branches.address}</p>
       <a href="#" className="hoursServices" onClick={handleOpenPopup}>
           Opening Hours
-        </a>
+      </a>
         
     
         <button className='start-reservation-button' onClick={handleStartReservation}>Start a Reservation</button>
 
 
-     
-
-      
-{isPopupOpen && (
+  {isPopupOpen && (
     <div className="popup-overlay">
       <div className="popup-container">
         <h2>{branches.location}</h2>
