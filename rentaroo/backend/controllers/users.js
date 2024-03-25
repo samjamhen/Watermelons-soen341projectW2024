@@ -77,10 +77,10 @@ const deleteUser = async (req, res) => {
 
 //LOGIN
 const loginUser = async (req, res) => {
-    const {email, password} = req.body
+    const {email, password, userType} = req.body
 
     try {
-        const user = await User.login(email, password)
+        const user = await User.login(email, password, userType)
         if (!user) {
             return res.status(404).json({error: 'User not found'})
         }

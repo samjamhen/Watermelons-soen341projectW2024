@@ -110,7 +110,7 @@ sendDepositConfirmation = async (reservation) => {
               <li>Deposit amount: $500</li>
               <li>Damages: ${reservation.previousDamages}</li>
               <li>Total Price: ${reservation.updatedPrice}</li>
-              <li>Timestamp: {new Date().toLocaleString()}</li>
+              <li>Timestamp: ${new Date().toLocaleString()}</li>
             </ul>
           </div>
           <Footer />
@@ -160,16 +160,16 @@ sendDepositReturnConfirmation = async (reservation) => {
         const message = {
             to: `${reservation.email}`,
             from: 'rentaroo.hq@gmail.com',
-            subject: 'Deposit Returned',
+            subject: 'Payment Confirmed & Deposit Returned',
             html: `<div className="confirmation-container">
             <h1>Thank You! Payment Confirmed</h1>
             <p>Thank you, <b>${reservation.fullName}</b>, for your payment. Your payment has been successfully confirmed.</p>
             <p>Your payment details:</p>
             <ul>
               <li>Rental Price: ${reservation.totalPrice}</li>
-              {/* <li>Damages: ${reservation.newDamages}</li> */}
-              {/* <li>Total Price: ${reservation.finalPrice}</li> */} 
-              <li>Timestamp: {new Date().toLocaleString()}</li>
+              <li>Damages: ${reservation.newDamages}</li>
+              <li>Total Price: ${reservation.finalPrice}</li> 
+              <li>Timestamp: ${new Date().toLocaleString()}</li>
             </ul>
           </div>`
         }
