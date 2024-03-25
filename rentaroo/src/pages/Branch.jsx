@@ -13,6 +13,8 @@ import '../styles/Branch.css'
 import { Autocomplete } from '@react-google-maps/api'
 
 
+
+
 const Branch = () => {
 
   const { user } = useAuthContext();
@@ -113,6 +115,18 @@ const onPlaceChanged = () => {
 };
 
 
+  const [sortedBranches, setSortedBranches] = useState([]);
+
+  useEffect(() => {
+    if (branches.length > 0) {
+      console.log('Original Branches:', branches);
+      console.log(branches.distance);
+      
+      const sorted = branches.sort((a, b) => a.distance - b.distance);
+      console.log('Sorted Branches:', sorted);
+      setSortedBranches(sorted);
+    }
+  }, [branches]);
 
 
   return (
@@ -157,10 +171,12 @@ const onPlaceChanged = () => {
       <button type="button" onClick={toggleMap}>
         {showMap ? 'Hide Map' : 'Show Map'}
       </button>
+        
+        
         <div>
-          {branches.length > 0 ? (
-            branches.map((branch) => (
-              <BranchCard key={branch._id} branches={branch} latitude={lat} longitude={lon}/>
+        {sortedBranches.length > 0 ? (
+        sortedBranches.map((branch) => (
+              <BranchCard key={branch._id} branches={branch} latitude={lat} longitude={lon} />
               
             ))
           ) 
