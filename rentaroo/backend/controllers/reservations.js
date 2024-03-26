@@ -1,6 +1,6 @@
 const Reservation = require('../models/reservations.js')
 const Vehicle = require('../models/vehicles.js')
-const { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendDepositReturnConfirmation } = require('../middleware/emails.js')
+const { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendVehicleReturnConfirmation, sendDepositReturnConfirmation } = require('../middleware/emails.js')
 
 //get all reservations
 const getReservations = async (req, res) => {
@@ -217,6 +217,9 @@ const updateReservation = async (req, res) => {
 
         if (updated.depositStatus == "payed" && old.depositStatus == "notPayed"){
             await sendDepositConfirmation(updated)
+        }
+        else if(updated.status == "checked-out" && old.status == "checked-in"){
+            await sendVehicleReturnConfirmation(updated)
         }
         else if(updated.depositStatus == "returned" && old.depositStatus == "payed"){
             await sendDepositReturnConfirmation(updated)

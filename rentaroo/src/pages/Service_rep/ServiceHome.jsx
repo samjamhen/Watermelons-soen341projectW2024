@@ -37,7 +37,24 @@ const Home = () => {
   const handleSubmit = (e) =>{
     e.preventDefault();
     const place = autocomplete.getPlace();
-    localStorage.setItem('searchInput', place.formatted_address);
+  
+    // Function to build the address string
+    const buildAddressString = (place) => {
+      const addressComponents = [];
+      place.address_components.forEach(component => {
+        const { long_name, types } = component;
+        if (types.includes('street_number') || types.includes('route') || types.includes('locality') || types.includes('administrative_area_level_1') || types.includes('country')) {
+          addressComponents.push(long_name);
+        }
+      });
+      return addressComponents.join(', '); 
+    }
+  
+    const formattedAddress = buildAddressString(place);
+    console.log('Formatted Address:', formattedAddress);
+
+    
+    localStorage.setItem('searchInput', formattedAddress);
     window.location.href = '/Branch'; 
   }
 

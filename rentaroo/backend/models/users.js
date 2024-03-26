@@ -75,8 +75,8 @@ userSchema.statics.signup = async function(name, email, password, phoneNumber) {
     return user
 }
 
-//Static method to login a user
-userSchema.statics.login = async function(email, password) {
+//Static method to login a client
+userSchema.statics.login = async function(email, password, userType) {
     if (!email || !password) {
         throw Error('All fields must be filled');
     }
@@ -91,6 +91,10 @@ userSchema.statics.login = async function(email, password) {
 
     if (!isMatch) {
         throw Error('Incorrect password');
+    }
+
+    if (user.userType !== userType) {
+        throw Error('Please login as a ' + user.userType);
     }
 
     return user

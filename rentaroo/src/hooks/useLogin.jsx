@@ -6,7 +6,7 @@ export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const {dispatch} = useAuthContext();
 
-    const login = async (email, password) => {
+    const login = async (email, password, userType) => {
         setIsLoading(true);
         setError(null);
         try {
@@ -15,7 +15,7 @@ export const useLogin = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({email, password})
+                body: JSON.stringify({email, password, userType})
             });
             const json = await response.json();
             if (!response.ok) {
@@ -37,5 +37,5 @@ export const useLogin = () => {
         }
     }
 
-    return {login, error, isLoading};
+    return {login, error, setError, isLoading};
 }

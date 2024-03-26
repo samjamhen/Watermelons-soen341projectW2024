@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {useSignup} from '../hooks/useSignup';
 
+
 const SignupCard = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -26,9 +27,12 @@ const SignupCard = () => {
     <div className="login-card">
     <img src={"./logo2.png"} alt="Rentaroo Logo" className="logo2"/>
       <div className="credentials">
-        <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+        <input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} />
         <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input type="password" placeholder="Password" value={password} onChange={(e) => {
+          setPassword(e.target.value)
+          setPasswordMatch(e.target.value === confirmPassword)
+          }} />
         <span style={{ fontSize: '0.8rem', color: 'gray' }}>
         Password must contain:
         <ul style={{ paddingLeft: '20px', margin: '0', marginBottom: '15px' }}>
@@ -45,9 +49,9 @@ const SignupCard = () => {
         }} 
         />
         {!passwordMatch && confirmPassword && <span style={{color: 'red'}}>Passwords do not match.</span>}
-        <input type="text" placeholder="Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+        <input type="text" placeholder="Phone Number (xxx-xxx-xxxx)" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
       </div>
-      <button disabled = {isLoading} onClick={handleSignup}>Sign up</button>
+      <button disabled = {isLoading || !name || !email || !password || !confirmPassword || !phoneNumber || !passwordMatch} onClick={handleSignup}>Sign up</button>
       {error && <div className="error">{error}</div>}
   </div>
   );

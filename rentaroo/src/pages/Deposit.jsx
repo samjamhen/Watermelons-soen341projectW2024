@@ -54,6 +54,10 @@ const Deposit = () => {
       alert("Deposit already payed")
       return
     }
+    if(deposit.creditCard.CVV!==cvv){
+      alert("Credit Card Details Invalid. Please Try again.")
+      return
+    }
     try {
       // POST request to update card
       const updatedBalance = (deposit.creditCard.balance - 500);
