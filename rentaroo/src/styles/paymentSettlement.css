@@ -1,0 +1,39 @@
+.payment-settlement-container {
+    width: 400px;
+    margin: 0 auto;
+    margin-bottom: 40px;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  .damages-price-input {
+    margin-bottom: 15px;
+  }
+  
+  .damages-price-input label {
+    margin-right: 10px;
+  }
+  
+  .damages-price-input input {
+    width: 100px;
+    padding: 5px;
+    margin-right: 5px;
+  }
+  
+  .submit-payment-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submit-payment-btn:hover {
+    background-color: #45a049;
+  }
+  

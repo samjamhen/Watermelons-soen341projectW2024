@@ -1,0 +1,93 @@
+/* Header Styles */
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    padding: 0px 50px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+
+  }
+  
+  .sticky {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    padding: 0px 50px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    z-index: 100;
+  }
+  
+  .logo img {
+    width: 150px; /* Adjust height as needed */
+    padding: 0;
+  }
+
+  .logged-in {
+    display: flex;
+    align-items: center;
+  }
+
+  .logout-button {
+    margin-left: 20px;
+    margin-top: 20px;
+  }
+  
+  #navbar {
+    list-style-type: none;
+    margin-left: 100px;
+  
+  }
+  
+  #navbar li {
+    display: inline;
+    margin-right: 20px;
+  }
+  #checkinNavBar{
+    list-style-type: none;
+    align-items: center;
+    background-color: rgb(243, 242, 243);  
+    margin-left: 260px;
+    max-width: 180px;
+    padding-top:5px;
+    padding-bottom:5px;
+    border-radius: 5px;
+    color:black;
+}
+#checkoutNavBar{
+  list-style-type: none;
+  align-items: center;
+  background-color: rgb(243, 242, 243);  
+  margin-left: 260px;
+  max-width: 180px;
+  padding-top:5px;
+  padding-bottom:5px;
+  border-radius: 5px;
+  color:black;
+}
+#checkinNavBar:hover, #checkoutNavBar:hover{
+  background-color: rgb(204, 204, 204);
+  color:black;
+
+}
+#checkinNavBar:focus, #checkoutNavBar:focus{
+  background-color: rgb(180, 180, 180);
+  color:black;
+
+}
+  #checkinNavBar li, #checkoutNavBar li{
+    display: inline;
+    text-align: center;
+    color:black;
+  }
+
+  
+  #navbar a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+  }
+  
+  #navbar a:hover {
+    color: lightgray;
+  }
+  

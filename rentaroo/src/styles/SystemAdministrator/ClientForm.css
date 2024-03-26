@@ -1,0 +1,68 @@
+/* Style for the client container */
+.client-container {
+    display: flex;
+    max-width: 90vw; 
+    margin: 0 auto;
+    gap: 2vw; /* Add space between the image and the form */
+}
+
+/* Style for the client image placeholder */
+.client-image-placeholder {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0; /* Placeholder background color */
+    padding: 20px; /* Adjust padding as needed */
+}
+
+/* Style for the form container */
+.client-form {
+    flex: 2;
+    max-width: 40vw;
+    margin: 0 auto;
+}
+
+/* Style for the form headings */
+.client-form h2, .client-form h3 {
+    text-align: center;
+}
+
+/* Style for form labels */
+.client-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Style for form inputs */
+.client-form input[type="text"],
+.client-form input[type="email"],
+.client-form input[type="tel"],
+.client-form input[type="text"],
+.client-form select,
+.client-form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+/* Style for date picker container */
+.client-form .react-datepicker-wrapper {
+    width: 100%;
+}
+
+/* Style for submit button */
+.client-form button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Style for submit button on hover */
+.client-form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
