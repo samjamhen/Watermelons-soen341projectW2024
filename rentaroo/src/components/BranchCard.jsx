@@ -9,7 +9,8 @@ const BranchCard = ({branches, latitude, longitude}) => {
 
 const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-const handleOpenPopup = () => {
+const handleOpenPopup = (e) => {
+    e.preventDefault();
     setIsPopupOpen(true);
   };
 
