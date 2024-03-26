@@ -28,6 +28,9 @@ const PaymentConfirmation = ({reservationDetails}) => {
     }
   }
 
+  // Calculate the damages price
+  const damagesPrice = reservationDetails.finalPrice - reservationDetails.totalPrice;
+
 
   return (
     <div className="confirmation-container">
