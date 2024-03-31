@@ -7,6 +7,8 @@ import Footer from '../../components/Footer';
 import '../../styles/Home.css'
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import { useVehicleContext } from "../../hooks/useVehicleContext";
+
 import { Autocomplete } from '@react-google-maps/api'
 
 const Home = () => {
@@ -15,6 +17,8 @@ const Home = () => {
   const [autocomplete, setAutocomplete] = useState(null);
   const [isAutocompleteSelected, setIsAutoCompleteSelected] = useState(false);
   const [searchInput, setSearchInput] = useState('');
+
+
 
 
   const renderHeader = () => {
@@ -85,6 +89,9 @@ const Home = () => {
       <main>
       <div className="home-container">
       <h1 className="home-title">Welcome to Our Vehicle Rental System</h1>
+      <Link to="/CustomerVehicleForm">
+        <button className="add-vehicle-button">Apply to have your vehicle Featured</button>
+      </Link>
       <p className="home-description">
         Discover the joy of driving with our carefully selected fleet of vehicles. From compact cars to spacious SUVs, we have the perfect vehicle for your next adventure.
       </p>

@@ -11,17 +11,19 @@
     "@testing-library/user-event": "^13.5.0",
     "@vis.gl/react-google-maps": "^0.8.0",
     "axios": "^1.6.7",
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.1",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
-    "mongoose": "^8.1.1",
+    "mongoose": "^8.2.2",
     "react": "^18.2.0",
     "react-datepicker": "^6.1.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.2",
     "react-scripts": "^5.0.1",
+    "stripe": "^14.21.0",
     "validator": "^13.11.0",
     "web-vitals": "^2.1.4"
   },
@@ -55,6 +57,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@shelf/jest-mongodb": "^4.2.0",
+    "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "nodemon": "^3.0.3",
@@ -62,5 +65,10 @@
   },
   "presets": [
     "@babel/preset-react"
-  ]
+  ],
+  "jest": {
+    "transform": {
+      "^.+\\.(js|jsx)?$": "babel-jest"
+    }
+  }
 }
