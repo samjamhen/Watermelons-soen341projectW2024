@@ -14,10 +14,10 @@ const ReservationCard = ({ reservation, onDelete }) => {
     ...reservation,
     pickupDate: new Date(reservation.pickupDate),
     returnDate: new Date(reservation.returnDate),
-    totalPrice: reservation.totalPrice
+    rentalPrice: reservation.rentalPrice
   });
   const [validDates, setValidDates] = useState(true)
-  const pricePerDay = (reservation.totalPrice) / (
+  const pricePerDay = (reservation.rentalPrice) / (
     (reservation.pickupDate && reservation.returnDate) ? 
     Math.ceil(((new Date(reservation.returnDate)) - (new Date(reservation.pickupDate))) / (1000 * 60 * 60 * 24) + 1) :
     1
@@ -81,13 +81,16 @@ const ReservationCard = ({ reservation, onDelete }) => {
       const differenceInMilliseconds = editedData.returnDate - editedData.pickupDate;
       // Convert the difference to days and round up using Math.ceil()
       const differenceInDays = Math.ceil(differenceInMilliseconds / (1000 * 60 * 60 * 24));
-      // Calculate the totalPrice
-      const totalPrice = pricePerDay * (differenceInDays + 1);
-      // Update the formData with the new totalPrice
+      // Calculate the rentalPrice
+      const rentalPrice = pricePerDay * (differenceInDays + 1);
+      // Update the formData with the new rentalPrice
+      const totalPrice = rentalPrice + (editedData.additionalFeaturesPrice || 0);
       setEditedData(prevData => ({
       ...prevData,
-      totalPrice: totalPrice
+      rentalPrice: rentalPrice,
+      totalPrice : totalPrice
       }));
+
     }
   }, [editedData.pickupDate, editedData.returnDate]);
   
@@ -389,7 +392,13 @@ const ReservationCard = ({ reservation, onDelete }) => {
           </>
         )}
         <p>
-          <strong>Total Price:</strong> {editedData.totalPrice}
+          <strong>Rental Price:</strong> {editedData.rentalPrice}
+        </p>
+        <p>
+          <strong>Additional Price: </strong> {editedData.additionalFeaturesPrice}
+        </p>
+        <p>
+          <strong> Total Price:</strong> {(editedData.rentalPrice + editedData.additionalFeaturesPrice)}
         </p>
       </div>
       <div className="client-actions">

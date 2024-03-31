@@ -29,7 +29,7 @@ const PaymentConfirmation = ({reservationDetails}) => {
   }
 
   // Calculate the damages price
-  const damagesPrice = reservationDetails.finalPrice - reservationDetails.totalPrice;
+  const damagesPrice = reservationDetails.finalPrice - reservationDetails.rentalPrice;
 
 
   return (
@@ -38,8 +38,10 @@ const PaymentConfirmation = ({reservationDetails}) => {
       <p>Thank you, <b>{reservationDetails.fullName}</b>, for your payment. Your payment has been successfully confirmed.</p>
       <p>Your payment details:</p>
       <ul>
-        <li>Rental Price: ${reservationDetails.totalPrice}</li>
         <li>Damages: {reservation?.newDamages}</li>
+        <li>Additional Features: {reservation?.additionalFeatures}</li>
+        <li>Rental Price: ${reservation?.rentalPrice}</li>
+        <li>Additional Feature Price: ${reservation?.additionalFeaturesPrice}</li>
         <li>Total Price: ${reservation?.finalPrice}</li>
         <li>Timestamp: {new Date().toLocaleString()}</li>
       </ul>
