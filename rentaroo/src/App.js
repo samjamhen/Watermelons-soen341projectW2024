@@ -16,15 +16,18 @@ import VehiclesManagement from './pages/SystemAdministrator/Vehicules/VehiclesMa
 import ReservationsManagement from './pages/SystemAdministrator/Reservations/ReservationsManagement';
 import ClientForm from './pages/SystemAdministrator/Clients/ClientForm';
 import VehicleForm from './pages/SystemAdministrator/Vehicules/VehicleForm';
+import CustomerVehicleForm from './pages/Customer/CustomerAppForm';
 import ConfirmationPage from './components/Confirmation';
 
 import HomeCustomer from "./pages/Customer/CustomerHome";
 import Checkin from "./pages/Service_rep/Checkin";
 import CarInspectionCheckin from "./pages/Service_rep/CarInspectionCheckin";
+import ConfirmReturn from "./pages/Service_rep/ConfirmReturn"
 
 import HomeCSR from "./pages/Service_rep/ServiceHome";
 import HomeAdmin from "./pages/SystemAdministrator/AdminHome";
 import CheckoutPage from './pages/Service_rep/CheckOut';
+import PaymentCheckout from './pages/Service_rep/PaymentCheckout';
 
 import Branch from './pages/Branch';
 import BranchForm from './pages/SystemAdministrator/BranchForm';
@@ -32,6 +35,7 @@ import BranchForm from './pages/SystemAdministrator/BranchForm';
 import { useAuthContext } from './hooks/useAuthContext';
 import RentalAgreementPage from './pages/RentalAgreementPage';
 import Deposit from './pages/Deposit';
+import DepositConfirmation from './components/DepositConfirmation';
 
 function App() {
   const { user } = useAuthContext();
@@ -86,8 +90,11 @@ function App() {
 
           <Route path="/Checkin" element={<Checkin/>}/>
           <Route path="/CarInspectionCheckin" element={<CarInspectionCheckin/>}/>
+          <Route path='/ConfirmReturn' element={<ConfirmReturn />} />
+          <Route path='/PaymentCheckout' element={<PaymentCheckout />} />
           <Route path="/RentalAgreement" element={<RentalAgreementPage/>}/>
           <Route path="/Deposit" element={<Deposit/>}/>
+          <Route path="/DepositConfirmation" element={<DepositConfirmation/>}/>
 
           
 
@@ -135,6 +142,10 @@ function App() {
           />
           <Route path="/VehicleForm" element={ user ? (
             user.user.userType === 'system_administrator' ? <VehicleForm /> :
+            <Navigate to="/" /> ) : <Navigate to="/Home" />}
+          />
+          <Route path="/CustomerVehicleForm" element={ user ? (
+            user.user.userType === 'client' ? <CustomerVehicleForm /> :
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
           />
           <Route  path="/StartReservation" element={user ? <StartReservation/> : <Navigate to="/Login"/>} />

@@ -1,5 +1,5 @@
 module.exports = {
-  roots: ["<rootDir>/rentaroo"], // Specify the root directory that Jest should scan for tests and modules within
+  roots: ["<rootDir>"], // Specify the root directory that Jest should scan for tests and modules within
   testMatch: ["**/*.test.{js,jsx}"],
   transform: {
     "^.+\\.jsx?$": "babel-jest",

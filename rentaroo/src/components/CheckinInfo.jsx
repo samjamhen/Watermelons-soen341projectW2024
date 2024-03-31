@@ -83,15 +83,16 @@ function CheckinInfo() {
       </form>
       
     </div>
-    <div className='fetched-reservation'>
-      {fetchedReservation && <ReservationCard reservation={fetchedReservation} />}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    
-      {showReservationButton && (
+    <div className='fetched-reservation'>   
+    {showReservationButton && (
   <button id="inspectcar"onClick={handleReservationButtonClick}>
     Inspect the reserved car
   </button>
 )}
+      {fetchedReservation && <ReservationCard reservation={fetchedReservation} />}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    
+   
     </div></div>
   );
 }

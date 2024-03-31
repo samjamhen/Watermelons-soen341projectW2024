@@ -90,5 +90,22 @@ PASSWORD: Password123!
 EMAIL : benjaminho@gmail.ca 
 PASSWORD : Qazwsxedc1!
 
+Also, the mock credit cards are part of the database. Hence, only these can be used for booking reservations. Please note that the Mastercard's balance is purposefully low so that tests can be made for accounts that would not have the sufficient funds to make a reservation. It will be rejected during the check-in process.
+
+- Visa 1
+NUMBER: 4567123456789012
+CVV: 123
+EXPIRATION DATE: 12/26
+
+- Visa 2
+NUMBER: 4111111111111111
+CVV: 123
+EXPIRATION DATE: 08/26
+
+- Mastercard
+NUMBER: 5432987654321098
+CVV: 456
+EXPIRATION DATE: 09/25
+
 ## FULL DEMO SHOWCASING ALL FEATURES
 Tap link [here](https://www.loom.com/share/6d2af05264cb4b38a1cadd11e0b09a14) to get access to our full demo where we showcase the core features.

@@ -6,23 +6,23 @@ const LoginCard = () => {
   const [selectedRole, setSelectedRole] = useState('client');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, error, isLoading } = useLogin();
+  const { login, error, setError, isLoading } = useLogin();
 
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
-    
+    setError(null);
   };
 
   const handleLogIn = async (e) => {
     e.preventDefault();
-    await login(email, password);
+    await login(email, password, selectedRole);
   };  
 
   return (
     <div className="login-card">
       <img src={"./logo2.png"} alt="Rentaroo Logo" className="logo2"/>
       <div className="role-options">
-      <button className={selectedRole === 'client' ? 'selected' : ''} onClick={() => handleRoleSelection('client')}>Customer</button>
+      <button className={selectedRole === 'client' ? 'selected' : ''} onClick={() => handleRoleSelection('client')}>Client</button>
       <button className={selectedRole === 'customer_representative' ? 'selected' : ''} onClick={() => handleRoleSelection('customer_representative')}>Customer Service Representative</button>
       <button className={selectedRole === 'system_administrator' ? 'selected' : ''} onClick={() => handleRoleSelection('system_administrator')}>System Administrator</button>
       </div>

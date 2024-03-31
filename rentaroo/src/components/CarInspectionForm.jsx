@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/CarInspectionForm.module.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -14,9 +14,9 @@ const CarInspectionForm = () => {
   const [error, setError] = useState('');
   const location = useLocation();
   const fetchedReservation = location.state;
+  console.log(fetchedReservation.fetchedReservation._id)
   const navigate = useNavigate(); // Create a navigate function
-
-
+ 
   const handleDamageChange = (part) => (e) => {
     setDamages({ ...damages, [part]: e.target.checked });
   };
@@ -25,7 +25,7 @@ const CarInspectionForm = () => {
     setDamagesDescription(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
   
     const isAnyDamageChecked = Object.values(damages).some((isDamage) => isDamage);
@@ -38,6 +38,24 @@ const CarInspectionForm = () => {
     if (!damagesDescription) {
       setError('Damages description is required.');
       return;
+    }
+
+    try{
+      console.log(fetchedReservation.fetchedReservation._id)
+      const response = await fetch(`api/reservations/${fetchedReservation.fetchedReservation._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({previousDamages : damagesDescription})
+      });
+
+      if(!response.ok){
+        throw new Error('Failed to update reservation');
+      }
+      console.log('Reservation updated succesfully');
+    } catch (error){
+      console.error('Error updating reservation: ', error.message)
     }
 
     setError('');

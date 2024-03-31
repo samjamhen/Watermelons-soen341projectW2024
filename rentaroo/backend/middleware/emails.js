@@ -1,6 +1,6 @@
 const sgMail = require('@sendgrid/mail');
 
-const API_KEY = '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';
+const API_KEY = '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';
 
 // Middleware to send confirmation email
 sendConfirmationEmail = async (reservation) => {
@@ -70,7 +70,7 @@ sendUpdatedConfirmation = async (reservation) => {
             from: 'rentaroo.hq@gmail.com',
             subject: 'Booking Updated',
             html: `<div className="confirmation-container">
-            <h1>Reservation Deleted!</h1>
+            <h1>Reservation Updated!</h1>
             <p>Thank you, <b>${reservation.fullName}</b>, your reservation was succesfully updated.</p>
             <p>Your new updated reservation details:</p>
             <ul>
@@ -99,8 +99,42 @@ sendDepositConfirmation = async (reservation) => {
             from: 'rentaroo.hq@gmail.com',
             subject: 'Deposit Taken',
             html: `<div className="confirmation-container">
-            <h1>Deposit Received!</h1>
-            <p>Thank you, <b>${reservation.fullName}</b>, your deposit was succesfully taken.</p>
+            <h1>Thank You! Deposit Confirmed</h1>
+            <h3>You can now take your rental vehicle.</h3>
+            <p>Thank you, <b>${reservation.fullName}</b>, for your deposit. Your deposit has been successfully confirmed.</p>
+            <br />
+            <p>A fixed amount has been frozen of your credit card. The deposit will be returned to you upon return of the vehicle in the same state. Please not that damage fees will be added to your final paiment if you do not respect the conditions of your rental agreement (damages, late return, etc.).</p>
+            <br />
+            <p>Details of your deposit:</p>
+            <ul>
+              <li>Deposit amount: $500</li>
+              <li>Damages: ${reservation.previousDamages}</li>
+              <li>Total Price: ${reservation.updatedPrice}</li>
+              <li>Timestamp: ${new Date().toLocaleString()}</li>
+            </ul>
+          </div>
+          <Footer />
+          </div>`
+        }
+    
+        await sgMail.send(message);
+      } catch (error) {
+        console.error('Error sending confirmation email:', error);
+        throw new Error('Error sending confirmation email');
+      }
+};
+
+sendVehicleReturnConfirmation = async (reservation) => {
+    try {
+        sgMail.setApiKey(API_KEY);
+    
+        const message = {
+            to: `${reservation.email}`,
+            from: 'rentaroo.hq@gmail.com',
+            subject: 'Vehicle Returned',
+            html: `<div className="confirmation-container">
+            <h1>Vehicle Returned!</h1>
+            <p>Thank you, <b>${reservation.fullName}</b>, your vehicle was succesfully returned.</p>
             <p>Your reservation details:</p>
             <ul>
               <li>Car: ${reservation.vehicle}</li>
@@ -118,47 +152,33 @@ sendDepositConfirmation = async (reservation) => {
         throw new Error('Error sending confirmation email');
       }
 };
-sendReceiptEmail = async (reservation) => {
+
+sendDepositReturnConfirmation = async (reservation) => {
     try {
         sgMail.setApiKey(API_KEY);
     
         const message = {
             to: `${reservation.email}`,
             from: 'rentaroo.hq@gmail.com',
-            subject: 'Booking Receipt',
-            html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h1 style="text-align: center; color: #007bff;">Booking Receipt</h1>
-            <div style="background-color: #f7f7f7; padding: 20px; border-radius: 10px;">
-                <p>Dear <strong>${reservation.fullName}</strong>,</p>
-                <p>Thank you for using our car rental service! Below is your booking receipt:</p>
-                <table style="width: 100%; border-collapse: collapse;">
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">Car:</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">${reservation.vehicle.make} ${reservation.vehicle.model}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">Pick-up Date:</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">${new Date(reservation.pickupDate).toLocaleDateString()}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">Return Date:</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">${new Date(reservation.returnDate).toLocaleDateString()}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px;">Total Price:</td>
-                        <td style="padding: 10px;">${reservation.totalPrice}</td>
-                    </tr>
-                </table>
-                <p style="margin-top: 20px;">You can view all your reservations in the "My Reservations" tab in your account.</p>
-            </div>
-            <p style="text-align: center; margin-top: 20px;">Thank you for choosing our service!</p>
-        </div>
-        `
+            subject: 'Payment Confirmed & Deposit Returned',
+            html: `<div className="confirmation-container">
+            <h1>Thank You! Payment Confirmed</h1>
+            <p>Thank you, <b>${reservation.fullName}</b>, for your payment. Your payment has been successfully confirmed.</p>
+            <p>Your payment details:</p>
+            <ul>
+              <li>Rental Price: ${reservation.totalPrice}</li>
+              <li>Damages: ${reservation.newDamages}</li>
+              <li>Total Price: ${reservation.finalPrice}</li> 
+              <li>Timestamp: ${new Date().toLocaleString()}</li>
+            </ul>
+          </div>`
         }
+    
         await sgMail.send(message);
       } catch (error) {
         console.error('Error sending confirmation email:', error);
         throw new Error('Error sending confirmation email');
       }
-    }
-module.exports = { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendReceiptEmail};
+};
+
+module.exports = { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendVehicleReturnConfirmation, sendDepositReturnConfirmation };
