@@ -7,6 +7,7 @@ import ViewReservationPage from "./pages/ViewReservationPage";
 import TermsAndConditions from './pages/TermsAndConditions';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import ConfirmationPage from './pages/ConfirmationPage';
 
 import Admin from './pages/SystemAdministrator/Admin';
 import ReservationPage from './pages/ReservationPage';
@@ -17,7 +18,6 @@ import ReservationsManagement from './pages/SystemAdministrator/Reservations/Res
 import ClientForm from './pages/SystemAdministrator/Clients/ClientForm';
 import VehicleForm from './pages/SystemAdministrator/Vehicules/VehicleForm';
 import CustomerVehicleForm from './pages/Customer/CustomerAppForm';
-import ConfirmationPage from './components/Confirmation';
 
 import HomeCustomer from "./pages/Customer/CustomerHome";
 import Checkin from "./pages/Service_rep/Checkin";
@@ -87,6 +87,7 @@ function App() {
 
           <Route path="/Branch" element={ <Branch/>}/>
           <Route path="/BranchForm" element={<BranchForm/>}/>
+          <Route path="/ConfirmationPage" element={<ConfirmationPage/>}/>
 
           <Route path="/Checkin" element={<Checkin/>}/>
           <Route path="/CarInspectionCheckin" element={<CarInspectionCheckin/>}/>

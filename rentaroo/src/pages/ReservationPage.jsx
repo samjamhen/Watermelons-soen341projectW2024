@@ -7,10 +7,13 @@ import HeaderCustomer from '../components/HeaderCustomer';
 import Footer from '../components/Footer';
 import Confirmation from '../components/Confirmation';
 import { useAuthContext } from '../hooks/useAuthContext';
+import AdditionalFeatures from '../components/AdditionalFeatures'; // Import AdditionalFeatures component
 
 const ReservationPage = () => {
   const [reservationSubmitted, setReservationSubmitted] = useState(false);
   const [reservationDetails, setReservationDetails] = useState({});
+  const [additionalFeaturesSubmitted, setAdditionalFeaturesSubmitted] = useState(false);
+  const [confirmationVisible, setConfirmationVisible] = useState(false); // State to track visibility of confirmation
   const { user } = useAuthContext();
 
   const renderHeader = () => {
@@ -37,6 +40,12 @@ const ReservationPage = () => {
     setReservationSubmitted(true);
   };
 
+  // Function to call upon successful submission of additional features
+  const handleAdditionalFeaturesSubmit = () => {
+    setAdditionalFeaturesSubmitted(true);
+    setConfirmationVisible(true); // Show confirmation after additional features are submitted
+  };
+
   return (
     <div>
       {renderHeader()}
@@ -45,8 +54,18 @@ const ReservationPage = () => {
         // Pass the submit handler to the BookingForm
         <BookingForm onSuccessfulSubmission={handleReservationSubmit} />
       ) : (
-        // Pass the reservation details to the confirmation component
-        <Confirmation reservationDetails={reservationDetails} />
+        <>
+          {!additionalFeaturesSubmitted ? (
+            // Pass the submit handler to the AdditionalFeatures component
+            <AdditionalFeatures
+              reservationDetails={reservationDetails}
+              onSubmit={handleAdditionalFeaturesSubmit}
+            />
+          ) : (
+            // Display the Confirmation component after both forms are submitted
+            confirmationVisible && <Confirmation reservationDetails={reservationDetails} />
+          )}
+        </>
       )}
       <Footer />
     </div>

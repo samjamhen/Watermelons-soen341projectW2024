@@ -1,0 +1,20 @@
+.additional-features-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .features-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .features-list li {
+    margin-bottom: 10px;
+  }
+  
+  .features-list label {
+    cursor: pointer;
+  }
+  

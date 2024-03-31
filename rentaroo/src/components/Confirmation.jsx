@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/ConfirmationPage.css';
 
+
 const Confirmation = ({reservationDetails}) => {
   if (!reservationDetails) {
     return <div>No reservation details found.</div>;
