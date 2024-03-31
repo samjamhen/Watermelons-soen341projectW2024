@@ -21,6 +21,8 @@ const createVehicle = async (req, res) => {
     photos,
     location,
     availabilityStatus,
+    application: applicationData 
+
   } = req.body;
   try {
     const newVehicle = await Vehicle.create({
@@ -40,6 +42,7 @@ const createVehicle = async (req, res) => {
       photos,
       location,
       availabilityStatus,
+      applicationData
     });
 
     // Find the branch associated with the vehicle's location
@@ -60,26 +63,49 @@ const createVehicle = async (req, res) => {
 //READ
 //Get all Vehicles
 const getAllVehicles = async (req, res) => {
-  const vehicles = await Vehicle.find({}).sort({ Timestamp: -1 });
+  try {
+    let query = Vehicle.find({}).sort({ Timestamp: -1 });
 
-  res.status(200).json(vehicles);
+    // Optionally populate the application field
+    if (req.query.includeApplication) {
+      query = query.populate('application.submittedBy'); // Assuming 'submittedBy' is a field in the Customer model
+    }
+
+    const vehicles = await query.exec();
+    
+    res.status(200).json(vehicles);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 //Get a specific Vehicle
 const getVehicle = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Vehicle not found" });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "Vehicle not found" });
+    }
+
+    let query = Vehicle.findById(id);
+
+    // Optionally populate the application field
+    if (req.query.includeApplication) {
+      query = query.populate('application.submittedBy'); // Assuming 'submittedBy' is a field in the Customer model
+    }
+
+    const vehicle = await query.exec();
+
+    if (!vehicle) {
+      return res.status(404).json({ error: "Vehicle not found" });
+    }
+
+    res.status(200).json(vehicle);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  const vehicle = await Vehicle.findById(id);
-
-  if (!vehicle) {
-    return res.status(404).json({ error: "Vehicle not found" });
-  }
-
-  res.status(200).json(vehicle);
 };
+
 //UPDATE
 const updateVehicle = async (req, res) => {
   const { id } = req.params;

@@ -16,6 +16,7 @@ import VehiclesManagement from './pages/SystemAdministrator/Vehicules/VehiclesMa
 import ReservationsManagement from './pages/SystemAdministrator/Reservations/ReservationsManagement';
 import ClientForm from './pages/SystemAdministrator/Clients/ClientForm';
 import VehicleForm from './pages/SystemAdministrator/Vehicules/VehicleForm';
+import CustomerVehicleForm from './pages/Customer/CustomerAppForm';
 import ConfirmationPage from './components/Confirmation';
 
 import HomeCustomer from "./pages/Customer/CustomerHome";
@@ -141,6 +142,10 @@ function App() {
           />
           <Route path="/VehicleForm" element={ user ? (
             user.user.userType === 'system_administrator' ? <VehicleForm /> :
+            <Navigate to="/" /> ) : <Navigate to="/Home" />}
+          />
+          <Route path="/CustomerVehicleForm" element={ user ? (
+            user.user.userType === 'client' ? <CustomerVehicleForm /> :
             <Navigate to="/" /> ) : <Navigate to="/Home" />}
           />
           <Route  path="/StartReservation" element={user ? <StartReservation/> : <Navigate to="/Login"/>} />
