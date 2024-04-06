@@ -21,8 +21,9 @@ const createVehicle = async (req, res) => {
     photos,
     location,
     availabilityStatus,
-    application: applicationData 
-
+    status,
+    submittedBy,
+    description,
   } = req.body;
   try {
     const newVehicle = await Vehicle.create({
@@ -42,7 +43,9 @@ const createVehicle = async (req, res) => {
       photos,
       location,
       availabilityStatus,
-      applicationData
+      status,
+      submittedBy,
+      description,
     });
 
     // Find the branch associated with the vehicle's location
