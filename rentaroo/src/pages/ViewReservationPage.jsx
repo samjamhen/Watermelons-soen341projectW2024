@@ -3,6 +3,7 @@ import axios from 'axios';
 import Header from "../components/HeaderCustomer";
 import Footer from "../components/Footer";
 import ReservationCard from '../components/SystemAdministrator/ReservationCard';
+import RequestCard from '../components/RequestCard';
 
 function ViewReservationPage() {
     const [reservations, setReservations] = useState([]);
@@ -63,6 +64,8 @@ const filteredReservations = reservations.filter(reservation => reservation.user
 return (
     <div>
         <Header />
+
+        <div className="Reservations">
         <h1>My Reservations</h1>
         {filteredReservations.length > 0 ? (
             filteredReservations.map(reservation => (
@@ -75,6 +78,24 @@ return (
         ) : (
             <h3>You have no reservations.</h3> // Display this message if there are no reservations
         )}
+
+     </div>
+
+
+     <div className="Vehicle-Requests">
+
+        <h1>My Vehicles Requests</h1>
+
+        <RequestCard/>
+
+
+
+
+     </div>
+
+
+
+
         <Footer />
     </div>
 );
