@@ -75,7 +75,12 @@ function AdminCatalog() {
   }
 
   function renderVehicles() {
-    return sortedVehicles.map((vehicle) => (
+    const filteredVehicles = sortedVehicles.filter(vehicle => {
+      // Check if the vehicle has an application and the application status is 'approved'
+      return !vehicle.status || vehicle.status === 'approved';
+    });
+  
+    return filteredVehicles.map((vehicle) => (
       <AdminVehicleCard key={vehicle._id} vehicle={vehicle} />
     ));
   }

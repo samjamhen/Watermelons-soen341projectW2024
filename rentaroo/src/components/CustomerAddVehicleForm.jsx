@@ -23,9 +23,9 @@ const CustomerAddVehicleForm = () => {
   const [photos, setPhotos] = useState([""]);
   const [error, setError] = useState(null);
   const [imageError, setImageError] = useState(false);
-  const [applicationSubmittedBy, setApplicationSubmittedBy] = useState("");
-  const [applicationStatus, setApplicationStatus] = useState("pending");
-  const [applicationDescription, setApplicationDescription] = useState("");
+  const [submittedBy, setApplicationSubmittedBy] = useState("");
+  const [status, setApplicationStatus] = useState("pending");
+  const [description, setApplicationDescription] = useState("");
   // const [vehicleImage, setVehicleImage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(""); // New state for success message
 
@@ -50,11 +50,9 @@ const CustomerAddVehicleForm = () => {
         mileage,
         price,
         photos,
-        application: {
-          applicationSubmittedBy,
-          applicationStatus,
-          applicationDescription,
-        },
+        status,
+        submittedBy,
+        description,
       };
 
       const response = await fetch("/api/vehicles", {
@@ -223,6 +221,14 @@ const CustomerAddVehicleForm = () => {
       </label>
 
       <label>
+        applcation Status:
+        <select value={status} onChange={(e) => setCarType(e.target.value)}>
+          <option value="pending">Pending</option>
+          
+        </select>
+      </label>
+
+      <label>
         Car Type:
         <select value={carType} onChange={(e) => setCarType(e.target.value)}>
           <option value="sedan">Sedan</option>
@@ -259,14 +265,14 @@ const CustomerAddVehicleForm = () => {
         <label>Customer ID:</label>
         <input
           type="text"
-          value={applicationSubmittedBy}
+          value={submittedBy}
           onChange={(e) => setApplicationSubmittedBy(e.target.value)}
           required
         />
         
         <label>Application Description:</label>
         <textarea
-          value={applicationDescription}
+          value={description}
           onChange={(e) => setApplicationDescription(e.target.value)}
           required
         />
