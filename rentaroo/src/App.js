@@ -31,6 +31,7 @@ import PaymentCheckout from './pages/Service_rep/PaymentCheckout';
 
 import Branch from './pages/Branch';
 import BranchForm from './pages/SystemAdministrator/BranchForm';
+import Requests from './pages/SystemAdministrator/Requests';
 
 import { useAuthContext } from './hooks/useAuthContext';
 import RentalAgreementPage from './pages/RentalAgreementPage';
@@ -96,6 +97,8 @@ function App() {
           <Route path="/RentalAgreement" element={<RentalAgreementPage/>}/>
           <Route path="/Deposit" element={<Deposit/>}/>
           <Route path="/DepositConfirmation" element={<DepositConfirmation/>}/>
+
+          <Route path="/Requests" element={<Requests/>}/>
 
           
 
