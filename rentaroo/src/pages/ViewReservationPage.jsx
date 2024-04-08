@@ -3,16 +3,21 @@ import axios from 'axios';
 import Header from "../components/HeaderCustomer";
 import Footer from "../components/Footer";
 import ReservationCard from '../components/SystemAdministrator/ReservationCard';
+import RequestCard from '../components/RequestCard';
 
 function ViewReservationPage() {
     const [reservations, setReservations] = useState([]);
+    const [vehicles, setVehicles]=useState([]);
     const storedUser = localStorage.getItem('user');
     const user = JSON.parse(storedUser);
     const userId = user?.user?._id; 
 
     useEffect(() => {
       fetchAllReservations();
+      fetchRequestedVehicles();
   }, []);
+
+
 
   const fetchAllReservations = async () => {
       try {
@@ -26,6 +31,21 @@ function ViewReservationPage() {
           console.error('Error fetching reservations:', error);
       }
   };
+
+  const fetchRequestedVehicles = async () => {
+    try {
+        const response = await axios.get('/api/vehicles');
+        if (response.status === 200) {
+            const vehiclesWithSubmittedBy = response.data.filter(vehicle => vehicle.submittedBy === userId);
+            setVehicles(vehiclesWithSubmittedBy);
+            console.log(vehicles);
+        } else {
+            throw new Error('Unable to fetch vehicles');
+        }
+    } catch (error) {
+        console.error('Error fetching vehicles:', error);
+    }
+};
 
 
   const handleDeleteReservation = async (reservationId) => {
@@ -63,6 +83,8 @@ const filteredReservations = reservations.filter(reservation => reservation.user
 return (
     <div>
         <Header />
+
+        <div className="Reservations">
         <h1>My Reservations</h1>
         {filteredReservations.length > 0 ? (
             filteredReservations.map(reservation => (
@@ -75,6 +97,33 @@ return (
         ) : (
             <h3>You have no reservations.</h3> // Display this message if there are no reservations
         )}
+
+     </div>
+
+
+     <div className="Vehicle-Requests">
+
+     <div className="Vehicle-Requests">
+                <h1>My Vehicles Requests</h1>
+                {vehicles.length > 0 ? (
+                    vehicles.map(vehicle => (
+                        <RequestCard
+                            key={vehicle._id}
+                            vehicle={vehicle} // Pass the vehicle data as prop
+                        />
+                    ))
+                ) : (
+                    <h3>No vehicles found.</h3>
+                )}
+            </div>
+
+
+
+     </div>
+
+
+
+
         <Footer />
     </div>
 );
