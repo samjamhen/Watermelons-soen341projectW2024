@@ -12,7 +12,7 @@ export const useLogout = () => {
         dispatch({type: 'LOGOUT'});
 
         // Redirect to home page
-        window.location.href = '/home';
+        window.location.href = '/Home';
     }
 
     return {logout};

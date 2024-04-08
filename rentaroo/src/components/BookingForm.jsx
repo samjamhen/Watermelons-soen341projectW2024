@@ -17,7 +17,7 @@ const BookingForm = ({onSuccessfulSubmission}) => {
     pickupDate: new Date(),
     returnDate: new Date(),
     driversLicenseNumber: '',
-    totalPrice: 0,
+    rentalPrice: 0,
     creditCard: ''
   });
   const [emailFormatError, setEmailFormatError] = useState(false);
@@ -69,21 +69,21 @@ const BookingForm = ({onSuccessfulSubmission}) => {
     const differenceInMilliseconds = formData.returnDate - formData.pickupDate;
     // Convert the difference to days and round up using Math.ceil()
     const differenceInDays = Math.ceil(differenceInMilliseconds / (1000 * 60 * 60 * 24));
-    // Calculate the totalPrice
-    const totalPrice = vehicle.price * (differenceInDays + 1);
-    // Update the formData with the new totalPrice
+    // Calculate the rentalPrice
+    const rentalPrice = vehicle.price * (differenceInDays + 1);
+    // Update the formData with the new rentalPrice
     setFormData(prevData => ({
     ...prevData,
-    totalPrice: totalPrice
+    rentalPrice: rentalPrice
     }));
 
     if (new Date(formData.returnDate) < new Date(formData.pickupDate)) {
       console.log('Dates are not valid');
       setValidDates(false)
-      // Set totalPrice to 0 if return date is before pickup date
+      // Set rentalPrice to 0 if return date is before pickup date
       setFormData(prevData => ({
         ...prevData,
-        totalPrice: 0
+        rentalPrice: 0
       }))
     }
   }, [formData.pickupDate, formData.returnDate, formData.creditCard]);
@@ -188,9 +188,10 @@ const handleSubmit = async (e) => {
       pickupDate: formData.pickupDate,
       returnDate: formData.returnDate,
       driversLicenseNumber: formData.driversLicenseNumber,
-      totalPrice: formData.totalPrice,
+      rentalPrice: formData.rentalPrice,
       creditCard: formData.creditCard
     };
+    console.log(reservation)
 
     const response = await fetch('/api/reservations', {
       method: 'POST',
@@ -218,7 +219,7 @@ const handleSubmit = async (e) => {
       pickupDate: new Date(),
       returnDate: new Date(),
       driversLicenseNumber: '',
-      totalPrice: 0,
+      rentalPrice: 0,
       creditCard: ''
     });
 
@@ -253,7 +254,7 @@ const handleSubmit = async (e) => {
             <li>Fuel Type: {vehicle.fuelType}</li>
             <li>Car Type: {vehicle.carType}</li>
             <li>Features: {vehicle.featuresAndAmenities.join(', ')}</li>
-            <li>Total Price: {formData.totalPrice}</li>
+            <li>Total Price: {formData.rentalPrice}</li>
           </ul>
 
           {/* Add more vehicle details as needed */}
