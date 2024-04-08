@@ -16,11 +16,11 @@ function RequestCard({ vehicle, onSelectButtonClick }) {
     onSelectButtonClick();
   };
 
-  const handleDeleteRequest = () => {
-
+  function handleDeleteRequest() {
+    //send email to customer, then delete the whole created vehicle from database
 };
   function handleAcceptRequest() {
-
+    // send an email to customer and change vehicle status to "available in database"
 }
 
   return (

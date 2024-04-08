@@ -25,9 +25,6 @@ const CustomerRequest = () => {
         setSelectedVehicle(vehicle);
       }
 
-      function handlePopupCloseButtonClick() {
-        setSelectedVehicle(null);
-      }
 
     return (
         <div>
@@ -38,7 +35,6 @@ const CustomerRequest = () => {
         vehicle={vehicle}
         onSelectButtonClick={() => handleSelectButtonClick(vehicle)}
         selectedVehicle={selectedVehicle}
-        handlePopupCloseButtonClick={handlePopupCloseButtonClick}
       />
             ))}
         </div>
