@@ -21,6 +21,7 @@ const AdditionalFeatures = ({ reservationDetails, onSubmit }) => {
     const pickupDate = new Date(reservationDetails.pickupDate);
     const returnDate = new Date(reservationDetails.returnDate);
     const numberOfDays = Math.ceil((returnDate - pickupDate) / (1000 * 3600 * 24));
+    const rentalPrice = reservationDetails.rentalPrice;
 
     // Calculate the total price of additional features
     let additionalFeaturesPrice = 0;
@@ -31,13 +32,33 @@ const AdditionalFeatures = ({ reservationDetails, onSubmit }) => {
     if (features.BikeRack) additionalFeaturesPrice += 15 * numberOfDays;
     if (features.ChildSafetySeat) additionalFeaturesPrice += 15 * numberOfDays;
 
+    const additionalFeaturesAsString = Object.keys(features).filter(key => features[key]).join(', ');
+    const totalPrice = additionalFeaturesPrice + reservationDetails.rentalPrice
+
+    console.log(additionalFeaturesAsString)
+    console.log(additionalFeaturesPrice)
+
     // Here submit additional features and additionalfeatures price to backend
     try {
-      //  here add stuff to backend
+        // POST request to update reservation
+        const response = await fetch(`/api/reservations/${reservationDetails._id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({additionalFeaturesPrice : additionalFeaturesPrice, totalPrice : rentalPrice + additionalFeaturesPrice, additionalFeatures : additionalFeaturesAsString, totalPrice : totalPrice}),
+        });    
+        if (!response.ok) {
+          throw new Error("Failed to update reservation");
+        }
+        
+        alert('Reservation updated successfully');
+        console.log('Reservation updated successfully');
+    //  here add stuff to backend
 
-      onSubmit();
-    } catch (error) {
-      console.error('Error updating additional features:', error.message);
+    onSubmit();
+      } catch (error) {
+        console.error('Error updating additional features:', error.message);
     }
   };
 

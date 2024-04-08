@@ -67,19 +67,18 @@ const vehicleSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    application: {
-
-      submittedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Customer', // Reference to the Customer model
-      },
-      status: {
-        type: String,
-        enum: ['pending', 'approved', 'rejected'],
-        default: 'pending'
-      },
-    
-    }
+    submittedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Customer', // Reference to the Customer model
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'approved', 'rejected'],
+    },
+    description: {
+      type: String,
+    },
+   
   },
   { timestamps: true }
 );

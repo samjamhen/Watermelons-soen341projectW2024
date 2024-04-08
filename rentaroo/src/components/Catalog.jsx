@@ -17,14 +17,21 @@ function Catalog() {
           throw new Error("Failed to fetch vehicles");
         }
         const json = await response.json();
-        setVehicles(json);
+  
+        // Filter vehicles based on application status (e.g., "pending")
+        const pendingVehicles = json.filter(vehicle => !vehicle.status || vehicle.status === "approved");
+  
+        // Set the filtered vehicles in your state (e.g., setPendingVehicles)
+        setVehicles(pendingVehicles);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }
     };
-
+  
     fetchVehicles();
   }, []);
+  
+  
 
   useEffect(() => {
     handleSortChange();
