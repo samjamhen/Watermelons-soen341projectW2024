@@ -2,7 +2,6 @@ import React from "react";
 import "../styles/Header.css";
 import { Link } from "react-router-dom";
 // import logo from './logo.png'
-import "../styles/Header.css";
 import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
 
@@ -45,7 +44,11 @@ const Header = () => {
               </Link>
             </li>
           </ul>
+          <div> <Link to="/Requests" id="requests-link">
+                Manage Customer Rental Requests
+              </Link></div>
         </div>
+        
         {!user && (
         <div id = "navbar">
           <Link to="/Login" id="link">

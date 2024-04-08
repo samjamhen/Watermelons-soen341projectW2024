@@ -88,6 +88,18 @@ nav {
   }
   
   #navbar a:hover {
-    color: lightgray;
+    color: 
+    lightgray;
   }
+  #requests-link{
+    margin-left:42%;
+    padding-bottom:5px;  
+    padding-top:0px;
+    text-decoration: none;
+    color:black;
+
+}
+#requests-link:hover{
+  color: 
+  lightgray;}
   
