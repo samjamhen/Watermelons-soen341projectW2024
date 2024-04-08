@@ -39,7 +39,6 @@ const reservations = new mongoose.Schema({
     },
     totalPrice:{
         type: Number,
-        required: true
     }, 
     creditCard:{
         type: String,
@@ -62,7 +61,18 @@ const reservations = new mongoose.Schema({
     },
     finalPrice:{
         type: Number
+    },
+    rentalPrice:{
+        type: Number
+    },
+    additionalFeaturesPrice:{
+        type: Number
+    },
+    additionalFeatures:{
+        type: String
     }
+
+
 }, {timestamps: true});
 
 const Reservation = mongoose.model('Reservations', reservations)
