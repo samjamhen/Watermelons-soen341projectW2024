@@ -4,18 +4,6 @@ import "../styles/RequestCard.css"
 
 const RequestCard = ({vehicle, onCancel} ) =>{
 
-    // Sample car data object
-    //Connect with database "Vehicle-requests"
-  const carData = {
-    status: 'Pending',
-    makeModel: 'Tesla Model 3',
-    category: 'Sedan',
-    year: 2020,
-    mileage: 20000,
-    color: 'Black',
-    pricePerDay: 100,
-  };
-
   const [isCancelled, setIsCancelled] = useState(false); 
   const handleCancelButton = async () => {
     const isConfirmed = window.confirm("Are you sure you want to cancel this request?");
@@ -53,7 +41,7 @@ return(
       <h4> {vehicle.make}</h4>
       <p><strong>Category:</strong> {vehicle.category}</p>
       <p><strong>Year:</strong> {vehicle.year}</p>
-      <p><strong>Mileage:</strong> {carData.mileage} miles</p>
+      <p><strong>Mileage:</strong> {vehicle.mileage} miles</p>
       <p><strong>Color:</strong> {vehicle.color}</p>
       <p><strong>Price per Day:</strong> ${vehicle.price}</p>
     </div>
