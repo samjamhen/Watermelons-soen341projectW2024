@@ -181,4 +181,55 @@ sendDepositReturnConfirmation = async (reservation) => {
       }
 };
 
-module.exports = { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendVehicleReturnConfirmation, sendDepositReturnConfirmation };
+sendVehicleEmailConfirmation = async (vehicle, user) => {
+  try {
+      sgMail.setApiKey(API_KEY);
+  
+      const message = {
+          to: `${user.email}`,
+          from: 'rentaroo.hq@gmail.com',
+          subject: 'Vehicle Accepted',
+          html: `<div className="confirmation-container">
+          <h1>Welcome to the family! Your vehicle was added to the catalog.</h1>
+          <p>Thank you, <b>${user.name}</b>, for your patience. Your vehicle has been successfully added to our catalog.</p>
+          <p>Your vehicle details:</p>
+          <ul>
+            <li>Vehicle Model: ${vehicle.model}</li>
+            <li>Vehicle Category: ${vehicle.category}</li>
+            <li>Price: ${vehicle.price}</li>
+            <li>Location: ${vehicle.location}</li> 
+            <li>Timestamp: ${new Date().toLocaleString()}</li>
+          </ul>
+        </div>`
+      }
+  
+      await sgMail.send(message);
+    } catch (error) {
+      console.error('Error sending confirmation email:', error);
+      throw new Error('Error sending confirmation email');
+    }
+};
+
+sendVehicleEmailRefused = async (vehicle, user) => {
+  try {
+      sgMail.setApiKey(API_KEY);
+  
+      const message = {
+          to: `${user.email}`,
+          from: 'rentaroo.hq@gmail.com',
+          subject: 'Vehicle Refused',
+          html: `<div className="confirmation-container">
+          <h1>Your vehicle was refused.</h1>
+          <p>Thank you, <b>${user.name}</b>, for your patience. Unfortunately, your vehicle was refused and will not be added to the catalog.</p>
+          <p>Please email rentaroo.hq if you have any more inquiries.</p>
+        </div>`
+      }
+  
+      await sgMail.send(message);
+    } catch (error) {
+      console.error('Error sending email:', error);
+      throw new Error('Error sending email');
+    }
+};
+
+module.exports = { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendVehicleReturnConfirmation, sendDepositReturnConfirmation, sendVehicleEmailConfirmation, sendVehicleEmailRefused };
