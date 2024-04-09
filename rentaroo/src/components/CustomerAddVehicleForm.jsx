@@ -3,6 +3,11 @@ import "../styles/SystemAdministrator/VehicleForm.css";
 import { useVehicleContext } from "../hooks/useVehicleContext";
 
 const CustomerAddVehicleForm = () => {
+
+  const storedUser = localStorage.getItem('user');
+  const user = JSON.parse(storedUser);
+  const userId = user?.user?._id; 
+
   const { dispatch } = useVehicleContext();
 
   const [make, setMake] = useState("");
@@ -23,14 +28,20 @@ const CustomerAddVehicleForm = () => {
   const [photos, setPhotos] = useState([""]);
   const [error, setError] = useState(null);
   const [imageError, setImageError] = useState(false);
-  const [submittedBy, setApplicationSubmittedBy] = useState("");
+  const [submittedBy, setApplicationSubmittedBy] = useState(String(userId));;
   const [status, setApplicationStatus] = useState("pending");
   const [description, setApplicationDescription] = useState("");
   // const [vehicleImage, setVehicleImage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(""); // New state for success message
 
+  
+    
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(submittedBy);
 
     try {
       const vehicle = {
@@ -84,14 +95,13 @@ const CustomerAddVehicleForm = () => {
         setMileage("");
         setPrice("");
         setPhotos([""]);
-        setApplicationSubmittedBy("");
-        setApplicationStatus("pending");
         setApplicationDescription("");
 
         setError(null);
         console.log("Vehicle created successfully", json);
         setSuccessMessage("Vehicle created successfully");
         dispatch({ type: "CREATE_VEHICLE", payload: json });
+        
       }
     } catch (error) {
       console.error("Error adding vehicle:", error.message);
@@ -111,6 +121,7 @@ const CustomerAddVehicleForm = () => {
   };
 
   return (
+
     <form className="vehicle-form" onSubmit={handleSubmit}>
       <h1>Vehicle ApplicationForm</h1>
       <h4>Please provide details of your vehicle</h4>
@@ -220,13 +231,6 @@ const CustomerAddVehicleForm = () => {
         </select>
       </label>
 
-      <label>
-        applcation Status:
-        <select value={status} onChange={(e) => setCarType(e.target.value)}>
-          <option value="pending">Pending</option>
-          
-        </select>
-      </label>
 
       <label>
         Car Type:
@@ -262,13 +266,6 @@ const CustomerAddVehicleForm = () => {
         onChange={(e) => setPhotos(e.target.value.split(","))}
 
       />
-        <label>Customer ID:</label>
-        <input
-          type="text"
-          value={submittedBy}
-          onChange={(e) => setApplicationSubmittedBy(e.target.value)}
-          required
-        />
         
         <label>Application Description:</label>
         <textarea
@@ -276,6 +273,10 @@ const CustomerAddVehicleForm = () => {
           onChange={(e) => setApplicationDescription(e.target.value)}
           required
         />
+
+          <label >Credit Card Number:</label>
+          <input type="text" id="creditCard" name="creditCard" />
+        
       
 
 

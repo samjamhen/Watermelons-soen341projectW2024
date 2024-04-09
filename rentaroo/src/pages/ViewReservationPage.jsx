@@ -11,6 +11,8 @@ function ViewReservationPage() {
     const storedUser = localStorage.getItem('user');
     const user = JSON.parse(storedUser);
     const userId = user?.user?._id; 
+    
+
 
     useEffect(() => {
       fetchAllReservations();
@@ -21,6 +23,7 @@ function ViewReservationPage() {
 
   const fetchAllReservations = async () => {
       try {
+        console.log(userId);
           const response = await axios.get('/api/reservations');
           if (response.status === 200) {
               setReservations(response.data); // Assuming the API returns an array of all reservations
