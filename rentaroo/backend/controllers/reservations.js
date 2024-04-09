@@ -175,6 +175,17 @@ const bookReservation = async (req, res) => {
         console.log(reservation.email)
         await sendConfirmationEmail(reservation);
 
+        // Check if the vehicle booked is owned by a client
+        const bookedVehicle = await Vehicle.findById(vehicle);
+        if (bookedVehicle.submittedBy) {
+            //Check if the owner of the vehicle has already submitted a specimen cheque
+            const owner = await User.findById(bookedVehicle.submittedBy);
+            if (!owner.specimenChequeSubmitted) {
+                // Send an email requesting the specimen cheque
+                await sendSpecimenChequeRequestEmail(reservation);
+            }  
+        }
+
         // Return status
         res.status(200).json(reservation);
     } catch (error) {

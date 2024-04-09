@@ -123,7 +123,7 @@ const CustomerAddVehicleForm = () => {
   return (
 
     <form className="vehicle-form" onSubmit={handleSubmit}>
-      <h1>Vehicle ApplicationForm</h1>
+      <h1>Vehicle Application Form</h1>
       <h4>Please provide details of your vehicle</h4>
 
       <label>
@@ -274,9 +274,10 @@ const CustomerAddVehicleForm = () => {
           required
         />
 
+        {/*
           <label >Credit Card Number:</label>
           <input type="text" id="creditCard" name="creditCard" />
-        
+        */}
       
 
 

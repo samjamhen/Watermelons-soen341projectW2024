@@ -181,4 +181,39 @@ sendDepositReturnConfirmation = async (reservation) => {
       }
 };
 
+sendSpecimenChequeRequest = async (reservation) => {
+    try {
+        sgMail.setApiKey(API_KEY);
+
+        const message = {
+            to: `${reservation.email}`,
+            from: 'rentaroo.hq@gmail.com',
+            subject: 'Specimen Cheque Request',
+            html: `<div className="confirmation-container">
+            <h1>Specimen Cheque Request</h1>
+            <p>Dear <b>${reservation.fullName}</b>,</p>
+            <p>We hope this message finds you well. We're excited to inform you that your vehicle listing on <strong>Rentaroo</strong> has been booked by a prospective renter!</p>
+            <p>To proceed with finalizing the rental transaction, we kindly ask you to submit a specimen cheque. The specimen cheque serves as a necessary step to verify your payment information and ensure a smooth and secure transaction process.</p>
+            <p><strong>Here's what you need to do:</strong></p>
+            <ol>
+              <li>Prepare a specimen cheque.</li>
+              <li>Ensure that the specimen cheque contains all necessary details, including your name, account number (if applicable), and any other relevant information.</li>
+              <li>Scan or take a clear photo of the specimen cheque.</li>
+            </ol>
+            <p>Once you have the specimen cheque ready, please reply to this email with the scanned copy or photo attached. Our team will review the information provided and proceed with finalizing the rental transaction.</p>
+            <p>We understand that this additional step may seem unfamiliar, but please rest assured that it's a standard procedure to ensure the security and reliability of our rental platform.</p>
+            <p>Should you have any questions or concerns regarding the submission of the specimen cheque or any other aspect of the rental process, feel free to reach out to us. We're here to assist you every step of the way.</p>
+            <p>Thank you for choosing <strong>Rentaroo</strong> for your vehicle rental needs. We greatly appreciate your cooperation and look forward to facilitating a successful rental experience for you.</p>
+            <p>Best regards,</p>
+            `
+        };
+
+        await sgMail.send(message);
+      } catch (error) {
+        console.error('Error sending confirmation email:', error);
+        throw new Error('Error sending confirmation email');
+      }
+};
+
+
 module.exports = { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendVehicleReturnConfirmation, sendDepositReturnConfirmation };
