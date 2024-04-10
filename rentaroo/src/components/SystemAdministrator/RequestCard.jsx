@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../../styles/VehicleCard.css";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
@@ -10,17 +10,55 @@ function RequestCard({ vehicle, onSelectButtonClick }) {
   const [additionalInfoVisible, setAdditionalInfoVisible] =
     React.useState(false);
   const navigate = useNavigate(); // Create a navigate function
+  const [vehicleSelected, setVehicleSelected] = useState(null);
+
+  useEffect(() => {
+    if (vehicle) {
+      setVehicleSelected(vehicle);
+    }
+  }, [vehicle]);
+
 
   const handleSelectButtonClick = () => {
     setAdditionalInfoVisible(true);
     onSelectButtonClick();
   };
 
-  function handleDeleteRequest() {
+  const handleDeleteRequest = async () => {
     //send email to customer, then delete the whole created vehicle from database
-};
-  function handleAcceptRequest() {
+    try {
+      if (window.confirm("Are you sure you want to delete this vehicle?")) {
+        const response = await fetch(`/api/vehicles/${vehicle._id}`, {
+          method: "DELETE",
+        });
+        if (!response.ok) {
+          throw new Error("Failed to delete reservation");
+        }
+        alert("Vehicle refused succesfully");
+      }
+    } catch (error) {
+      console.error("Error deleting reservation:", error.message);
+    }
+  };
+  
+  const handleAcceptRequest = async () => {
     // send an email to customer and change vehicle status to "available in database"
+    // POST request to update the reservation's final price
+    const response = await fetch(`/api/vehicles/${vehicle._id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ status: "approved" }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update vehicle status');
+    }
+    alert("Adding vehicle to catalog")
+    console.log('Vehicle status updated successfully');
+
+    alert("Vehicle succesfully added");
 }
 
   return (
