@@ -181,17 +181,17 @@ sendDepositReturnConfirmation = async (reservation) => {
       }
 };
 
-sendSpecimenChequeRequest = async (reservation) => {
+sendSpecimenChequeRequest = async (vehicle) => {
     try {
         sgMail.setApiKey(API_KEY);
 
         const message = {
-            to: `${reservation.email}`,
+            to: `${vehicle.submittedBy.email}`,
             from: 'rentaroo.hq@gmail.com',
             subject: 'Specimen Cheque Request',
             html: `<div className="confirmation-container">
             <h1>Specimen Cheque Request</h1>
-            <p>Dear <b>${reservation.fullName}</b>,</p>
+            <p>Dear <b>${vehicle.submittedBy.name}</b>,</p>
             <p>We hope this message finds you well. We're excited to inform you that your vehicle listing on <strong>Rentaroo</strong> has been booked by a prospective renter!</p>
             <p>To proceed with finalizing the rental transaction, we kindly ask you to submit a specimen cheque. The specimen cheque serves as a necessary step to verify your payment information and ensure a smooth and secure transaction process.</p>
             <p><strong>Here's what you need to do:</strong></p>
@@ -214,6 +214,8 @@ sendSpecimenChequeRequest = async (reservation) => {
         throw new Error('Error sending confirmation email');
       }
 };
+
+
 
 sendVehicleEmailConfirmation = async (vehicle, user) => {
   try {

@@ -182,7 +182,7 @@ const bookReservation = async (req, res) => {
             const owner = await User.findById(bookedVehicle.submittedBy);
             if (owner.specimenChequeSubmitted == "no") {
                 // Send an email requesting the specimen cheque
-                await sendSpecimenChequeRequestEmail(reservation);
+                await sendSpecimenChequeRequestEmail(bookedVehicle);
             }  
         }
 
