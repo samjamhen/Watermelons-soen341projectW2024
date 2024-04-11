@@ -7,6 +7,7 @@ const cors = require("cors");
 const app = express();
 const dotenv = require("dotenv");
 dotenv.config();
+const sgMail = require('@sendgrid/mail');
 
 // Use middleware routes
 
