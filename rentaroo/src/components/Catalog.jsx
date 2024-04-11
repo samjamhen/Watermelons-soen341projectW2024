@@ -18,7 +18,7 @@ function Catalog() {
         }
         const json = await response.json();
   
-        // Filter vehicles based on application status (e.g., "pending")
+        // Filter vehicles based on application status (e.g., "approved")
         const pendingVehicles = json.filter(vehicle => !vehicle.status || vehicle.status === "approved");
   
         // Set the filtered vehicles in your state (e.g., setPendingVehicles)
