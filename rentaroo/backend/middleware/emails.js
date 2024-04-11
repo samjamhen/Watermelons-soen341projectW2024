@@ -227,7 +227,7 @@ sendPaymentEmailConfirmation = async (reservation, user) => {
       <p>We are pleased to inform you that your payment has been processed successfully.</p>
       <p>The details of the payment are as follows:</p>
       <ul>
-        <li><Reference Number: ${reservation._id}</li>
+        <li>Reference Number: ${reservation._id}</li>
         <li>Amount: ${reservation.finalPrice}</li>
         <li>Date: ${new Date().toLocaleString()}</li>
       </ul>

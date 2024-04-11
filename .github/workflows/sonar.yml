@@ -18,4 +18,18 @@ jobs:
       uses: sonarsource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ 54aa8d2a2cf8a70f0bffb8fb2636043d0f3851b4}}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Make sure to store your SonarCloud token securely as a secret
+
+  super-linter:
+    runs-on: ubuntu-latest
+    name: Lint Codebase
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Super-Linter
+        uses: github/super-linter@v6.3.1
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: "master"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
