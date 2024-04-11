@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import '../../styles/SystemAdministrator/ClientManagement.css';
 
-const ClientCard = ({ id, name, email, password, phoneNumber, userType, onDelete }) => {
+const ClientCard = ({ id, name, email, password, phoneNumber, userType, onDelete, specimenChequeSubmitted }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({
     name: name,
     email: email,
     phoneNumber: phoneNumber,
-    userType: userType
+    userType: userType,
+    specimenChequeSubmitted: specimenChequeSubmitted
   });
   const [emailError, setEmailError] = useState(false);
   const [emailFormatError, setEmailFormatError] = useState(false);
@@ -79,7 +80,8 @@ const handleSaveClick = async (e) => {
       name: name,
       email: email,
       phoneNumber: phoneNumber,
-      userType: userType
+      userType: userType,
+      specimenChequeSubmitted: specimenChequeSubmitted
     });
     setIsEditing(false);
   };
@@ -157,6 +159,14 @@ const handleSaveClick = async (e) => {
             </p>
             {phoneNumberError && <span style={{color: 'red'}}>Phone number is already in use. Please use a different one.</span>}
             {phoneNumberFormatError && phoneNumber && <span style={{color: 'red'}}>Please enter a phone number in the correct format.</span>}
+
+            <p>
+              <strong>Specimen Cheque Submitted: </strong>{' '}
+              <select name="userType" value={editedData.specimenChequeSubmitted} onChange={handleChange}>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </p>
             
             <p>
               <strong>User Type:</strong>{' '}
@@ -188,6 +198,10 @@ const handleSaveClick = async (e) => {
             
             <p>
               <strong>Phone Number:</strong> {editedData.phoneNumber}
+            </p>
+
+            <p>
+              <strong>Specimen Cheque Submitted: </strong>{editedData.specimenChequeSubmitted}
             </p>
             
             <p>

@@ -1,6 +1,7 @@
 const Reservation = require('../models/reservations.js')
 const Vehicle = require('../models/vehicles.js')
-const { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendVehicleReturnConfirmation, sendDepositReturnConfirmation } = require('../middleware/emails.js')
+const User = require("../models/users");
+const { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendVehicleReturnConfirmation, sendDepositReturnConfirmation, sendPaymentEmailConfirmation, sendSpecimenChequeRequest } = require('../middleware/emails.js')
 
 //get all reservations
 const getReservations = async (req, res) => {
@@ -175,6 +176,17 @@ const bookReservation = async (req, res) => {
         console.log(reservation.email)
         await sendConfirmationEmail(reservation);
 
+        // Check if the vehicle booked is owned by a client
+        const bookedVehicle = await Vehicle.findById(reservation.vehicle);
+        if (bookedVehicle?.submittedBy) {
+            //Check if the owner of the vehicle has already submitted a specimen cheque
+            const owner = await User.findById(bookedVehicle.submittedBy);
+            if (owner.specimenChequeSubmitted == "no") {
+                // Send an email requesting the specimen cheque
+                await sendSpecimenChequeRequest(owner);
+            }  
+        }
+
         // Return status
         res.status(200).json(reservation);
     } catch (error) {
@@ -220,9 +232,20 @@ const updateReservation = async (req, res) => {
         }
         else if(updated.status == "checked-out" && old.status == "checked-in"){
             await sendVehicleReturnConfirmation(updated)
+            
         }
         else if(updated.depositStatus == "returned" && old.depositStatus == "payed"){
             await sendDepositReturnConfirmation(updated)
+            const vehicle = await Vehicle.findById(updated.vehicle);
+      
+            if (!vehicle) {
+                throw new Error("Vehicle not found");
+            }
+
+            if(vehicle.submittedBy){
+                const owner = await User.findById(vehicle.submittedBy);
+                sendPaymentEmailConfirmation(updated, owner);
+            }
         }
         else{
             await sendUpdatedConfirmation(updated);

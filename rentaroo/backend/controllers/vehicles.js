@@ -1,6 +1,8 @@
 const Vehicle = require("../models/vehicles");
+const User = require("../models/users");
 const mongoose = require("mongoose");
 const Branch = require("../models/branches")
+const {sendVehicleEmailConfirmation, sendVehicleEmailRefused} = require("../middleware/emails.js")
 
 //CREATE
 const createVehicle = async (req, res) => {
@@ -24,6 +26,10 @@ const createVehicle = async (req, res) => {
     status,
     submittedBy,
     description,
+    frontphoto,
+    backphoto,
+    rightphoto,
+    leftphoto
   } = req.body;
   try {
     const newVehicle = await Vehicle.create({
@@ -46,6 +52,10 @@ const createVehicle = async (req, res) => {
       status,
       submittedBy,
       description,
+      frontphoto,
+      backphoto,
+      rightphoto,
+      leftphoto
     });
 
     // Find the branch associated with the vehicle's location
@@ -118,18 +128,50 @@ const updateVehicle = async (req, res) => {
     return res.status(404).json({ error: "Vehicle not found" });
   }
 
-  const existingVehicle = await Vehicle.findOneAndUpdate(
-    { _id: id },
-    {
-      ...req.body,
-    }
-  );
-  if (!existingVehicle) {
-    return res.status(404).json({ error: "Vehicle not found" });
-  }
+  try {
+    const prevVehicle = await Vehicle.findById(id);
 
-  res.status(200).json({ message: "Vehicle updated successfully" });
+    if (!prevVehicle) {
+      return res.status(404).json({ error: "Vehicle not found" });
+    }
+
+    const existingVehicle = await Vehicle.findOneAndUpdate(
+      { 
+        _id: id,
+      },
+      { 
+        ...req.body,
+      },
+      { 
+        new: true // Return the updated document
+      }
+    );
+
+    if (!existingVehicle) {
+      // If the status was already approved, return error
+      return res.status(400).json({ error: "Vehicle status already approved" });
+    }
+
+    if (prevVehicle.status === "pending" && existingVehicle.status === "approved") {
+      const user = await User.findById(existingVehicle.submittedBy);
+      
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      sendVehicleEmailConfirmation(existingVehicle, user);
+
+      return res.status(200).json({ message: "Vehicle updated successfully" });
+    }
+
+    // If the status transition didn't occur, return success without email sending
+    return res.status(200).json({ message: "Vehicle updated successfully" });
+  } catch (error) {
+    console.error("Error updating vehicle:", error.message);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 };
+
 
 //DELETE
 const deleteVehicle = async (req, res) => {
@@ -159,8 +201,21 @@ const deleteVehicle = async (req, res) => {
     return res.status(400).json({ error: "Vehicle not found" });
   }
 
+  if(vehicle.status!=""){
+    try {
+      const user = await User.findById(vehicle.submittedBy);
+      
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      sendVehicleEmailRefused(vehicle, user)
+    } catch (error) {
+      console.error("Error fetching user data:", error.message);
+    }
+
   res.status(200).json({ message: "Vehicle deleted successfully" });
-};
+}};
 
 module.exports = {
   getAllVehicles,

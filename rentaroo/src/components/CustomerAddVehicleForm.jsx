@@ -35,6 +35,10 @@ const CustomerAddVehicleForm = () => {
   const [submittedBy, setApplicationSubmittedBy] = useState(String(userId));;
   const [status, setApplicationStatus] = useState("pending");
   const [description, setApplicationDescription] = useState("");
+  const [frontphoto, setFrontphoto] = useState([""]);
+  const [backphoto, setBackphoto] = useState([""]);
+  const [rightphoto, setRightphoto] = useState([""]);
+  const [leftphoto, setLeftphoto] = useState([""]);
   // const [vehicleImage, setVehicleImage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(""); // New state for success message
 
@@ -72,6 +76,10 @@ const CustomerAddVehicleForm = () => {
         status,
         submittedBy,
         description,
+        frontphoto,
+        backphoto,
+        rightphoto,
+        leftphoto,
       };
 
       const response = await fetch("/api/vehicles", {
@@ -108,10 +116,14 @@ const CustomerAddVehicleForm = () => {
         setRightPhoto("");
         setLeftPhoto("");
         setApplicationDescription("");
+        setFrontphoto([""]);
+        setBackphoto([""]);
+        setRightphoto([""]);
+        setLeftphoto([""]);
 
         setError(null);
         console.log("Vehicle created successfully", json);
-        setSuccessMessage("Vehicle created successfully");
+        setSuccessMessage("Application submitted succesfully");
         dispatch({ type: "CREATE_VEHICLE", payload: json });
         
       }
@@ -135,7 +147,7 @@ const CustomerAddVehicleForm = () => {
   return (
 
     <form className="vehicle-form" onSubmit={handleSubmit}>
-      <h1>Vehicle ApplicationForm</h1>
+      <h1>Vehicle Application Form</h1>
       <h4>Please provide details of your vehicle</h4>
 
       <label>
@@ -282,6 +294,37 @@ const CustomerAddVehicleForm = () => {
         onChange={(e) => setPhotos(e.target.value.split(","))}
 
       />
+
+      <label>Upload Photos of your Vehicle for Inspection (add a link):</label>
+      <label>Front Photo (add a link):</label>
+      <input
+        type="text"
+        value={frontphoto.join(",")}
+        onChange={(e) => setFrontphoto(e.target.value.split(","))}
+
+      />
+      <label>Back Photo (add a link):</label>
+      <input
+        type="text"
+        value={backphoto.join(",")}
+        onChange={(e) => setBackphoto(e.target.value.split(","))}
+
+      />
+      <label>Right Photo (add a link):</label>
+      <input
+        type="text"
+        value={rightphoto.join(",")}
+        onChange={(e) => setRightphoto(e.target.value.split(","))}
+
+      />
+      <label>Left Photo (add a link):</label>
+      <input
+        type="text"
+        value={leftphoto.join(",")}
+        onChange={(e) => setLeftphoto(e.target.value.split(","))}
+
+      />
+      
         
         <label>Application Description:</label>
         <textarea
@@ -291,40 +334,17 @@ const CustomerAddVehicleForm = () => {
         />
 
         
-
           <label >Credit Card Number:</label>
           <input type="text" id="creditCard" name="creditCard" />
-
-
-          <label>Upload Photos of your Vehicle for Inspection (add a link):</label>
+       
 
       
-
-      Front Side: <input type="text" 
-      value={frontPhoto}
-      onChange={(e) => setFrontPhoto(e.target.value)} 
-      />
-
-      Back Side: <input type="text" 
-         value={backPhoto}
-         onChange={(e) => setBackPhoto(e.target.value)} 
-         />
-
-      Right Side: <input type="text" 
-         value={rightPhoto}
-         onChange={(e) => setRightPhoto(e.target.value)} 
-         />
-
-      Left Side: <input type="text" 
-         value={leftPhoto}
-         onChange={(e) => setLeftPhoto(e.target.value)} 
-         />
  
         
       
 
 
-      <button type="submit">Add Vehicle</button>
+      <button type="submit">Apply</button>
       {error && <div className="alert alert-danger">{error}</div>}
       {successMessage && (
         <div className="alert alert-success">{successMessage}</div>

@@ -31,6 +31,12 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
             unique: true
+        },
+
+        specimenChequeSubmitted: {
+            type: String,
+            enum: ['yes', 'no'],
+            default: 'no'
         }
 
         //Add fields specific to each user type

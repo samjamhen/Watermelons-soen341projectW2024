@@ -63,6 +63,7 @@ const ClientsManagement = () => {
                 password={user.password}
                 phoneNumber={user.phoneNumber}
                 userType={user.userType}
+                specimenChequeSubmitted={user.specimenChequeSubmitted}
                 onDelete={handleDelete}
               />
             ))
