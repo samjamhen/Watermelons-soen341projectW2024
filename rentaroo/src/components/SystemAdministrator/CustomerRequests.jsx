@@ -13,7 +13,9 @@ const CustomerRequest = () => {
               throw new Error("Failed to fetch vehicles");
             }
             const json = await response.json();
-            setVehicles(json);
+
+            const pendingVehicles = json.filter( vehicle =>vehicle.status === "pending");
+            setVehicles(pendingVehicles);
           } catch (error) {
             console.error("Error fetching vehicles:", error);
           }
