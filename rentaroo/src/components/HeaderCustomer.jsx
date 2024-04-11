@@ -41,7 +41,7 @@ const Header = () => {
             </li>
             <li>
               <Link to="/ViewReservationPage" id="link">
-                My Reservations
+                My Reservations / Rental Requests
               </Link>
             </li>
           </ul>
