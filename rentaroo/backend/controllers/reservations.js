@@ -177,8 +177,8 @@ const bookReservation = async (req, res) => {
         await sendConfirmationEmail(reservation);
 
         // Check if the vehicle booked is owned by a client
-        const bookedVehicle = await Vehicle.findById(vehicle);
-        if (bookedVehicle.submittedBy) {
+        const bookedVehicle = await Vehicle.findById(reservation.vehicle);
+        if (bookedVehicle?.submittedBy) {
             //Check if the owner of the vehicle has already submitted a specimen cheque
             const owner = await User.findById(bookedVehicle.submittedBy);
             if (owner.specimenChequeSubmitted == "no") {
