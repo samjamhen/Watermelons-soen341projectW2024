@@ -123,7 +123,7 @@ const CustomerAddVehicleForm = () => {
 
         setError(null);
         console.log("Vehicle created successfully", json);
-        setSuccessMessage("Vehicle created successfully");
+        setSuccessMessage("Application submitted succesfully");
         dispatch({ type: "CREATE_VEHICLE", payload: json });
         
       }
@@ -365,7 +365,7 @@ const CustomerAddVehicleForm = () => {
       
 
 
-      <button type="submit">Add Vehicle</button>
+      <button type="submit">Apply</button>
       {error && <div className="alert alert-danger">{error}</div>}
       {successMessage && (
         <div className="alert alert-success">{successMessage}</div>
