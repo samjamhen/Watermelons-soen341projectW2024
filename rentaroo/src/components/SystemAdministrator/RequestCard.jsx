@@ -98,7 +98,25 @@ function RequestCard({ vehicle, onSelectButtonClick }) {
         {additionalInfoVisible && (
           <>
             <p className="vehicle-additional-info"> {vehicle.additionalInfo}</p>
-            
+            <div className="request-digital-inspection">
+              <table>
+                <tr>
+                  <td>
+                    Front Side: {vehicle.frontphoto}
+                  </td>
+                  <td>
+                    Back Side: 
+                  </td>
+                  <td>
+                    Right Side: 
+                  </td>
+                  <td>
+                    Left Side: 
+                  </td>
+                 
+                </tr>
+              </table>
+            </div>
             <button 
               className="select-button" 
               id="deny-request"
