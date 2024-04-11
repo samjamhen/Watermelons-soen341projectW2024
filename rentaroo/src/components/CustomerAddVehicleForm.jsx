@@ -294,6 +294,8 @@ const CustomerAddVehicleForm = () => {
         onChange={(e) => setPhotos(e.target.value.split(","))}
 
       />
+
+      <label>Upload Photos of your Vehicle for Inspection (add a link):</label>
       <label>Front Photo (add a link):</label>
       <input
         type="text"
@@ -331,34 +333,12 @@ const CustomerAddVehicleForm = () => {
           required
         />
 
-        {/*
+        
           <label >Credit Card Number:</label>
           <input type="text" id="creditCard" name="creditCard" />
-        */}
-
-          <label>Upload Photos of your Vehicle for Inspection (add a link):</label>
+       
 
       
-
-      Front Side: <input type="text" 
-      value={frontPhoto}
-      onChange={(e) => setFrontPhoto(e.target.value)} 
-      />
-
-      Back Side: <input type="text" 
-         value={backPhoto}
-         onChange={(e) => setBackPhoto(e.target.value)} 
-         />
-
-      Right Side: <input type="text" 
-         value={rightPhoto}
-         onChange={(e) => setRightPhoto(e.target.value)} 
-         />
-
-      Left Side: <input type="text" 
-         value={leftPhoto}
-         onChange={(e) => setLeftPhoto(e.target.value)} 
-         />
  
         
       
