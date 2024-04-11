@@ -227,6 +227,7 @@ const updateReservation = async (req, res) => {
 
         const updated = await Reservation.findByIdAndUpdate(_id, updatedReservation, { new: true });
 
+        //email logic
         if (updated.depositStatus == "payed" && old.depositStatus == "notPayed"){
             await sendDepositConfirmation(updated)
         }
