@@ -1,11 +1,9 @@
 const sgMail = require('@sendgrid/mail');
 
-const API_KEY = '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';
-
 // Middleware to send confirmation email
 sendConfirmationEmail = async (reservation) => {
     try {
-        sgMail.setApiKey(API_KEY);
+        sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
     
         const message = {
             to: `${reservation.email}`,
@@ -34,7 +32,7 @@ sendConfirmationEmail = async (reservation) => {
 
 sendDeleteConfirmation = async (reservation) => {
     try {
-        sgMail.setApiKey(API_KEY);
+        sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
     
         const message = {
             to: `${reservation.email}`,
@@ -63,7 +61,7 @@ sendDeleteConfirmation = async (reservation) => {
 
 sendUpdatedConfirmation = async (reservation) => {
     try {
-        sgMail.setApiKey(API_KEY);
+        sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
     
         const message = {
             to: `${reservation.email}`,
@@ -92,7 +90,7 @@ sendUpdatedConfirmation = async (reservation) => {
 
 sendDepositConfirmation = async (reservation) => {
     try {
-        sgMail.setApiKey(API_KEY);
+        sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
     
         const message = {
             to: `${reservation.email}`,
@@ -126,7 +124,7 @@ sendDepositConfirmation = async (reservation) => {
 
 sendVehicleReturnConfirmation = async (reservation) => {
     try {
-        sgMail.setApiKey(API_KEY);
+        sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
     
         const message = {
             to: `${reservation.email}`,
@@ -155,7 +153,7 @@ sendVehicleReturnConfirmation = async (reservation) => {
 
 sendDepositReturnConfirmation = async (reservation) => {
     try {
-        sgMail.setApiKey(API_KEY);
+        sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
     
         const message = {
             to: `${reservation.email}`,
@@ -183,7 +181,7 @@ sendDepositReturnConfirmation = async (reservation) => {
 
 sendSpecimenChequeRequest = async (user) => {
     try {
-        sgMail.setApiKey(API_KEY);
+        sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
 
         const message = {
             to: `${user.email}`,
@@ -215,17 +213,17 @@ sendSpecimenChequeRequest = async (user) => {
       }
 };
 
-sendPaymentEmailConfirmation = async (reservation, vehicle) => {
+sendPaymentEmailConfirmation = async (reservation, user) => {
   try {
-    sgMail.setApiKey(API_KEY);
+    sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
 
     const message = {
-      to: `${vehicle.submittedBy.email}`,
+      to: `${user.email}`,
       from: 'rentaroo.hq@gmail.com',
       subject: 'Payment Confirmation',
       html: `<div className="confirmation-container">
       <h1>Payment Confirmed</h1>
-      <p>Dear <b>${vehicle.submittedBy.name}</b>,</p>
+      <p>Dear <b>${user.name}</b>,</p>
       <p>We are pleased to inform you that your payment has been processed successfully.</p>
       <p>The details of the payment are as follows:</p>
       <ul>
@@ -249,7 +247,7 @@ sendPaymentEmailConfirmation = async (reservation, vehicle) => {
 
 sendVehicleEmailConfirmation = async (vehicle, user) => {
   try {
-      sgMail.setApiKey(API_KEY);
+      sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
   
       const message = {
           to: `${user.email}`,
@@ -278,7 +276,7 @@ sendVehicleEmailConfirmation = async (vehicle, user) => {
 
 sendVehicleEmailRefused = async (vehicle, user) => {
   try {
-      sgMail.setApiKey(API_KEY);
+      sgMail.setApiKey(process.env.REACT_APP_SENDGRID_API_KEY);
   
       const message = {
           to: `${user.email}`,
@@ -298,4 +296,4 @@ sendVehicleEmailRefused = async (vehicle, user) => {
     }
 };
 
-module.exports = { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendVehicleReturnConfirmation, sendDepositReturnConfirmation, sendVehicleEmailConfirmation, sendVehicleEmailRefused, sendSpecimenChequeRequest };
+module.exports = { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendVehicleReturnConfirmation, sendDepositReturnConfirmation, sendVehicleEmailConfirmation, sendVehicleEmailRefused, sendSpecimenChequeRequest, sendPaymentEmailConfirmation };

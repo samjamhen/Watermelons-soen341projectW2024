@@ -1,6 +1,7 @@
 const Reservation = require('../models/reservations.js')
 const Vehicle = require('../models/vehicles.js')
-const { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendVehicleReturnConfirmation, sendDepositReturnConfirmation } = require('../middleware/emails.js')
+const User = require("../models/users");
+const { sendConfirmationEmail, sendDeleteConfirmation, sendUpdatedConfirmation, sendDepositConfirmation, sendVehicleReturnConfirmation, sendDepositReturnConfirmation, sendPaymentEmailConfirmation, sendSpecimenChequeRequest } = require('../middleware/emails.js')
 
 //get all reservations
 const getReservations = async (req, res) => {
@@ -182,7 +183,7 @@ const bookReservation = async (req, res) => {
             const owner = await User.findById(bookedVehicle.submittedBy);
             if (owner.specimenChequeSubmitted == "no") {
                 // Send an email requesting the specimen cheque
-                await sendSpecimenChequeRequestEmail(owner);
+                await sendSpecimenChequeRequest(owner);
             }  
         }
 
@@ -231,9 +232,20 @@ const updateReservation = async (req, res) => {
         }
         else if(updated.status == "checked-out" && old.status == "checked-in"){
             await sendVehicleReturnConfirmation(updated)
+            
         }
         else if(updated.depositStatus == "returned" && old.depositStatus == "payed"){
             await sendDepositReturnConfirmation(updated)
+            const vehicle = await Vehicle.findById(updated.vehicle);
+      
+            if (!vehicle) {
+                throw new Error("Vehicle not found");
+            }
+
+            if(vehicle.submittedBy){
+                const owner = await User.findById(vehicle.submittedBy);
+                sendPaymentEmailConfirmation(updated, owner);
+            }
         }
         else{
             await sendUpdatedConfirmation(updated);
