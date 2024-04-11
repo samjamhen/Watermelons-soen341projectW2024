@@ -31,6 +31,10 @@ const CustomerAddVehicleForm = () => {
   const [submittedBy, setApplicationSubmittedBy] = useState(String(userId));;
   const [status, setApplicationStatus] = useState("pending");
   const [description, setApplicationDescription] = useState("");
+  const [frontphoto, setFrontphoto] = useState([""]);
+  const [backphoto, setBackphoto] = useState([""]);
+  const [rightphoto, setRightphoto] = useState([""]);
+  const [leftphoto, setLeftphoto] = useState([""]);
   // const [vehicleImage, setVehicleImage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(""); // New state for success message
 
@@ -64,6 +68,10 @@ const CustomerAddVehicleForm = () => {
         status,
         submittedBy,
         description,
+        frontphoto,
+        backphoto,
+        rightphoto,
+        leftphoto,
       };
 
       const response = await fetch("/api/vehicles", {
@@ -96,6 +104,10 @@ const CustomerAddVehicleForm = () => {
         setPrice("");
         setPhotos([""]);
         setApplicationDescription("");
+        setFrontphoto([""]);
+        setBackphoto([""]);
+        setRightphoto([""]);
+        setLeftphoto([""]);
 
         setError(null);
         console.log("Vehicle created successfully", json);
@@ -266,6 +278,35 @@ const CustomerAddVehicleForm = () => {
         onChange={(e) => setPhotos(e.target.value.split(","))}
 
       />
+      <label>Front Photo (add a link):</label>
+      <input
+        type="text"
+        value={frontphoto.join(",")}
+        onChange={(e) => setFrontphoto(e.target.value.split(","))}
+
+      />
+      <label>Back Photo (add a link):</label>
+      <input
+        type="text"
+        value={backphoto.join(",")}
+        onChange={(e) => setBackphoto(e.target.value.split(","))}
+
+      />
+      <label>Right Photo (add a link):</label>
+      <input
+        type="text"
+        value={rightphoto.join(",")}
+        onChange={(e) => setRightphoto(e.target.value.split(","))}
+
+      />
+      <label>Left Photo (add a link):</label>
+      <input
+        type="text"
+        value={leftphoto.join(",")}
+        onChange={(e) => setLeftphoto(e.target.value.split(","))}
+
+      />
+      
         
         <label>Application Description:</label>
         <textarea
