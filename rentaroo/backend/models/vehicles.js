@@ -78,6 +78,19 @@ const vehicleSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    frontphoto: {
+      type: [String],
+    },
+    backphoto: {
+      type: [String],
+    },
+    rightphoto: {
+      type: [String],
+    },
+    leftphoto: {
+      type: [String],
+    },
+
    
   },
   { timestamps: true }
